@@ -9,92 +9,43 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --primary:#0A2240;
-  --accent:#F5A623;
-  --accent2:#00C9A7;
-  --text:#1a1a2e;
-  --muted:#6b7280;
-  --light:#f8f9fa;
-  --white:#ffffff;
-  --border:#e5e7eb;
-  --radius:12px;
+  --primary:#0A2240;--accent:#F5A623;--accent2:#00C9A7;
+  --text:#1a1a2e;--muted:#6b7280;--light:#f8f9fa;--border:#e5e7eb;
 }
 html{scroll-behavior:smooth}
 body{font-family:'Noto Sans TC',sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
-img{max-width:100%;height:auto;display:block}
+.view{display:none}.view.active{display:block}
 
-/* ─── VIEWS ─── */
-.view{display:none}
-.view.active{display:block}
-
-/* ─── NAVBAR ─── */
-.top-bar{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  background:rgba(10,34,64,0.97);backdrop-filter:blur(12px);
-  padding:0 24px;height:64px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
-.logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none}
-.logo-icon{
-  width:38px;height:38px;background:var(--accent);border-radius:7px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Bebas Neue';font-size:20px;color:#fff;flex-shrink:0;
-}
+/* NAV */
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,34,64,0.97);backdrop-filter:blur(12px);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-icon{width:38px;height:38px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:20px;color:#fff;flex-shrink:0;transition:background .3s}
 .logo-text{display:flex;flex-direction:column}
 .logo-en{font-family:'Bebas Neue';font-size:20px;color:#fff;letter-spacing:3px;line-height:1}
 .logo-zh{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:2px}
-
-/* Desktop Nav */
 .nav-links{display:flex;gap:24px;align-items:center}
-.nav-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:0.3px;transition:color 0.2s;cursor:pointer;white-space:nowrap}
+.nav-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;cursor:pointer;transition:color .2s;white-space:nowrap}
 .nav-links a:hover{color:var(--accent)}
 .nav-right{display:flex;gap:10px;align-items:center;flex-shrink:0}
-.btn-admin{background:var(--accent);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Noto Sans TC';white-space:nowrap;transition:background 0.2s}
+.btn-admin{background:var(--accent);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Noto Sans TC';white-space:nowrap;transition:background .2s}
 .btn-admin:hover{background:#e0941a}
-
-/* Hamburger */
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;z-index:210}
-.hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all 0.3s}
+.hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all .3s}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-
-/* Mobile Drawer */
-.mobile-menu{
-  display:none;position:fixed;top:64px;left:0;right:0;bottom:0;
-  background:rgba(10,34,64,0.99);z-index:190;
-  flex-direction:column;padding:32px 24px;gap:0;
-  overflow-y:auto;
-}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;background:rgba(10,34,64,0.99);z-index:190;flex-direction:column;padding:32px 24px;overflow-y:auto}
 .mobile-menu.open{display:flex}
-.mobile-menu a{
-  color:rgba(255,255,255,0.85);text-decoration:none;font-size:18px;
-  padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.08);
-  cursor:pointer;transition:color 0.2s;
-}
+.mobile-menu a{color:rgba(255,255,255,0.85);text-decoration:none;font-size:18px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.08);cursor:pointer;transition:color .2s}
 .mobile-menu a:hover{color:var(--accent)}
-.mobile-menu .btn-admin-mobile{
-  margin-top:24px;background:var(--accent);color:#fff;border:none;
-  padding:14px;border-radius:8px;font-size:16px;cursor:pointer;
-  font-family:'Noto Sans TC';font-weight:500;
-}
+.mobile-menu .btn-admin-mobile{margin-top:24px;background:var(--accent);color:#fff;border:none;padding:14px;border-radius:8px;font-size:16px;cursor:pointer;font-family:'Noto Sans TC';font-weight:500}
 
-/* ─── HERO ─── */
-.hero{
-  min-height:100vh;
-  background:linear-gradient(135deg,#0A2240 0%,#1a3a5c 55%,#0d4a6e 100%);
-  position:relative;display:flex;align-items:center;overflow:hidden;
-  padding-top:64px;
-}
+/* HERO */
+.hero{min-height:100vh;background:linear-gradient(135deg,#0A2240 0%,#1a3a5c 55%,#0d4a6e 100%);position:relative;display:flex;align-items:center;overflow:hidden;padding-top:64px}
 .hero-bg-pattern{position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 60px,#fff 60px,#fff 61px),repeating-linear-gradient(90deg,transparent,transparent 60px,#fff 60px,#fff 61px)}
 .hero-glow{position:absolute;right:-100px;top:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,0.15) 0%,transparent 70%);pointer-events:none}
 .hero-glow2{position:absolute;left:-50px;bottom:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,201,167,0.1) 0%,transparent 70%);pointer-events:none}
-
-.hero-content{
-  position:relative;z-index:2;max-width:1200px;margin:0 auto;
-  padding:40px 24px 60px;
-  display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;width:100%;
-}
+.hero-content{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:40px 24px 60px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;width:100%}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);padding:6px 14px;border-radius:20px;margin-bottom:20px}
 .hero-tag span{font-size:11px;color:var(--accent);letter-spacing:2px;font-weight:500}
 .hero-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
@@ -104,27 +55,26 @@ img{max-width:100%;height:auto;display:block}
 .hero-sub{font-size:clamp(13px,2vw,16px);color:rgba(255,255,255,0.6);letter-spacing:4px;margin-bottom:24px;font-weight:300}
 .hero-desc{font-size:clamp(13px,1.5vw,15px);color:rgba(255,255,255,0.75);line-height:1.85;margin-bottom:36px}
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn-primary{background:var(--accent);color:#fff;border:none;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans TC';transition:all 0.2s;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff;border:none;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans TC';transition:all .2s;white-space:nowrap}
 .btn-primary:hover{background:#e0941a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,166,35,0.35)}
-.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.3);padding:13px 28px;border-radius:8px;font-size:14px;cursor:pointer;font-family:'Noto Sans TC';transition:all 0.2s;white-space:nowrap}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.3);padding:13px 28px;border-radius:8px;font-size:14px;cursor:pointer;font-family:'Noto Sans TC';transition:all .2s;white-space:nowrap}
 .btn-outline:hover{border-color:#fff;background:rgba(255,255,255,0.07)}
-
 .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .stat-card{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:20px;backdrop-filter:blur(10px)}
 .stat-num{font-family:'Bebas Neue';font-size:42px;color:var(--accent);letter-spacing:2px;line-height:1}
 .stat-label{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-top:4px}
 
-/* ─── SEARCH ─── */
+/* SEARCH */
 .search-section{background:#fff;padding:20px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.08);position:relative;z-index:10}
 .search-inner{max-width:1200px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .search-label{font-size:13px;color:var(--muted);font-weight:500;white-space:nowrap}
-.search-input{flex:1;min-width:140px;border:1.5px solid var(--border);border-radius:7px;padding:10px 14px;font-size:13px;font-family:'Noto Sans TC';color:var(--text);outline:none;transition:border-color 0.2s}
+.search-input{flex:1;min-width:140px;border:1.5px solid var(--border);border-radius:7px;padding:10px 14px;font-size:13px;font-family:'Noto Sans TC';color:var(--text);outline:none;transition:border-color .2s}
 .search-input:focus{border-color:var(--primary)}
 .search-select{border:1.5px solid var(--border);border-radius:7px;padding:10px 12px;font-size:13px;font-family:'Noto Sans TC';color:var(--text);outline:none;background:#fff;cursor:pointer;flex-shrink:0}
-.btn-search{background:var(--primary);color:#fff;border:none;padding:10px 22px;border-radius:7px;font-size:13px;cursor:pointer;font-family:'Noto Sans TC';font-weight:500;white-space:nowrap;width:100%;transition:background 0.2s}
+.btn-search{background:var(--primary);color:#fff;border:none;padding:10px 22px;border-radius:7px;font-size:13px;cursor:pointer;font-family:'Noto Sans TC';font-weight:500;white-space:nowrap;width:100%;transition:background .2s}
 .btn-search:hover{background:#1a3a5c}
 
-/* ─── SECTIONS ─── */
+/* SECTIONS */
 section{padding:72px 24px}
 .section-bg{background:var(--light)}
 .section-inner{max-width:1200px;margin:0 auto}
@@ -133,17 +83,17 @@ section{padding:72px 24px}
 .section-header h2{font-family:'Bebas Neue';font-size:clamp(36px,5vw,48px);color:var(--primary);letter-spacing:2px;line-height:1;margin-bottom:10px}
 .section-header p{font-size:14px;color:var(--muted);max-width:480px;margin:0 auto;line-height:1.7}
 
-/* ─── FEATURES ─── */
+/* FEATURES */
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.feature-card{border:1.5px solid var(--border);border-radius:14px;padding:28px;transition:all 0.3s}
+.feature-card{border:1.5px solid var(--border);border-radius:14px;padding:28px;transition:all .3s}
 .feature-card:hover{border-color:var(--accent);box-shadow:0 8px 32px rgba(245,166,35,0.1);transform:translateY(-4px)}
 .feature-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
 .feature-card h3{font-size:16px;font-weight:600;color:var(--primary);margin-bottom:8px}
 .feature-card p{font-size:13px;color:var(--muted);line-height:1.75}
 
-/* ─── LOCATIONS ─── */
+/* LOCATIONS */
 .locations-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.loc-card{background:var(--light);border-radius:10px;padding:18px;transition:all 0.2s;border:1.5px solid transparent;cursor:pointer}
+.loc-card{background:var(--light);border-radius:10px;padding:18px;transition:all .2s;border:1.5px solid transparent;cursor:pointer}
 .loc-card:hover{background:#fff;border-color:var(--accent);box-shadow:0 4px 20px rgba(0,0,0,0.07)}
 .loc-name{font-weight:600;font-size:14px;color:var(--primary);margin-bottom:5px}
 .loc-addr{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:10px}
@@ -151,25 +101,25 @@ section{padding:72px 24px}
 .loc-tag.open{background:#d1fae5;color:#065f46}
 .loc-tag.full{background:#fee2e2;color:#991b1b}
 
-/* ─── NEWS ─── */
+/* NEWS */
 .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.news-card{border-radius:10px;overflow:hidden;border:1.5px solid var(--border);transition:all 0.25s;cursor:pointer}
+.news-card{border-radius:10px;overflow:hidden;border:1.5px solid var(--border);transition:all .25s;cursor:pointer}
 .news-card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.09);transform:translateY(-3px)}
 .news-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:36px}
 .news-body{padding:18px}
 .news-date{font-size:11px;color:var(--muted);margin-bottom:6px}
 .news-title{font-size:14px;font-weight:600;color:var(--primary);line-height:1.55}
 .news-more{text-align:center;margin-top:32px}
-.btn-more{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:11px 28px;border-radius:7px;font-size:13px;cursor:pointer;font-family:'Noto Sans TC';transition:all 0.2s}
+.btn-more{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:11px 28px;border-radius:7px;font-size:13px;cursor:pointer;font-family:'Noto Sans TC';transition:all .2s}
 .btn-more:hover{border-color:var(--primary);color:var(--primary)}
 
-/* ─── CTA STRIP ─── */
+/* CTA */
 .cta-strip{background:var(--primary);padding:64px 24px;text-align:center}
 .cta-strip h2{font-family:'Bebas Neue';font-size:clamp(32px,5vw,44px);color:#fff;letter-spacing:2px;margin-bottom:10px}
 .cta-strip p{font-size:14px;color:rgba(255,255,255,0.65);margin-bottom:24px;line-height:1.7}
 .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
-/* ─── FOOTER ─── */
+/* FOOTER */
 footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 .footer-inner{max-width:1200px;margin:0 auto}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:40px;margin-bottom:48px}
@@ -177,46 +127,42 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 .brand-zh{font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:3px;margin-top:2px;margin-bottom:16px;display:block}
 .footer-desc{font-size:13px;line-height:1.85;max-width:220px;color:rgba(255,255,255,0.45)}
 .footer-social{display:flex;gap:8px;margin-top:18px}
-.social-btn{width:32px;height:32px;background:rgba(255,255,255,0.08);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:background 0.2s}
+.social-btn{width:32px;height:32px;background:rgba(255,255,255,0.08);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:background .2s}
 .social-btn:hover{background:rgba(255,255,255,0.15)}
 .footer-col h4{font-size:11px;font-weight:600;color:#fff;margin-bottom:16px;letter-spacing:1.5px;text-transform:uppercase}
-.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:10px;cursor:pointer;transition:color 0.2s}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:10px;cursor:pointer;transition:color .2s}
 .footer-col a:hover{color:var(--accent)}
 .footer-contact-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:12px;color:rgba(255,255,255,0.45)}
 .footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:11px;color:rgba(255,255,255,0.25)}
 .footer-bottom-links{display:flex;gap:16px}
-.footer-bottom-links a{color:rgba(255,255,255,0.25);text-decoration:none;cursor:pointer;transition:color 0.2s}
+.footer-bottom-links a{color:rgba(255,255,255,0.25);text-decoration:none;cursor:pointer;transition:color .2s}
 .footer-bottom-links a:hover{color:rgba(255,255,255,0.5)}
 
-/* ─── ADMIN ─── */
+/* ADMIN LAYOUT */
 .admin-layout{display:flex;height:100vh;background:#f0f2f5;overflow:hidden}
-.admin-sidebar{width:240px;background:var(--primary);flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;transition:transform 0.3s}
+.admin-sidebar{width:240px;background:var(--primary);flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s}
 .admin-logo-wrap{padding:20px;border-bottom:1px solid rgba(255,255,255,0.08)}
 .admin-logo-wrap .logo-en{font-family:'Bebas Neue';font-size:18px;color:#fff;letter-spacing:3px;line-height:1}
 .admin-logo-wrap .logo-zh{font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:2px;margin-top:2px;display:block}
 .admin-menu{flex:1;padding:10px 0;overflow-y:auto}
 .menu-group-label{font-size:9px;color:rgba(255,255,255,0.28);letter-spacing:2px;padding:16px 18px 6px;font-weight:600}
-.menu-item{display:flex;align-items:center;gap:10px;padding:10px 18px;color:rgba(255,255,255,0.6);font-size:13px;cursor:pointer;transition:all 0.15s;border-left:3px solid transparent;user-select:none}
+.menu-item{display:flex;align-items:center;gap:10px;padding:10px 18px;color:rgba(255,255,255,0.6);font-size:13px;cursor:pointer;transition:all .15s;border-left:3px solid transparent;user-select:none}
 .menu-item:hover{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.9)}
 .menu-item.active{background:rgba(245,166,35,0.1);color:var(--accent);border-left-color:var(--accent)}
 .menu-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
 .admin-sidebar-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,0.08)}
 .sidebar-user{font-size:11px;color:rgba(255,255,255,0.35)}
 .sidebar-user strong{display:block;color:rgba(255,255,255,0.7);font-size:12px;margin-bottom:2px}
-
 .admin-main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
 .admin-header{background:#fff;border-bottom:1px solid var(--border);padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:10px}
 .admin-header h1{font-size:16px;font-weight:600;color:var(--primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .admin-header-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
-.btn-preview{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';transition:all 0.2s;white-space:nowrap}
+.btn-preview{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';transition:all .2s;white-space:nowrap}
 .btn-preview:hover{border-color:var(--primary);color:var(--primary)}
-.btn-save{background:var(--primary);color:#fff;border:none;padding:7px 16px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';white-space:nowrap;transition:background 0.2s}
+.btn-save{background:var(--primary);color:#fff;border:none;padding:7px 16px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';white-space:nowrap;transition:background .2s}
 .btn-save:hover{background:#1a3a5c}
 .admin-content{flex:1;overflow-y:auto;padding:20px}
-.admin-panel{display:none}
-.admin-panel.active{display:block}
-
-/* Admin hamburger */
+.admin-panel{display:none}.admin-panel.active{display:block}
 .admin-hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;background:none;border:none}
 .admin-hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px}
 
@@ -234,7 +180,7 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 .activity-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .activity-text{flex:1;color:var(--text)}
 .activity-time{color:var(--muted);font-size:11px;white-space:nowrap}
-.quick-btn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:10px 14px;background:#fff;border:1.5px solid var(--border);border-radius:7px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';color:var(--text);transition:all 0.2s;margin-bottom:7px}
+.quick-btn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:10px 14px;background:#fff;border:1.5px solid var(--border);border-radius:7px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';color:var(--text);transition:all .2s;margin-bottom:7px}
 .quick-btn:hover{border-color:var(--primary);color:var(--primary);background:#f8f9ff}
 .quick-btn:last-child{margin-bottom:0}
 
@@ -242,16 +188,20 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 .banner-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
 .banner-item{background:#fff;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;position:relative}
 .banner-item.active-banner{border-color:var(--accent2)}
-.banner-preview{height:120px;display:flex;align-items:center;justify-content:center;font-size:32px}
+.banner-preview{height:120px;display:flex;align-items:center;justify-content:center;font-size:32px;position:relative}
+.banner-preview img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.banner-preview .banner-emoji{position:relative;z-index:1;font-size:32px}
 .banner-controls{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px}
 .banner-name{font-size:12px;color:var(--text);font-weight:500}
 .banner-btns{display:flex;gap:6px}
-.btn-sm{padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;font-family:'Noto Sans TC';border:1px solid var(--border);background:#fff;color:var(--text);transition:all 0.15s}
+.btn-sm{padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;font-family:'Noto Sans TC';border:1px solid var(--border);background:#fff;color:var(--text);transition:all .15s}
 .btn-sm:hover{background:var(--light)}
 .btn-sm.danger{border-color:#fca5a5;color:#dc2626}
+.btn-sm.danger:hover{background:#fff5f5}
 .btn-sm.primary{border-color:var(--primary);color:var(--primary)}
-.active-badge{position:absolute;top:6px;right:6px;background:var(--accent2);color:#fff;font-size:9px;padding:2px 8px;border-radius:4px;font-weight:600}
-.upload-box{border:2px dashed var(--border);border-radius:8px;padding:28px 16px;text-align:center;cursor:pointer;transition:all 0.2s;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:168px}
+.btn-sm.primary:hover{background:#f0f4ff}
+.active-badge{position:absolute;top:6px;right:6px;background:var(--accent2);color:#fff;font-size:9px;padding:2px 8px;border-radius:4px;font-weight:600;z-index:2}
+.upload-box{border:2px dashed var(--border);border-radius:8px;padding:28px 16px;text-align:center;cursor:pointer;transition:all .2s;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:168px}
 .upload-box:hover{border-color:var(--accent);background:rgba(245,166,35,0.02)}
 .upload-icon{font-size:28px;margin-bottom:8px}
 .upload-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px}
@@ -265,7 +215,7 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 .news-table th{background:#f8f9fa;padding:10px 14px;text-align:left;font-size:10px;color:var(--muted);font-weight:600;letter-spacing:1px;border-bottom:1px solid var(--border)}
 .news-table td{padding:11px 14px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
 .news-table tr:last-child td{border:none}
-.news-table tr:hover td{background:#fafafa}
+.news-table tbody tr:hover td{background:#fafafa}
 .status-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
 .status-badge.pub{background:#d1fae5;color:#065f46}
 .status-badge.draft{background:#fef3c7;color:#92400e}
@@ -282,78 +232,53 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 .settings-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:18px}
 .settings-card h3{font-size:13px;font-weight:600;color:var(--primary);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .form-row{margin-bottom:12px}
-.form-label{font-size:11px;color:var(--muted);margin-bottom:5px;display:block;font-weight:500;letter-spacing:0.5px}
-.form-input{width:100%;border:1.5px solid var(--border);border-radius:5px;padding:8px 11px;font-size:12px;font-family:'Noto Sans TC';color:var(--text);outline:none;transition:border-color 0.2s}
+.form-label{font-size:11px;color:var(--muted);margin-bottom:5px;display:block;font-weight:500;letter-spacing:.5px}
+.form-input{width:100%;border:1.5px solid var(--border);border-radius:5px;padding:8px 11px;font-size:12px;font-family:'Noto Sans TC';color:var(--text);outline:none;transition:border-color .2s}
 .form-input:focus{border-color:var(--primary)}
-.form-textarea{width:100%;border:1.5px solid var(--border);border-radius:5px;padding:8px 11px;font-size:12px;font-family:'Noto Sans TC';color:var(--text);outline:none;resize:vertical;min-height:72px;transition:border-color 0.2s;line-height:1.6}
+.form-textarea{width:100%;border:1.5px solid var(--border);border-radius:5px;padding:8px 11px;font-size:12px;font-family:'Noto Sans TC';color:var(--text);outline:none;resize:vertical;min-height:72px;transition:border-color .2s;line-height:1.6}
 .form-textarea:focus{border-color:var(--primary)}
 
 /* LOGO */
 .color-row{display:flex;gap:8px;align-items:center}
 .color-swatch{width:32px;height:32px;border-radius:5px;border:1.5px solid var(--border);cursor:pointer;position:relative;overflow:hidden;flex-shrink:0}
-.color-swatch input[type="color"]{position:absolute;inset:-4px;opacity:0;cursor:pointer;width:calc(100%+8px);height:calc(100%+8px)}
-.logo-preview-box{border-radius:8px;padding:18px;display:flex;align-items:center;gap:12px;margin-bottom:14px;transition:background 0.3s}
-.logo-preview-icon{width:42px;height:42px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:20px;color:#fff;flex-shrink:0;transition:background 0.3s}
+.color-swatch input[type="color"]{position:absolute;inset:-4px;opacity:0;cursor:pointer;width:calc(100% + 8px);height:calc(100% + 8px)}
+.logo-preview-box{border-radius:8px;padding:18px;display:flex;align-items:center;gap:12px;margin-bottom:14px;transition:background .3s}
+.logo-preview-icon{width:42px;height:42px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:20px;color:#fff;flex-shrink:0;transition:background .3s}
 .logo-preview-texts .pv-en{font-family:'Bebas Neue';font-size:20px;color:#fff;letter-spacing:3px;line-height:1}
 .logo-preview-texts .pv-zh{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-top:2px;display:block}
 .brand-note{background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:12px;font-size:11px;color:#92400e;line-height:1.6;margin-bottom:14px}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:12px;padding:24px;width:100%;max-width:500px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
-.modal h2{font-size:16px;font-weight:600;color:var(--primary);margin-bottom:18px}
+.modal{background:#fff;border-radius:12px;padding:24px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal h2{font-size:16px;font-weight:600;color:var(--primary);margin-bottom:18px;display:flex;align-items:center;gap:8px}
 .modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
-.btn-cancel{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:8px 18px;border-radius:5px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';transition:all 0.2s}
+.btn-cancel{background:#fff;border:1.5px solid var(--border);color:var(--text);padding:8px 18px;border-radius:5px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';transition:all .2s}
 .btn-cancel:hover{background:var(--light)}
-.btn-confirm{background:var(--primary);color:#fff;border:none;padding:8px 20px;border-radius:5px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';transition:background 0.2s}
+.btn-confirm{background:var(--primary);color:#fff;border:none;padding:8px 20px;border-radius:5px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';transition:background .2s}
 .btn-confirm:hover{background:#1a3a5c}
 
 /* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;left:24px;background:var(--primary);color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;z-index:9999;display:none;box-shadow:0 8px 24px rgba(10,34,64,0.3);animation:slideUp 0.3s ease;text-align:center}
+.toast{position:fixed;bottom:24px;right:24px;left:24px;background:var(--primary);color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;z-index:9999;display:none;box-shadow:0 8px 24px rgba(10,34,64,0.3);animation:slideUp .3s ease;text-align:center}
 @media(min-width:600px){.toast{left:auto;width:auto;max-width:340px}}
 @keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-
-/* text utils */
 .text-muted{font-size:12px;color:var(--muted);line-height:1.6}
-.mb-16{margin-bottom:16px}
 .mb-20{margin-bottom:20px}
+.hidden-file{display:none}
 
-/* ══════════════════════════════════
-   RESPONSIVE — Tablet (max 900px)
-══════════════════════════════════ */
+/* RESPONSIVE */
 @media(max-width:900px){
-  /* Nav */
-  .nav-links{display:none}
-  .hamburger{display:flex}
-  .btn-admin{display:none}
-
-  /* Hero */
+  .nav-links{display:none}.hamburger{display:flex}.btn-admin{display:none}
   .hero-content{grid-template-columns:1fr;gap:32px;padding:40px 20px 48px}
   .hero-stats{grid-template-columns:repeat(4,1fr);gap:10px}
-  .stat-card{padding:14px}
-  .stat-num{font-size:30px}
-  .stat-label{font-size:9px}
-
-  /* Search */
-  .search-inner{flex-direction:column;align-items:stretch}
-  .search-label{display:none}
-  .search-select{width:100%}
-  .search-input{width:100%}
-
-  /* Features */
+  .stat-card{padding:14px}.stat-num{font-size:30px}.stat-label{font-size:9px}
+  .search-inner{flex-direction:column;align-items:stretch}.search-label{display:none}
+  .search-select,.search-input{width:100%}
   .features-grid{grid-template-columns:repeat(2,1fr)}
-
-  /* Locations */
   .locations-grid{grid-template-columns:repeat(2,1fr)}
-
-  /* News */
   .news-grid{grid-template-columns:repeat(2,1fr)}
-
-  /* Footer */
   .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
-
-  /* Admin */
   .admin-sidebar{position:fixed;top:0;left:0;bottom:0;z-index:250;transform:translateX(-100%)}
   .admin-sidebar.open{transform:translateX(0)}
   .admin-hamburger{display:flex}
@@ -363,84 +288,38 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
   .loc-admin-grid{grid-template-columns:1fr}
   .banner-grid{grid-template-columns:1fr}
 }
-
-/* ══════════════════════════════════
-   RESPONSIVE — Mobile (max 600px)
-══════════════════════════════════ */
 @media(max-width:600px){
-  /* Nav */
-  .top-bar{padding:0 16px;height:58px}
-  .logo-en{font-size:17px;letter-spacing:2px}
-
-  /* Hero */
-  .hero{padding-top:58px}
-  .hero-content{padding:32px 16px 44px}
+  .top-bar{padding:0 16px;height:58px}.logo-en{font-size:17px;letter-spacing:2px}
+  .hero{padding-top:58px}.hero-content{padding:32px 16px 44px}
   .hero h1{font-size:clamp(40px,12vw,58px)}
   .hero-sub{font-size:12px;letter-spacing:3px}
   .hero-stats{grid-template-columns:repeat(2,1fr);gap:10px}
-  .stat-card{padding:14px 10px}
-  .stat-num{font-size:28px}
-  .stat-label{font-size:9px;letter-spacing:1px}
+  .stat-card{padding:14px 10px}.stat-num{font-size:28px}.stat-label{font-size:9px;letter-spacing:1px}
   .hero-btns{flex-direction:column}
   .btn-primary,.btn-outline{width:100%;text-align:center;padding:13px 20px}
-
-  /* Search */
   .search-section{padding:16px}
-
-  /* Sections */
-  section{padding:52px 16px}
-  .section-header{margin-bottom:32px}
+  section{padding:52px 16px}.section-header{margin-bottom:32px}
   .section-header h2{font-size:clamp(30px,9vw,40px)}
-
-  /* Features — single column */
-  .features-grid{grid-template-columns:1fr;gap:14px}
-  .feature-card{padding:20px}
-
-  /* Locations — 2 col on mobile */
-  .locations-grid{grid-template-columns:repeat(2,1fr);gap:10px}
-  .loc-card{padding:14px}
-  .loc-name{font-size:13px}
-
-  /* News — single column */
-  .news-grid{grid-template-columns:1fr;gap:14px}
-  .news-img{height:130px}
-
-  /* CTA */
-  .cta-strip{padding:48px 16px}
-  .cta-btns{flex-direction:column;align-items:center}
+  .features-grid{grid-template-columns:1fr;gap:14px}.feature-card{padding:20px}
+  .locations-grid{grid-template-columns:repeat(2,1fr);gap:10px}.loc-card{padding:14px}.loc-name{font-size:13px}
+  .news-grid{grid-template-columns:1fr;gap:14px}.news-img{height:130px}
+  .cta-strip{padding:48px 16px}.cta-btns{flex-direction:column;align-items:center}
   .cta-btns .btn-primary,.cta-btns .btn-outline{width:100%;max-width:280px;text-align:center}
-
-  /* Footer */
-  .footer-grid{grid-template-columns:1fr;gap:28px}
-  .footer-desc{max-width:100%}
-  .footer-bottom{flex-direction:column;text-align:center}
-  .footer-bottom-links{justify-content:center}
-
-  /* Admin */
-  .admin-content{padding:14px}
-  .admin-header{padding:0 14px;height:54px}
-  .admin-header h1{font-size:14px}
-  .dash-stats{grid-template-columns:repeat(2,1fr);gap:10px}
-  .dash-stat{padding:12px}
-  .dash-stat-val{font-size:22px}
+  .footer-grid{grid-template-columns:1fr;gap:28px}.footer-desc{max-width:100%}
+  .footer-bottom{flex-direction:column;text-align:center}.footer-bottom-links{justify-content:center}
+  .admin-content{padding:14px}.admin-header{padding:0 14px;height:54px}.admin-header h1{font-size:14px}
+  .dash-stats{grid-template-columns:repeat(2,1fr);gap:10px}.dash-stat{padding:12px}.dash-stat-val{font-size:22px}
   .banner-grid{grid-template-columns:1fr}
   .news-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
   .loc-admin-grid{grid-template-columns:1fr}
 }
-
-/* Very small screens */
-@media(max-width:360px){
-  .locations-grid{grid-template-columns:1fr}
-  .hero-stats{grid-template-columns:repeat(2,1fr)}
-}
+@media(max-width:360px){.locations-grid{grid-template-columns:1fr}.hero-stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 
-<!-- ████████ FRONTEND ████████ -->
+<!-- ═══════════ FRONTEND ═══════════ -->
 <div id="view-front" class="view active">
-
-  <!-- Navbar -->
   <nav class="top-bar">
     <div class="logo-wrap">
       <div class="logo-icon" id="nav-logo-icon">P</div>
@@ -458,13 +337,9 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
     </div>
     <div class="nav-right">
       <button class="btn-admin" onclick="switchView('admin')">⚙ 後台管理</button>
-      <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="選單">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
     </div>
   </nav>
-
-  <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobile-menu">
     <a href="#features" onclick="closeMobileMenu()">服務特色</a>
     <a href="#locations" onclick="closeMobileMenu()">停車據點</a>
@@ -474,18 +349,12 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
     <button class="btn-admin-mobile" onclick="closeMobileMenu();switchView('admin')">⚙ 後台管理</button>
   </div>
 
-  <!-- Hero -->
   <section class="hero" id="home">
-    <div class="hero-bg-pattern"></div>
-    <div class="hero-glow"></div>
-    <div class="hero-glow2"></div>
+    <div class="hero-bg-pattern"></div><div class="hero-glow"></div><div class="hero-glow2"></div>
     <div class="hero-content">
       <div>
-        <div class="hero-tag">
-          <div class="hero-dot"></div>
-          <span id="hero-tag-text">全台超過 200 個停車場據點</span>
-        </div>
-        <h1 id="hero-title">SMART<br><span>PARKING</span><br>SOLUTION</h1>
+        <div class="hero-tag"><div class="hero-dot"></div><span id="hero-tag-text">全台超過 200 個停車場據點</span></div>
+        <h1>SMART<br><span>PARKING</span><br>SOLUTION</h1>
         <p class="hero-sub" id="hero-slogan">智慧停車，從容生活</p>
         <p class="hero-desc" id="hero-desc">泊位提供全方位智慧停車解決方案，24小時專人管理，月票自動扣繳，讓您的停車體驗更便利、更安心。</p>
         <div class="hero-btns">
@@ -504,32 +373,19 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
     </div>
   </section>
 
-  <!-- Search -->
   <div class="search-section">
     <div class="search-inner">
       <span class="search-label">🔍 尋找停車場</span>
-      <select class="search-select">
-        <option>選擇縣市</option>
-        <option>台北市</option><option>新北市</option><option>桃園市</option>
-        <option>台中市</option><option>台南市</option><option>高雄市</option>
-      </select>
+      <select class="search-select"><option>選擇縣市</option><option>台北市</option><option>新北市</option><option>桃園市</option><option>台中市</option><option>台南市</option><option>高雄市</option></select>
       <input class="search-input" placeholder="輸入地址或停車場名稱…">
-      <select class="search-select">
-        <option>全部類型</option>
-        <option>月租停車</option><option>臨時停車</option><option>機場停車</option>
-      </select>
+      <select class="search-select"><option>全部類型</option><option>月租停車</option><option>臨時停車</option><option>機場停車</option></select>
       <button class="btn-search" onclick="showToast('🔍 搜尋功能開發中，敬請期待！')">搜尋停車場</button>
     </div>
   </div>
 
-  <!-- Features -->
   <section class="section-bg" id="features">
     <div class="section-inner">
-      <div class="section-header">
-        <div class="section-tag">WHY PARKNOW</div>
-        <h2>為什麼選擇泊位</h2>
-        <p>超過 20 年停車場管理經驗，提供最優質的智慧停車體驗</p>
-      </div>
+      <div class="section-header"><div class="section-tag">WHY PARKNOW</div><h2>為什麼選擇泊位</h2><p>超過 20 年停車場管理經驗，提供最優質的智慧停車體驗</p></div>
       <div class="features-grid">
         <div class="feature-card"><div class="feature-icon" style="background:#FFF3E0">🕐</div><h3>24小時全天服務</h3><p>全天候專業人員駐守，確保您的愛車安全無虞，隨時停、隨時取車。</p></div>
         <div class="feature-card"><div class="feature-icon" style="background:#E8F5E9">💳</div><h3>多元繳費方式</h3><p>支援 E-TAG 自動扣繳、超商繳費、信用卡、悠遊付等多種方式。</p></div>
@@ -541,45 +397,21 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
     </div>
   </section>
 
-  <!-- Locations -->
   <section id="locations">
     <div class="section-inner">
-      <div class="section-header">
-        <div class="section-tag">OUR LOCATIONS</div>
-        <h2>熱門停車據點</h2>
-        <p>精選全台熱門地區停車場，找到最近的泊位停車場</p>
-      </div>
-      <div class="locations-grid" id="locations-display">
-        <div class="loc-card"><div class="loc-name">台北車站停車場</div><div class="loc-addr">台北市中正區忠孝西路一段</div><span class="loc-tag open">● 有空位</span></div>
-        <div class="loc-card"><div class="loc-name">信義區商圈停車場</div><div class="loc-addr">台北市信義區松高路</div><span class="loc-tag full">● 客滿</span></div>
-        <div class="loc-card"><div class="loc-name">台中火車站停車場</div><div class="loc-addr">台中市中區台灣大道一段</div><span class="loc-tag open">● 有空位</span></div>
-        <div class="loc-card"><div class="loc-name">高雄三多商圈停車場</div><div class="loc-addr">高雄市苓雅區三多三路</div><span class="loc-tag open">● 有空位</span></div>
-        <div class="loc-card"><div class="loc-name">板橋車站停車場</div><div class="loc-addr">新北市板橋區縣民大道</div><span class="loc-tag open">● 有空位</span></div>
-        <div class="loc-card"><div class="loc-name">桃園機場停車場</div><div class="loc-addr">桃園市大園區航站南路</div><span class="loc-tag open">● 有空位</span></div>
-        <div class="loc-card"><div class="loc-name">淡水漁人碼頭停車場</div><div class="loc-addr">新北市淡水區觀海路</div><span class="loc-tag open">● 有空位</span></div>
-        <div class="loc-card"><div class="loc-name">台南成功大學停車場</div><div class="loc-addr">台南市東區大學路</div><span class="loc-tag full">● 客滿</span></div>
-      </div>
+      <div class="section-header"><div class="section-tag">OUR LOCATIONS</div><h2>熱門停車據點</h2><p>精選全台熱門地區停車場，找到最近的泊位停車場</p></div>
+      <div class="locations-grid" id="locations-display"></div>
     </div>
   </section>
 
-  <!-- News -->
   <section class="section-bg" id="news">
     <div class="section-inner">
-      <div class="section-header">
-        <div class="section-tag">LATEST NEWS</div>
-        <h2>最新消息</h2>
-        <p>掌握泊位最新動態、新場開幕與優惠資訊</p>
-      </div>
-      <div class="news-grid" id="news-display">
-        <div class="news-card"><div class="news-img" style="background:#e8f4fd">🏗️</div><div class="news-body"><div class="news-date">2024/10/07</div><div class="news-title">南港立體停車場入口變更通知</div></div></div>
-        <div class="news-card"><div class="news-img" style="background:#fff3e0">🎉</div><div class="news-body"><div class="news-date">2024/04/22</div><div class="news-title">淡水漁人碼頭停車場月租優惠活動開跑</div></div></div>
-        <div class="news-card"><div class="news-img" style="background:#e8f5e9">📋</div><div class="news-body"><div class="news-date">2024/04/11</div><div class="news-title">內湖行愛停車場正式開幕，月租特惠開跑</div></div></div>
-      </div>
+      <div class="section-header"><div class="section-tag">LATEST NEWS</div><h2>最新消息</h2><p>掌握泊位最新動態、新場開幕與優惠資訊</p></div>
+      <div class="news-grid" id="news-display"></div>
       <div class="news-more"><button class="btn-more" onclick="showToast('📰 更多消息頁面開發中！')">查看更多消息</button></div>
     </div>
   </section>
 
-  <!-- CTA -->
   <div class="cta-strip">
     <h2>出國停車，交給泊位</h2>
     <p>桃園、松山機場周邊停車 × 專車接駁 × 價格透明，讓您放心出發</p>
@@ -589,28 +421,17 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
     </div>
   </div>
 
-  <!-- Footer -->
   <footer id="contact">
     <div class="footer-inner">
       <div class="footer-grid">
-        <div class="footer-brand">
+        <div>
           <span class="brand-en" id="footer-logo-en">PARKNOW</span>
           <span class="brand-zh" id="footer-logo-zh">泊位智慧停車</span>
           <p class="footer-desc">提供全台最優質的智慧停車解決方案，讓停車變得更簡單、更安心、更有效率。</p>
-          <div class="footer-social">
-            <div class="social-btn" title="Facebook">📘</div>
-            <div class="social-btn" title="LINE">💬</div>
-            <div class="social-btn" title="Instagram">📸</div>
-          </div>
+          <div class="footer-social"><div class="social-btn">📘</div><div class="social-btn">💬</div><div class="social-btn">📸</div></div>
         </div>
-        <div class="footer-col">
-          <h4>關於泊位</h4>
-          <a>企業緣起</a><a>經營現況</a><a>服務項目</a><a>合作提案</a><a>徵才資訊</a>
-        </div>
-        <div class="footer-col">
-          <h4>停車服務</h4>
-          <a>月租停車</a><a>臨時停車</a><a>機場接駁</a><a>線上抽籤</a><a>多元繳費</a>
-        </div>
+        <div class="footer-col"><h4>關於泊位</h4><a>企業緣起</a><a>經營現況</a><a>服務項目</a><a>合作提案</a><a>徵才資訊</a></div>
+        <div class="footer-col"><h4>停車服務</h4><a>月租停車</a><a>臨時停車</a><a>機場接駁</a><a>線上抽籤</a><a>多元繳費</a></div>
         <div class="footer-col">
           <h4>聯絡我們</h4>
           <div class="footer-contact-item">📞 <span id="footer-phone">0800-888-123</span></div>
@@ -621,22 +442,17 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
       </div>
       <div class="footer-bottom">
         <span>© 2024 泊位智慧停車股份有限公司</span>
-        <div class="footer-bottom-links">
-          <a>隱私權政策</a><a>服務條款</a><a>網站地圖</a>
-        </div>
+        <div class="footer-bottom-links"><a>隱私權政策</a><a>服務條款</a><a>網站地圖</a></div>
       </div>
     </div>
   </footer>
 </div>
 
-<!-- ████████ ADMIN VIEW ████████ -->
+<!-- ═══════════ ADMIN ═══════════ -->
 <div id="view-admin" class="view">
   <div class="admin-layout">
     <div class="admin-sidebar" id="admin-sidebar">
-      <div class="admin-logo-wrap">
-        <div class="logo-en">PARKNOW</div>
-        <span class="logo-zh">後台管理系統</span>
-      </div>
+      <div class="admin-logo-wrap"><div class="logo-en">PARKNOW</div><span class="logo-zh">後台管理系統</span></div>
       <div class="admin-menu">
         <div class="menu-group-label">概覽</div>
         <div class="menu-item active" onclick="switchPanel('dashboard',this);closeAdminSidebar()"><span class="menu-icon">📊</span>控制台</div>
@@ -650,24 +466,19 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
         <div class="menu-group-label">系統</div>
         <div class="menu-item" onclick="switchView('front')"><span class="menu-icon">👁️</span>預覽網站</div>
       </div>
-      <div class="admin-sidebar-footer">
-        <div class="sidebar-user"><strong>管理員</strong>admin@parknow.com.tw</div>
-      </div>
+      <div class="admin-sidebar-footer"><div class="sidebar-user"><strong>管理員</strong>admin@parknow.com.tw</div></div>
     </div>
-    <!-- Sidebar overlay for mobile -->
     <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:240" onclick="closeAdminSidebar()"></div>
 
     <div class="admin-main">
       <div class="admin-header">
         <div style="display:flex;align-items:center;gap:10px">
-          <button class="admin-hamburger" id="admin-hamburger" onclick="toggleAdminSidebar()">
-            <span></span><span></span><span></span>
-          </button>
+          <button class="admin-hamburger" onclick="toggleAdminSidebar()"><span></span><span></span><span></span></button>
           <h1 id="admin-title">控制台</h1>
         </div>
         <div class="admin-header-right">
           <button class="btn-preview" onclick="switchView('front')">👁 預覽</button>
-          <button class="btn-save" onclick="showToast('✅ 所有變更已儲存')">💾 儲存</button>
+          <button class="btn-save" onclick="showToast('✅ 所有變更已儲存！')">💾 儲存</button>
         </div>
       </div>
       <div class="admin-content">
@@ -675,23 +486,22 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
         <!-- DASHBOARD -->
         <div class="admin-panel active" id="panel-dashboard">
           <div class="dash-stats">
-            <div class="dash-stat"><div class="dash-stat-val">200+</div><div class="dash-stat-label">停車場總數</div><div class="dash-stat-badge">↑ 本月+3</div></div>
-            <div class="dash-stat"><div class="dash-stat-val">3</div><div class="dash-stat-label">輪播圖數量</div></div>
-            <div class="dash-stat"><div class="dash-stat-val">12</div><div class="dash-stat-label">已發佈消息</div></div>
-            <div class="dash-stat"><div class="dash-stat-val">3</div><div class="dash-stat-label">草稿待發佈</div></div>
+            <div class="dash-stat"><div class="dash-stat-val" id="dash-loc-count">8</div><div class="dash-stat-label">停車場總數</div></div>
+            <div class="dash-stat"><div class="dash-stat-val" id="dash-banner-count">3</div><div class="dash-stat-label">輪播圖數量</div></div>
+            <div class="dash-stat"><div class="dash-stat-val" id="dash-news-pub">3</div><div class="dash-stat-label">已發佈消息</div></div>
+            <div class="dash-stat"><div class="dash-stat-val" id="dash-news-draft">0</div><div class="dash-stat-label">草稿待發佈</div></div>
           </div>
           <div class="dash-cards">
             <div class="dash-card">
               <h3>最近操作紀錄</h3>
-              <div class="activity-item"><div class="activity-dot" style="background:#10b981"></div><div class="activity-text">更新首頁輪播圖第2張</div><div class="activity-time">2小時前</div></div>
-              <div class="activity-item"><div class="activity-dot" style="background:#3b82f6"></div><div class="activity-text">新增消息：南港停車場入口變更</div><div class="activity-time">昨天</div></div>
-              <div class="activity-item"><div class="activity-dot" style="background:#f59e0b"></div><div class="activity-text">修改網站 Slogan 文字</div><div class="activity-time">3天前</div></div>
-              <div class="activity-item"><div class="activity-dot" style="background:#10b981"></div><div class="activity-text">新增板橋停車場據點</div><div class="activity-time">一週前</div></div>
+              <div id="activity-log">
+                <div class="activity-item"><div class="activity-dot" style="background:#10b981"></div><div class="activity-text">系統初始化完成</div><div class="activity-time">剛才</div></div>
+              </div>
             </div>
             <div class="dash-card">
               <h3>快速操作</h3>
               <button class="quick-btn" onclick="switchPanel('banner',document.querySelectorAll('.menu-item')[2]);closeAdminSidebar()">🖼️ 更換首頁輪播圖</button>
-              <button class="quick-btn" onclick="switchPanel('news',document.querySelectorAll('.menu-item')[3]);closeAdminSidebar()">📰 新增最新消息</button>
+              <button class="quick-btn" onclick="openNewsModal()">📰 新增最新消息</button>
               <button class="quick-btn" onclick="switchPanel('settings',document.querySelectorAll('.menu-item')[5]);closeAdminSidebar()">⚙️ 修改網站文字</button>
               <button class="quick-btn" onclick="switchPanel('logo',document.querySelectorAll('.menu-item')[6]);closeAdminSidebar()">🎨 更新品牌 LOGO</button>
             </div>
@@ -700,95 +510,52 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 
         <!-- BANNER -->
         <div class="admin-panel" id="panel-banner">
-          <p class="text-muted mb-20">管理首頁輪播圖片，建議尺寸：1920 × 800px。</p>
-          <div class="banner-grid">
-            <div class="banner-item active-banner">
-              <div class="active-badge">顯示中</div>
-              <div class="banner-preview" style="background:linear-gradient(135deg,#0A2240,#1a3a5c)">🏙️</div>
-              <div class="banner-controls">
-                <span class="banner-name">Banner 1 — 主視覺</span>
-                <div class="banner-btns">
-                  <button class="btn-sm primary" onclick="showToast('📁 請選擇要替換的圖片')">更換</button>
-                  <button class="btn-sm danger" onclick="showToast('⚠️ 確認刪除？')">刪除</button>
-                </div>
-              </div>
-            </div>
-            <div class="banner-item">
-              <div class="banner-preview" style="background:linear-gradient(135deg,#1a3a5c,#0d4a6e)">🌙</div>
-              <div class="banner-controls">
-                <span class="banner-name">Banner 2 — 夜間服務</span>
-                <div class="banner-btns">
-                  <button class="btn-sm primary" onclick="showToast('📁 請選擇要替換的圖片')">更換</button>
-                  <button class="btn-sm danger" onclick="showToast('⚠️ 確認刪除？')">刪除</button>
-                </div>
-              </div>
-            </div>
-            <div class="banner-item">
-              <div class="banner-preview" style="background:linear-gradient(135deg,#1a5c2a,#0d6e2a)">✈️</div>
-              <div class="banner-controls">
-                <span class="banner-name">Banner 3 — 機場停車</span>
-                <div class="banner-btns">
-                  <button class="btn-sm primary" onclick="showToast('📁 請選擇要替換的圖片')">更換</button>
-                  <button class="btn-sm danger" onclick="showToast('⚠️ 確認刪除？')">刪除</button>
-                </div>
-              </div>
-            </div>
-            <div class="upload-box" onclick="showToast('📁 請選擇要上傳的圖片')">
-              <div class="upload-icon">📤</div>
-              <div class="upload-title">新增輪播圖</div>
-              <div class="upload-hint">點擊上傳<br>支援 JPG、PNG、WebP</div>
-            </div>
-          </div>
+          <p class="text-muted mb-20">管理首頁輪播圖片，建議尺寸：1920×800px，點「更換」可上傳真實圖片。</p>
+          <div class="banner-grid" id="banner-grid"></div>
           <div class="banner-text-card">
-            <h3>輪播圖文字設定（Banner 1）</h3>
-            <div class="form-row"><label class="form-label">主標語</label><input class="form-input" value="24小時服務，多站點為人們帶來安全、為汽車帶來便利"></div>
-            <div class="form-row"><label class="form-label">按鈕文字</label><input class="form-input" value="立即尋找停車場"></div>
-            <button class="btn-save" onclick="showToast('✅ 輪播設定已儲存')">儲存設定</button>
+            <h3>輪播圖文字設定</h3>
+            <div class="form-row"><label class="form-label">主標語文字</label><input class="form-input" id="banner-slogan" value="24小時服務，多站點為人們帶來安全、為汽車帶來便利"></div>
+            <div class="form-row"><label class="form-label">按鈕文字</label><input class="form-input" id="banner-btn-text" value="立即尋找停車場"></div>
+            <button class="btn-save" onclick="saveBannerText()">✅ 儲存輪播文字</button>
           </div>
+          <!-- hidden file inputs -->
+          <input type="file" id="file-input-0" class="hidden-file" accept="image/*" onchange="handleBannerImage(0,this)">
+          <input type="file" id="file-input-1" class="hidden-file" accept="image/*" onchange="handleBannerImage(1,this)">
+          <input type="file" id="file-input-2" class="hidden-file" accept="image/*" onchange="handleBannerImage(2,this)">
+          <input type="file" id="file-input-new" class="hidden-file" accept="image/*" onchange="handleNewBannerImage(this)">
         </div>
 
         <!-- NEWS -->
         <div class="admin-panel" id="panel-news">
           <div class="table-header">
-            <p class="text-muted">管理最新消息與公告</p>
-            <button class="btn-save" onclick="openModal()">＋ 新增消息</button>
+            <p class="text-muted">管理最新消息與公告（新增後會即時更新前台）</p>
+            <button class="btn-save" onclick="openNewsModal()">＋ 新增消息</button>
           </div>
           <table class="news-table">
             <thead><tr><th>標題</th><th>分類</th><th>日期</th><th>狀態</th><th>操作</th></tr></thead>
-            <tbody>
-              <tr><td>南港立體停車場入口變更通知</td><td>公告</td><td>2024/10/07</td><td><span class="status-badge pub">已發佈</span></td><td><button class="btn-sm primary" onclick="showToast('✏️ 編輯模式')">編輯</button> <button class="btn-sm danger" onclick="showToast('🗑️ 已刪除')">刪除</button></td></tr>
-              <tr><td>淡水漁人碼頭月租優惠</td><td>優惠</td><td>2024/04/22</td><td><span class="status-badge pub">已發佈</span></td><td><button class="btn-sm primary" onclick="showToast('✏️ 編輯模式')">編輯</button> <button class="btn-sm danger" onclick="showToast('🗑️ 已刪除')">刪除</button></td></tr>
-              <tr><td>內湖行愛停車場月租優惠</td><td>新場</td><td>2024/04/11</td><td><span class="status-badge pub">已發佈</span></td><td><button class="btn-sm primary" onclick="showToast('✏️ 編輯模式')">編輯</button> <button class="btn-sm danger" onclick="showToast('🗑️ 已刪除')">刪除</button></td></tr>
-              <tr><td>板橋華江三路停車場優惠</td><td>優惠</td><td>2024/04/11</td><td><span class="status-badge draft">草稿</span></td><td><button class="btn-sm primary" onclick="showToast('✏️ 編輯模式')">編輯</button> <button class="btn-sm danger" onclick="showToast('🗑️ 已刪除')">刪除</button></td></tr>
-              <tr><td>E-TAG 自動代繳月票說明</td><td>服務</td><td>2024/03/20</td><td><span class="status-badge pub">已發佈</span></td><td><button class="btn-sm primary" onclick="showToast('✏️ 編輯模式')">編輯</button> <button class="btn-sm danger" onclick="showToast('🗑️ 已刪除')">刪除</button></td></tr>
-            </tbody>
+            <tbody id="news-tbody"></tbody>
           </table>
         </div>
 
         <!-- LOCATIONS -->
         <div class="admin-panel" id="panel-locations">
           <div class="table-header">
-            <p class="text-muted">管理各地停車場據點</p>
-            <button class="btn-save" onclick="showToast('➕ 新增據點功能開發中')">＋ 新增據點</button>
+            <p class="text-muted">管理各地停車場據點（新增/編輯後會即時更新前台）</p>
+            <button class="btn-save" onclick="openLocModal()">＋ 新增據點</button>
           </div>
-          <div class="loc-admin-grid">
-            <div class="loc-admin-card"><div class="loc-admin-header"><div><div class="loc-admin-name">台北車站停車場</div><div class="loc-admin-info">台北市中正區 ・ 月租 / 臨停</div></div><span class="loc-tag open">開放中</span></div><div class="banner-btns"><button class="btn-sm primary" onclick="showToast('✏️ 編輯據點')">編輯</button><button class="btn-sm danger" onclick="showToast('⚠️ 確認下架？')">下架</button></div></div>
-            <div class="loc-admin-card"><div class="loc-admin-header"><div><div class="loc-admin-name">信義區商圈停車場</div><div class="loc-admin-info">台北市信義區 ・ 月租 / 臨停</div></div><span class="loc-tag full">客滿</span></div><div class="banner-btns"><button class="btn-sm primary" onclick="showToast('✏️ 編輯據點')">編輯</button><button class="btn-sm danger" onclick="showToast('⚠️ 確認下架？')">下架</button></div></div>
-            <div class="loc-admin-card"><div class="loc-admin-header"><div><div class="loc-admin-name">桃園機場停車場</div><div class="loc-admin-info">桃園市大園區 ・ 機場接駁</div></div><span class="loc-tag open">開放中</span></div><div class="banner-btns"><button class="btn-sm primary" onclick="showToast('✏️ 編輯據點')">編輯</button><button class="btn-sm danger" onclick="showToast('⚠️ 確認下架？')">下架</button></div></div>
-            <div class="loc-admin-card"><div class="loc-admin-header"><div><div class="loc-admin-name">台中火車站停車場</div><div class="loc-admin-info">台中市中區 ・ 月租 / 臨停</div></div><span class="loc-tag open">開放中</span></div><div class="banner-btns"><button class="btn-sm primary" onclick="showToast('✏️ 編輯據點')">編輯</button><button class="btn-sm danger" onclick="showToast('⚠️ 確認下架？')">下架</button></div></div>
-          </div>
+          <div class="loc-admin-grid" id="loc-admin-grid"></div>
         </div>
 
         <!-- SETTINGS -->
         <div class="admin-panel" id="panel-settings">
-          <p class="text-muted mb-20">修改網站主要文字內容與聯絡資訊</p>
+          <p class="text-muted mb-20">修改網站主要文字內容與聯絡資訊，按「套用」後即時反映到前台。</p>
           <div class="settings-grid">
             <div class="settings-card">
               <h3>🏠 首頁文字</h3>
-              <div class="form-row"><label class="form-label">Hero 副標（小字）</label><input class="form-input" id="input-tag" value="全台超過 200 個停車場據點"></div>
-              <div class="form-row"><label class="form-label">Hero Slogan</label><input class="form-input" id="input-slogan" value="智慧停車，從容生活"></div>
-              <div class="form-row"><label class="form-label">服務描述</label><textarea class="form-textarea" id="input-desc">泊位提供全方位智慧停車解決方案，24小時專人管理，月票自動扣繳，讓您的停車體驗更便利、更安心。</textarea></div>
-              <button class="btn-save" onclick="applyTextSettings()">✅ 套用並預覽</button>
+              <div class="form-row"><label class="form-label">標語小字（Hero Tag）</label><input class="form-input" id="input-tag" value="全台超過 200 個停車場據點"></div>
+              <div class="form-row"><label class="form-label">主要 Slogan</label><input class="form-input" id="input-slogan" value="智慧停車，從容生活"></div>
+              <div class="form-row"><label class="form-label">服務描述段落</label><textarea class="form-textarea" id="input-desc">泊位提供全方位智慧停車解決方案，24小時專人管理，月票自動扣繳，讓您的停車體驗更便利、更安心。</textarea></div>
+              <button class="btn-save" onclick="applyTextSettings()">✅ 套用到前台</button>
             </div>
             <div class="settings-card">
               <h3>📞 聯絡資訊</h3>
@@ -796,20 +563,20 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
               <div class="form-row"><label class="form-label">客服信箱</label><input class="form-input" id="input-email" value="service@parknow.com.tw"></div>
               <div class="form-row"><label class="form-label">公司地址</label><input class="form-input" id="input-addr" value="台北市南港區忠孝東路六段66號"></div>
               <div class="form-row"><label class="form-label">服務時間</label><input class="form-input" id="input-hours" value="週一～週五，9:00～18:00"></div>
-              <button class="btn-save" onclick="applyContactSettings()">✅ 套用聯絡資訊</button>
+              <button class="btn-save" onclick="applyContactSettings()">✅ 套用到前台</button>
             </div>
           </div>
         </div>
 
         <!-- LOGO -->
         <div class="admin-panel" id="panel-logo">
-          <p class="text-muted mb-20">自訂品牌 LOGO 文字與主色調</p>
+          <p class="text-muted mb-20">自訂品牌 LOGO 文字與主色調，點「套用」後更新整站。</p>
           <div class="settings-grid">
             <div class="settings-card">
               <h3>🔤 LOGO 文字</h3>
               <div class="form-row"><label class="form-label">英文品牌名稱</label><input class="form-input" id="input-logo-en" value="PARKNOW" oninput="updateLogoPreview()"></div>
               <div class="form-row"><label class="form-label">中文品牌名稱</label><input class="form-input" id="input-logo-zh" value="泊位智慧停車" oninput="updateLogoPreview()"></div>
-              <h3 style="margin-top:16px">🎨 品牌色調</h3>
+              <h3 style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">🎨 品牌色調</h3>
               <div class="form-row" style="margin-top:12px">
                 <label class="form-label">主色（深色背景）</label>
                 <div class="color-row">
@@ -845,18 +612,40 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
   </div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal">
+<!-- ═══ MODALS ═══ -->
+<!-- NEWS MODAL -->
+<div class="modal-overlay" id="modal-news">
   <div class="modal">
-    <h2>✍️ 新增最新消息</h2>
-    <div class="form-row"><label class="form-label">消息標題</label><input class="form-input" placeholder="請輸入消息標題…"></div>
-    <div class="form-row"><label class="form-label">消息分類</label><select class="form-input"><option>公告</option><option>優惠</option><option>新場</option><option>服務</option></select></div>
-    <div class="form-row"><label class="form-label">發佈日期</label><input class="form-input" type="date"></div>
-    <div class="form-row"><label class="form-label">消息內容</label><textarea class="form-textarea" rows="4" placeholder="請輸入詳細消息內容…"></textarea></div>
-    <div class="form-row"><label class="form-label">發佈狀態</label><select class="form-input"><option>立即發佈</option><option>儲存為草稿</option></select></div>
+    <h2 id="news-modal-title">✍️ 新增最新消息</h2>
+    <input type="hidden" id="news-edit-id" value="">
+    <div class="form-row"><label class="form-label">消息標題 *</label><input class="form-input" id="news-title-input" placeholder="請輸入消息標題…"></div>
+    <div class="form-row"><label class="form-label">消息分類</label><select class="form-input" id="news-cat-input"><option>公告</option><option>優惠</option><option>新場</option><option>服務</option></select></div>
+    <div class="form-row"><label class="form-label">發佈日期</label><input class="form-input" type="date" id="news-date-input"></div>
+    <div class="form-row"><label class="form-label">消息圖示 Emoji</label><input class="form-input" id="news-emoji-input" value="📢" placeholder="貼上 emoji，例如 🎉 📋 🏗️"></div>
+    <div class="form-row"><label class="form-label">圖示背景色</label><input class="form-input" type="color" id="news-color-input" value="#e8f4fd"></div>
+    <div class="form-row"><label class="form-label">消息內容</label><textarea class="form-textarea" rows="3" id="news-content-input" placeholder="請輸入詳細消息內容…"></textarea></div>
+    <div class="form-row"><label class="form-label">發佈狀態</label><select class="form-input" id="news-status-input"><option value="pub">立即發佈</option><option value="draft">儲存為草稿</option></select></div>
     <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeModal()">取消</button>
-      <button class="btn-confirm" onclick="saveNews()">確認新增</button>
+      <button class="btn-cancel" onclick="closeModal('modal-news')">取消</button>
+      <button class="btn-confirm" onclick="saveNews()">確認儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOC MODAL -->
+<div class="modal-overlay" id="modal-loc">
+  <div class="modal">
+    <h2 id="loc-modal-title">📍 新增停車據點</h2>
+    <input type="hidden" id="loc-edit-id" value="">
+    <div class="form-row"><label class="form-label">停車場名稱 *</label><input class="form-input" id="loc-name-input" placeholder="例：台北車站停車場"></div>
+    <div class="form-row"><label class="form-label">地址</label><input class="form-input" id="loc-addr-input" placeholder="例：台北市中正區忠孝西路一段"></div>
+    <div class="form-row"><label class="form-label">地區 / 類型</label><input class="form-input" id="loc-info-input" placeholder="例：台北市中正區 ・ 月租 / 臨停"></div>
+    <div class="form-row"><label class="form-label">狀態</label>
+      <select class="form-input" id="loc-status-input"><option value="open">開放中（有空位）</option><option value="full">客滿</option><option value="hidden">下架</option></select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('modal-loc')">取消</button>
+      <button class="btn-confirm" onclick="saveLoc()">確認儲存</button>
     </div>
   </div>
 </div>
@@ -865,65 +654,337 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 <div class="toast" id="toast"></div>
 
 <script>
-/* ── VIEW ── */
-function switchView(v){
-  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
-  document.getElementById('view-'+v).classList.add('active');
-  window.scrollTo(0,0);
-  closeMobileMenu();
+/* ══════════════════════════════════════
+   DATA STORE
+══════════════════════════════════════ */
+let newsData = [
+  {id:1,title:'南港立體停車場入口變更通知',cat:'公告',date:'2024/10/07',emoji:'🏗️',color:'#e8f4fd',content:'',status:'pub'},
+  {id:2,title:'淡水漁人碼頭停車場月租優惠活動開跑',cat:'優惠',date:'2024/04/22',emoji:'🎉',color:'#fff3e0',content:'',status:'pub'},
+  {id:3,title:'內湖行愛停車場正式開幕，月租特惠開跑',cat:'新場',date:'2024/04/11',emoji:'📋',color:'#e8f5e9',content:'',status:'pub'},
+];
+let newsIdSeq = 4;
+
+let locData = [
+  {id:1,name:'台北車站停車場',addr:'台北市中正區忠孝西路一段',info:'台北市中正區 ・ 月租 / 臨停',status:'open'},
+  {id:2,name:'信義區商圈停車場',addr:'台北市信義區松高路',info:'台北市信義區 ・ 月租 / 臨停',status:'full'},
+  {id:3,name:'台中火車站停車場',addr:'台中市中區台灣大道一段',info:'台中市中區 ・ 月租 / 臨停',status:'open'},
+  {id:4,name:'高雄三多商圈停車場',addr:'高雄市苓雅區三多三路',info:'高雄市苓雅區 ・ 月租 / 臨停',status:'open'},
+  {id:5,name:'板橋車站停車場',addr:'新北市板橋區縣民大道',info:'新北市板橋區 ・ 月租 / 臨停',status:'open'},
+  {id:6,name:'桃園機場停車場',addr:'桃園市大園區航站南路',info:'桃園市大園區 ・ 機場接駁',status:'open'},
+  {id:7,name:'淡水漁人碼頭停車場',addr:'新北市淡水區觀海路',info:'新北市淡水區 ・ 月租 / 臨停',status:'open'},
+  {id:8,name:'台南成功大學停車場',addr:'台南市東區大學路',info:'台南市東區 ・ 月租 / 臨停',status:'full'},
+];
+let locIdSeq = 9;
+
+let banners = [
+  {id:0,name:'Banner 1 — 主視覺',emoji:'🏙️',bg:'linear-gradient(135deg,#0A2240,#1a3a5c)',imgUrl:'',active:true},
+  {id:1,name:'Banner 2 — 夜間服務',emoji:'🌙',bg:'linear-gradient(135deg,#1a3a5c,#0d4a6e)',imgUrl:'',active:false},
+  {id:2,name:'Banner 3 — 機場停車',emoji:'✈️',bg:'linear-gradient(135deg,#1a5c2a,#0d6e2a)',imgUrl:'',active:false},
+];
+
+/* ══════════════════════════════════════
+   RENDER FUNCTIONS
+══════════════════════════════════════ */
+function renderFrontNews(){
+  const grid=document.getElementById('news-display');
+  const pub=newsData.filter(n=>n.status==='pub').slice(0,3);
+  grid.innerHTML=pub.map(n=>`
+    <div class="news-card">
+      <div class="news-img" style="background:${n.color}">${n.emoji}</div>
+      <div class="news-body"><div class="news-date">${n.date}</div><div class="news-title">${n.title}</div></div>
+    </div>`).join('');
 }
 
-/* ── MOBILE MENU ── */
-function toggleMobileMenu(){
-  const m=document.getElementById('mobile-menu');
-  const h=document.getElementById('hamburger');
-  const open=m.classList.toggle('open');
-  h.classList.toggle('open',open);
-  document.body.style.overflow=open?'hidden':'';
-}
-function closeMobileMenu(){
-  document.getElementById('mobile-menu').classList.remove('open');
-  document.getElementById('hamburger').classList.remove('open');
-  document.body.style.overflow='';
+function renderFrontLocs(){
+  const grid=document.getElementById('locations-display');
+  const visible=locData.filter(l=>l.status!=='hidden');
+  grid.innerHTML=visible.map(l=>`
+    <div class="loc-card">
+      <div class="loc-name">${l.name}</div>
+      <div class="loc-addr">${l.addr}</div>
+      <span class="loc-tag ${l.status==='open'?'open':'full'}">${l.status==='open'?'● 有空位':'● 客滿'}</span>
+    </div>`).join('');
 }
 
-/* ── ADMIN SIDEBAR (mobile) ── */
-function toggleAdminSidebar(){
-  const s=document.getElementById('admin-sidebar');
-  const o=document.getElementById('sidebar-overlay');
-  const open=s.classList.toggle('open');
-  o.style.display=open?'block':'none';
-}
-function closeAdminSidebar(){
-  document.getElementById('admin-sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').style.display='none';
-}
-
-/* ── PANEL ── */
-function switchPanel(name,el){
-  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('panel-'+name).classList.add('active');
-  document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
-  if(el)el.classList.add('active');
-  const t={dashboard:'控制台',banner:'輪播圖管理',news:'最新消息',locations:'停車據點',settings:'網站設定',logo:'LOGO & 品牌'};
-  document.getElementById('admin-title').textContent=t[name]||name;
+function renderAdminNews(){
+  const tbody=document.getElementById('news-tbody');
+  tbody.innerHTML=newsData.map(n=>`
+    <tr>
+      <td>${n.emoji} ${n.title}</td>
+      <td>${n.cat}</td>
+      <td>${n.date}</td>
+      <td><span class="status-badge ${n.status}">${n.status==='pub'?'已發佈':'草稿'}</span></td>
+      <td>
+        <button class="btn-sm primary" onclick="editNews(${n.id})">編輯</button>
+        <button class="btn-sm danger" onclick="deleteNews(${n.id})">刪除</button>
+        ${n.status==='draft'?`<button class="btn-sm" onclick="publishNews(${n.id})">發佈</button>`:''}
+      </td>
+    </tr>`).join('');
+  updateDashStats();
 }
 
-/* ── TOAST ── */
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.style.display='block';
-  clearTimeout(window._tt);
-  window._tt=setTimeout(()=>t.style.display='none',2800);
+function renderAdminLocs(){
+  const grid=document.getElementById('loc-admin-grid');
+  grid.innerHTML=locData.map(l=>`
+    <div class="loc-admin-card" id="loc-card-${l.id}">
+      <div class="loc-admin-header">
+        <div>
+          <div class="loc-admin-name">${l.name}</div>
+          <div class="loc-admin-info">${l.info}</div>
+        </div>
+        <span class="loc-tag ${l.status==='open'?'open':'full'}">${l.status==='open'?'開放中':'客滿'}</span>
+      </div>
+      <div class="banner-btns">
+        <button class="btn-sm primary" onclick="editLoc(${l.id})">編輯</button>
+        <button class="btn-sm" onclick="toggleLocStatus(${l.id})">${l.status==='open'?'標為客滿':'標為開放'}</button>
+        <button class="btn-sm danger" onclick="deleteLoc(${l.id})">下架刪除</button>
+      </div>
+    </div>`).join('');
+  updateDashStats();
 }
 
-/* ── MODAL ── */
-function openModal(){document.getElementById('modal').classList.add('open')}
-function closeModal(){document.getElementById('modal').classList.remove('open')}
-function saveNews(){closeModal();showToast('✅ 消息已新增成功！')}
-document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+function renderBannerGrid(){
+  const grid=document.getElementById('banner-grid');
+  let html=banners.map(b=>`
+    <div class="banner-item${b.active?' active-banner':''}" id="banner-card-${b.id}">
+      ${b.active?'<div class="active-badge">顯示中</div>':''}
+      <div class="banner-preview" style="background:${b.imgUrl?'#000':b.bg}">
+        ${b.imgUrl?`<img src="${b.imgUrl}" alt="">`:''}
+        <span class="banner-emoji" ${b.imgUrl?'style="display:none"':''}>${b.emoji}</span>
+      </div>
+      <div class="banner-controls">
+        <span class="banner-name">${b.name}</span>
+        <div class="banner-btns">
+          ${!b.active?`<button class="btn-sm" onclick="setBannerActive(${b.id})">設為主圖</button>`:''}
+          <button class="btn-sm primary" onclick="document.getElementById('file-input-${b.id}').click()">更換圖片</button>
+          <button class="btn-sm danger" onclick="deleteBanner(${b.id})">刪除</button>
+        </div>
+      </div>
+    </div>`).join('');
+  html+=`<div class="upload-box" onclick="document.getElementById('file-input-new').click()">
+    <div class="upload-icon">📤</div>
+    <div class="upload-title">新增輪播圖</div>
+    <div class="upload-hint">點擊上傳<br>支援 JPG、PNG、WebP</div>
+  </div>`;
+  grid.innerHTML=html;
+  document.getElementById('dash-banner-count').textContent=banners.length;
+}
 
-/* ── SETTINGS ── */
+function updateDashStats(){
+  document.getElementById('dash-loc-count').textContent=locData.filter(l=>l.status!=='hidden').length;
+  document.getElementById('dash-news-pub').textContent=newsData.filter(n=>n.status==='pub').length;
+  document.getElementById('dash-news-draft').textContent=newsData.filter(n=>n.status==='draft').length;
+  document.getElementById('dash-banner-count').textContent=banners.length;
+}
+
+function addActivity(text){
+  const log=document.getElementById('activity-log');
+  const item=document.createElement('div');
+  item.className='activity-item';
+  item.innerHTML=`<div class="activity-dot" style="background:#10b981"></div><div class="activity-text">${text}</div><div class="activity-time">剛才</div>`;
+  log.prepend(item);
+  if(log.children.length>6)log.removeChild(log.lastChild);
+}
+
+/* ══════════════════════════════════════
+   NEWS CRUD
+══════════════════════════════════════ */
+function openNewsModal(editId){
+  const today=new Date().toISOString().slice(0,10);
+  if(editId){
+    const n=newsData.find(x=>x.id===editId);
+    document.getElementById('news-modal-title').textContent='✏️ 編輯消息';
+    document.getElementById('news-edit-id').value=editId;
+    document.getElementById('news-title-input').value=n.title;
+    document.getElementById('news-cat-input').value=n.cat;
+    document.getElementById('news-date-input').value=n.date.replace(/\//g,'-');
+    document.getElementById('news-emoji-input').value=n.emoji;
+    document.getElementById('news-color-input').value=n.color;
+    document.getElementById('news-content-input').value=n.content;
+    document.getElementById('news-status-input').value=n.status;
+  } else {
+    document.getElementById('news-modal-title').textContent='✍️ 新增最新消息';
+    document.getElementById('news-edit-id').value='';
+    document.getElementById('news-title-input').value='';
+    document.getElementById('news-cat-input').value='公告';
+    document.getElementById('news-date-input').value=today;
+    document.getElementById('news-emoji-input').value='📢';
+    document.getElementById('news-color-input').value='#e8f4fd';
+    document.getElementById('news-content-input').value='';
+    document.getElementById('news-status-input').value='pub';
+  }
+  openModal('modal-news');
+}
+
+function saveNews(){
+  const title=document.getElementById('news-title-input').value.trim();
+  if(!title){showToast('⚠️ 請輸入消息標題！');return;}
+  const editId=parseInt(document.getElementById('news-edit-id').value)||0;
+  const dateVal=document.getElementById('news-date-input').value;
+  const fmtDate=dateVal?dateVal.replace(/-/g,'/'):'';
+  const obj={
+    id:editId||newsIdSeq++,
+    title,
+    cat:document.getElementById('news-cat-input').value,
+    date:fmtDate,
+    emoji:document.getElementById('news-emoji-input').value||'📢',
+    color:document.getElementById('news-color-input').value,
+    content:document.getElementById('news-content-input').value,
+    status:document.getElementById('news-status-input').value,
+  };
+  if(editId){
+    const idx=newsData.findIndex(x=>x.id===editId);
+    newsData[idx]=obj;
+    addActivity(`編輯消息：${title}`);
+  } else {
+    newsData.unshift(obj);
+    addActivity(`新增消息：${title}`);
+  }
+  closeModal('modal-news');
+  renderAdminNews();
+  renderFrontNews();
+  showToast(`✅ 消息「${title}」已${editId?'更新':'新增'}並同步到前台！`);
+}
+
+function editNews(id){openNewsModal(id);}
+
+function deleteNews(id){
+  const n=newsData.find(x=>x.id===id);
+  if(!confirm(`確定要刪除「${n.title}」嗎？`))return;
+  newsData=newsData.filter(x=>x.id!==id);
+  renderAdminNews();renderFrontNews();
+  addActivity(`刪除消息：${n.title}`);
+  showToast('🗑️ 消息已刪除，前台已同步更新！');
+}
+
+function publishNews(id){
+  const n=newsData.find(x=>x.id===id);
+  n.status='pub';
+  renderAdminNews();renderFrontNews();
+  addActivity(`發佈消息：${n.title}`);
+  showToast(`✅ 「${n.title}」已發佈到前台！`);
+}
+
+/* ══════════════════════════════════════
+   LOCATIONS CRUD
+══════════════════════════════════════ */
+function openLocModal(editId){
+  if(editId){
+    const l=locData.find(x=>x.id===editId);
+    document.getElementById('loc-modal-title').textContent='✏️ 編輯停車據點';
+    document.getElementById('loc-edit-id').value=editId;
+    document.getElementById('loc-name-input').value=l.name;
+    document.getElementById('loc-addr-input').value=l.addr;
+    document.getElementById('loc-info-input').value=l.info;
+    document.getElementById('loc-status-input').value=l.status;
+  } else {
+    document.getElementById('loc-modal-title').textContent='📍 新增停車據點';
+    document.getElementById('loc-edit-id').value='';
+    document.getElementById('loc-name-input').value='';
+    document.getElementById('loc-addr-input').value='';
+    document.getElementById('loc-info-input').value='';
+    document.getElementById('loc-status-input').value='open';
+  }
+  openModal('modal-loc');
+}
+
+function saveLoc(){
+  const name=document.getElementById('loc-name-input').value.trim();
+  if(!name){showToast('⚠️ 請輸入停車場名稱！');return;}
+  const editId=parseInt(document.getElementById('loc-edit-id').value)||0;
+  const obj={
+    id:editId||locIdSeq++,
+    name,
+    addr:document.getElementById('loc-addr-input').value,
+    info:document.getElementById('loc-info-input').value,
+    status:document.getElementById('loc-status-input').value,
+  };
+  if(editId){
+    const idx=locData.findIndex(x=>x.id===editId);
+    locData[idx]=obj;
+    addActivity(`編輯據點：${name}`);
+  } else {
+    locData.push(obj);
+    addActivity(`新增據點：${name}`);
+  }
+  closeModal('modal-loc');
+  renderAdminLocs();renderFrontLocs();
+  showToast(`✅ 據點「${name}」已${editId?'更新':'新增'}，前台已同步！`);
+}
+
+function editLoc(id){openLocModal(id);}
+
+function toggleLocStatus(id){
+  const l=locData.find(x=>x.id===id);
+  l.status=l.status==='open'?'full':'open';
+  renderAdminLocs();renderFrontLocs();
+  addActivity(`更新據點狀態：${l.name} → ${l.status==='open'?'開放中':'客滿'}`);
+  showToast(`✅ 「${l.name}」狀態已更新！`);
+}
+
+function deleteLoc(id){
+  const l=locData.find(x=>x.id===id);
+  if(!confirm(`確定要下架刪除「${l.name}」嗎？`))return;
+  locData=locData.filter(x=>x.id!==id);
+  renderAdminLocs();renderFrontLocs();
+  addActivity(`下架據點：${l.name}`);
+  showToast('🗑️ 據點已下架，前台已同步更新！');
+}
+
+/* ══════════════════════════════════════
+   BANNER
+══════════════════════════════════════ */
+function handleBannerImage(idx,input){
+  if(!input.files[0])return;
+  const url=URL.createObjectURL(input.files[0]);
+  banners[idx].imgUrl=url;
+  renderBannerGrid();
+  addActivity(`更換輪播圖：${banners[idx].name}`);
+  showToast('✅ 輪播圖已更換！');
+}
+
+function handleNewBannerImage(input){
+  if(!input.files[0])return;
+  const url=URL.createObjectURL(input.files[0]);
+  const newId=banners.length;
+  banners.push({id:newId,name:`Banner ${newId+1} — 自訂`,emoji:'🖼️',bg:'linear-gradient(135deg,#374151,#111827)',imgUrl:url,active:false});
+  // add hidden file input for new banner
+  const fi=document.createElement('input');
+  fi.type='file';fi.id=`file-input-${newId}`;fi.className='hidden-file';fi.accept='image/*';
+  fi.onchange=function(){handleBannerImage(newId,this)};
+  document.body.appendChild(fi);
+  renderBannerGrid();
+  addActivity('新增輪播圖');
+  showToast('✅ 新輪播圖已上傳！');
+}
+
+function setBannerActive(id){
+  banners.forEach(b=>b.active=false);
+  banners.find(b=>b.id===id).active=true;
+  renderBannerGrid();
+  addActivity(`切換主輪播圖：${banners.find(b=>b.id===id).name}`);
+  showToast('✅ 主輪播圖已切換！');
+}
+
+function deleteBanner(id){
+  if(banners.length<=1){showToast('⚠️ 至少需保留一張輪播圖！');return;}
+  const b=banners.find(x=>x.id===id);
+  if(!confirm(`確定要刪除「${b.name}」嗎？`))return;
+  banners=banners.filter(x=>x.id!==id);
+  if(!banners.some(x=>x.active))banners[0].active=true;
+  renderBannerGrid();
+  addActivity(`刪除輪播圖：${b.name}`);
+  showToast('🗑️ 輪播圖已刪除！');
+}
+
+function saveBannerText(){
+  addActivity('更新輪播圖文字設定');
+  showToast('✅ 輪播文字設定已儲存！');
+}
+
+/* ══════════════════════════════════════
+   SETTINGS
+══════════════════════════════════════ */
 function applyTextSettings(){
   const s=document.getElementById('input-slogan').value;
   const tg=document.getElementById('input-tag').value;
@@ -931,15 +992,20 @@ function applyTextSettings(){
   if(s)document.getElementById('hero-slogan').textContent=s;
   if(tg)document.getElementById('hero-tag-text').textContent=tg;
   if(d)document.getElementById('hero-desc').textContent=d;
-  showToast('✅ 首頁文字已更新！');
+  addActivity('更新首頁文字設定');
+  showToast('✅ 首頁文字已更新到前台！');
 }
+
 function applyContactSettings(){
-  const fields=[['input-phone','footer-phone'],['input-email','footer-email'],['input-addr','footer-addr'],['input-hours','footer-hours']];
-  fields.forEach(([inp,out])=>{const v=document.getElementById(inp).value;if(v)document.getElementById(out).textContent=v;});
+  const map=[['input-phone','footer-phone'],['input-email','footer-email'],['input-addr','footer-addr'],['input-hours','footer-hours']];
+  map.forEach(([inp,out])=>{const v=document.getElementById(inp).value;if(v)document.getElementById(out).textContent=v;});
+  addActivity('更新聯絡資訊');
   showToast('✅ 聯絡資訊已更新到頁尾！');
 }
 
-/* ── LOGO ── */
+/* ══════════════════════════════════════
+   LOGO & BRAND
+══════════════════════════════════════ */
 function updateLogoPreview(){
   const en=document.getElementById('input-logo-en').value||'PARKNOW';
   const zh=document.getElementById('input-logo-zh').value||'泊位智慧停車';
@@ -974,13 +1040,68 @@ function applyBrandToSite(){
   ['nav-logo-zh','footer-logo-zh'].forEach(id=>document.getElementById(id).textContent=zh);
   const icon=document.getElementById('nav-logo-icon');
   icon.textContent=en.charAt(0);icon.style.background=a;
+  addActivity(`更新品牌：${en} / ${zh}`);
   showToast('🚀 品牌設定已套用到整個網站！');
 }
 
-/* ── SCROLL: close mobile menu on anchor click ── */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',closeMobileMenu);
+/* ══════════════════════════════════════
+   UI HELPERS
+══════════════════════════════════════ */
+function switchView(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  window.scrollTo(0,0);closeMobileMenu();
+}
+function switchPanel(name,el){
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
+  if(el)el.classList.add('active');
+  const t={dashboard:'控制台',banner:'輪播圖管理',news:'最新消息',locations:'停車據點',settings:'網站設定',logo:'LOGO & 品牌'};
+  document.getElementById('admin-title').textContent=t[name]||name;
+}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function toggleMobileMenu(){
+  const m=document.getElementById('mobile-menu');
+  const h=document.getElementById('hamburger');
+  const open=m.classList.toggle('open');
+  h.classList.toggle('open',open);
+  document.body.style.overflow=open?'hidden':'';
+}
+function closeMobileMenu(){
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow='';
+}
+function toggleAdminSidebar(){
+  const s=document.getElementById('admin-sidebar');
+  const o=document.getElementById('sidebar-overlay');
+  const open=s.classList.toggle('open');
+  o.style.display=open?'block':'none';
+}
+function closeAdminSidebar(){
+  document.getElementById('admin-sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').style.display='none';
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.display='block';
+  clearTimeout(window._tt);
+  window._tt=setTimeout(()=>t.style.display='none',3000);
+}
+
+// Close modals on overlay click
+['modal-news','modal-loc'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeModal(id);});
 });
+
+/* ── INIT ── */
+renderFrontNews();
+renderFrontLocs();
+renderAdminNews();
+renderAdminLocs();
+renderBannerGrid();
 </script>
 </body>
 </html>
