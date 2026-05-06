@@ -504,6 +504,7 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
               <button class="quick-btn" onclick="openNewsModal()">📰 新增最新消息</button>
               <button class="quick-btn" onclick="switchPanel('settings',document.querySelectorAll('.menu-item')[5]);closeAdminSidebar()">⚙️ 修改網站文字</button>
               <button class="quick-btn" onclick="switchPanel('logo',document.querySelectorAll('.menu-item')[6]);closeAdminSidebar()">🎨 更新品牌 LOGO</button>
+              <button class="quick-btn" style="color:#dc2626;border-color:#fca5a5;margin-top:8px" onclick="resetAllData()">🔄 重置所有資料為預設值</button>
             </div>
           </div>
         </div>
@@ -655,16 +656,14 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 
 <script>
 /* ══════════════════════════════════════
-   DATA STORE
+   DEFAULT DATA
 ══════════════════════════════════════ */
-let newsData = [
+const DEFAULT_NEWS = [
   {id:1,title:'南港立體停車場入口變更通知',cat:'公告',date:'2024/10/07',emoji:'🏗️',color:'#e8f4fd',content:'',status:'pub'},
   {id:2,title:'淡水漁人碼頭停車場月租優惠活動開跑',cat:'優惠',date:'2024/04/22',emoji:'🎉',color:'#fff3e0',content:'',status:'pub'},
   {id:3,title:'內湖行愛停車場正式開幕，月租特惠開跑',cat:'新場',date:'2024/04/11',emoji:'📋',color:'#e8f5e9',content:'',status:'pub'},
 ];
-let newsIdSeq = 4;
-
-let locData = [
+const DEFAULT_LOCS = [
   {id:1,name:'台北車站停車場',addr:'台北市中正區忠孝西路一段',info:'台北市中正區 ・ 月租 / 臨停',status:'open'},
   {id:2,name:'信義區商圈停車場',addr:'台北市信義區松高路',info:'台北市信義區 ・ 月租 / 臨停',status:'full'},
   {id:3,name:'台中火車站停車場',addr:'台中市中區台灣大道一段',info:'台中市中區 ・ 月租 / 臨停',status:'open'},
@@ -674,13 +673,69 @@ let locData = [
   {id:7,name:'淡水漁人碼頭停車場',addr:'新北市淡水區觀海路',info:'新北市淡水區 ・ 月租 / 臨停',status:'open'},
   {id:8,name:'台南成功大學停車場',addr:'台南市東區大學路',info:'台南市東區 ・ 月租 / 臨停',status:'full'},
 ];
-let locIdSeq = 9;
-
-let banners = [
-  {id:0,name:'Banner 1 — 主視覺',emoji:'🏙️',bg:'linear-gradient(135deg,#0A2240,#1a3a5c)',imgUrl:'',active:true},
-  {id:1,name:'Banner 2 — 夜間服務',emoji:'🌙',bg:'linear-gradient(135deg,#1a3a5c,#0d4a6e)',imgUrl:'',active:false},
-  {id:2,name:'Banner 3 — 機場停車',emoji:'✈️',bg:'linear-gradient(135deg,#1a5c2a,#0d6e2a)',imgUrl:'',active:false},
+const DEFAULT_BANNERS = [
+  {id:0,name:'Banner 1 — 主視覺',emoji:'🏙️',bg:'linear-gradient(135deg,#0A2240,#1a3a5c)',imgB64:'',active:true},
+  {id:1,name:'Banner 2 — 夜間服務',emoji:'🌙',bg:'linear-gradient(135deg,#1a3a5c,#0d4a6e)',imgB64:'',active:false},
+  {id:2,name:'Banner 3 — 機場停車',emoji:'✈️',bg:'linear-gradient(135deg,#1a5c2a,#0d6e2a)',imgB64:'',active:false},
 ];
+const DEFAULT_SETTINGS = {
+  slogan:'智慧停車，從容生活',
+  tag:'全台超過 200 個停車場據點',
+  desc:'泊位提供全方位智慧停車解決方案，24小時專人管理，月票自動扣繳，讓您的停車體驗更便利、更安心。',
+  phone:'0800-888-123',
+  email:'service@parknow.com.tw',
+  addr:'台北市南港區忠孝東路六段66號',
+  hours:'週一～週五，9:00～18:00',
+  bannerSlogan:'24小時服務，多站點為人們帶來安全、為汽車帶來便利',
+  bannerBtn:'立即尋找停車場',
+};
+const DEFAULT_BRAND = {
+  logoEn:'PARKNOW', logoZh:'泊位智慧停車',
+  primary:'#0A2240', accent:'#F5A623',
+};
+
+/* ══════════════════════════════════════
+   LOCALSTORAGE PERSISTENCE
+══════════════════════════════════════ */
+const LS = {
+  get(k,def){try{const v=localStorage.getItem('pn_'+k);return v?JSON.parse(v):def;}catch(e){return def;}},
+  set(k,v){try{localStorage.setItem('pn_'+k,JSON.stringify(v));}catch(e){showToast('⚠️ 瀏覽器儲存空間已滿，圖片無法保留');}}
+};
+
+function saveToStorage(){
+  LS.set('news', newsData);
+  LS.set('newsSeq', newsIdSeq);
+  LS.set('locs', locData);
+  LS.set('locSeq', locIdSeq);
+  // banners: save without large base64 separately to avoid quota issues
+  LS.set('bannersMeta', banners.map(b=>({...b, imgB64:''})));
+  banners.forEach(b=>{ if(b.imgB64) LS.set('bannerImg_'+b.id, b.imgB64); });
+  LS.set('settings', siteSettings);
+  LS.set('brand', siteBrand);
+}
+
+function loadFromStorage(){
+  newsData   = LS.get('news', JSON.parse(JSON.stringify(DEFAULT_NEWS)));
+  newsIdSeq  = LS.get('newsSeq', 4);
+  locData    = LS.get('locs', JSON.parse(JSON.stringify(DEFAULT_LOCS)));
+  locIdSeq   = LS.get('locSeq', 9);
+  const meta = LS.get('bannersMeta', null);
+  if(meta){
+    banners = meta;
+    banners.forEach(b=>{ b.imgB64 = LS.get('bannerImg_'+b.id,'')||''; });
+  } else {
+    banners = JSON.parse(JSON.stringify(DEFAULT_BANNERS));
+  }
+  siteSettings = LS.get('settings', {...DEFAULT_SETTINGS});
+  siteBrand    = LS.get('brand', {...DEFAULT_BRAND});
+}
+
+/* ══════════════════════════════════════
+   DATA STORE (populated by loadFromStorage)
+══════════════════════════════════════ */
+let newsData, newsIdSeq, locData, locIdSeq, banners;
+let siteSettings = {...DEFAULT_SETTINGS};
+let siteBrand    = {...DEFAULT_BRAND};
 
 /* ══════════════════════════════════════
    RENDER FUNCTIONS
@@ -748,9 +803,9 @@ function renderBannerGrid(){
   let html=banners.map(b=>`
     <div class="banner-item${b.active?' active-banner':''}" id="banner-card-${b.id}">
       ${b.active?'<div class="active-badge">顯示中</div>':''}
-      <div class="banner-preview" style="background:${b.imgUrl?'#000':b.bg}">
-        ${b.imgUrl?`<img src="${b.imgUrl}" alt="">`:''}
-        <span class="banner-emoji" ${b.imgUrl?'style="display:none"':''}>${b.emoji}</span>
+      <div class="banner-preview" style="background:${b.imgB64?'#000':b.bg}">
+        ${b.imgB64?`<img src="${b.imgB64}" alt="">`:''}
+        <span class="banner-emoji" ${b.imgB64?'style="display:none"':''}>${b.emoji}</span>
       </div>
       <div class="banner-controls">
         <span class="banner-name">${b.name}</span>
@@ -841,9 +896,8 @@ function saveNews(){
     addActivity(`新增消息：${title}`);
   }
   closeModal('modal-news');
-  renderAdminNews();
-  renderFrontNews();
-  showToast(`✅ 消息「${title}」已${editId?'更新':'新增'}並同步到前台！`);
+  renderAdminNews(); renderFrontNews(); saveToStorage();
+  showToast(`✅ 消息「${title}」已${editId?'更新':'新增'}並儲存！`);
 }
 
 function editNews(id){openNewsModal(id);}
@@ -852,17 +906,17 @@ function deleteNews(id){
   const n=newsData.find(x=>x.id===id);
   if(!confirm(`確定要刪除「${n.title}」嗎？`))return;
   newsData=newsData.filter(x=>x.id!==id);
-  renderAdminNews();renderFrontNews();
+  renderAdminNews(); renderFrontNews(); saveToStorage();
   addActivity(`刪除消息：${n.title}`);
-  showToast('🗑️ 消息已刪除，前台已同步更新！');
+  showToast('🗑️ 消息已刪除並儲存！');
 }
 
 function publishNews(id){
   const n=newsData.find(x=>x.id===id);
   n.status='pub';
-  renderAdminNews();renderFrontNews();
+  renderAdminNews(); renderFrontNews(); saveToStorage();
   addActivity(`發佈消息：${n.title}`);
-  showToast(`✅ 「${n.title}」已發佈到前台！`);
+  showToast(`✅ 「${n.title}」已發佈並儲存！`);
 }
 
 /* ══════════════════════════════════════
@@ -908,8 +962,8 @@ function saveLoc(){
     addActivity(`新增據點：${name}`);
   }
   closeModal('modal-loc');
-  renderAdminLocs();renderFrontLocs();
-  showToast(`✅ 據點「${name}」已${editId?'更新':'新增'}，前台已同步！`);
+  renderAdminLocs(); renderFrontLocs(); saveToStorage();
+  showToast(`✅ 據點「${name}」已${editId?'更新':'新增'}並儲存！`);
 }
 
 function editLoc(id){openLocModal(id);}
@@ -917,18 +971,18 @@ function editLoc(id){openLocModal(id);}
 function toggleLocStatus(id){
   const l=locData.find(x=>x.id===id);
   l.status=l.status==='open'?'full':'open';
-  renderAdminLocs();renderFrontLocs();
+  renderAdminLocs(); renderFrontLocs(); saveToStorage();
   addActivity(`更新據點狀態：${l.name} → ${l.status==='open'?'開放中':'客滿'}`);
-  showToast(`✅ 「${l.name}」狀態已更新！`);
+  showToast(`✅ 「${l.name}」狀態已更新並儲存！`);
 }
 
 function deleteLoc(id){
   const l=locData.find(x=>x.id===id);
   if(!confirm(`確定要下架刪除「${l.name}」嗎？`))return;
   locData=locData.filter(x=>x.id!==id);
-  renderAdminLocs();renderFrontLocs();
+  renderAdminLocs(); renderFrontLocs(); saveToStorage();
   addActivity(`下架據點：${l.name}`);
-  showToast('🗑️ 據點已下架，前台已同步更新！');
+  showToast('🗑️ 據點已下架並儲存！');
 }
 
 /* ══════════════════════════════════════
@@ -936,71 +990,84 @@ function deleteLoc(id){
 ══════════════════════════════════════ */
 function handleBannerImage(idx,input){
   if(!input.files[0])return;
-  const url=URL.createObjectURL(input.files[0]);
-  banners[idx].imgUrl=url;
-  renderBannerGrid();
-  addActivity(`更換輪播圖：${banners[idx].name}`);
-  showToast('✅ 輪播圖已更換！');
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const b64=e.target.result;
+    const banner=banners.find(b=>b.id===idx);
+    if(banner){ banner.imgB64=b64; renderBannerGrid(); saveToStorage(); addActivity(`更換輪播圖：${banner.name}`); showToast('✅ 輪播圖已更換並儲存！'); }
+  };
+  reader.readAsDataURL(input.files[0]);
 }
 
 function handleNewBannerImage(input){
   if(!input.files[0])return;
-  const url=URL.createObjectURL(input.files[0]);
-  const newId=banners.length;
-  banners.push({id:newId,name:`Banner ${newId+1} — 自訂`,emoji:'🖼️',bg:'linear-gradient(135deg,#374151,#111827)',imgUrl:url,active:false});
-  // add hidden file input for new banner
-  const fi=document.createElement('input');
-  fi.type='file';fi.id=`file-input-${newId}`;fi.className='hidden-file';fi.accept='image/*';
-  fi.onchange=function(){handleBannerImage(newId,this)};
-  document.body.appendChild(fi);
-  renderBannerGrid();
-  addActivity('新增輪播圖');
-  showToast('✅ 新輪播圖已上傳！');
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const b64=e.target.result;
+    const newId=Date.now();
+    banners.push({id:newId,name:`Banner ${banners.length+1} — 自訂`,emoji:'🖼️',bg:'linear-gradient(135deg,#374151,#111827)',imgB64:b64,active:false});
+    const fi=document.createElement('input');
+    fi.type='file';fi.id=`file-input-${newId}`;fi.className='hidden-file';fi.accept='image/*';
+    fi.onchange=function(){handleBannerImage(newId,this)};
+    document.body.appendChild(fi);
+    renderBannerGrid(); saveToStorage(); addActivity('新增輪播圖'); showToast('✅ 新輪播圖已上傳並儲存！');
+  };
+  reader.readAsDataURL(input.files[0]);
 }
 
 function setBannerActive(id){
   banners.forEach(b=>b.active=false);
   banners.find(b=>b.id===id).active=true;
-  renderBannerGrid();
+  renderBannerGrid(); saveToStorage();
   addActivity(`切換主輪播圖：${banners.find(b=>b.id===id).name}`);
-  showToast('✅ 主輪播圖已切換！');
+  showToast('✅ 主輪播圖已切換並儲存！');
 }
 
 function deleteBanner(id){
   if(banners.length<=1){showToast('⚠️ 至少需保留一張輪播圖！');return;}
   const b=banners.find(x=>x.id===id);
   if(!confirm(`確定要刪除「${b.name}」嗎？`))return;
+  try{localStorage.removeItem('pn_bannerImg_'+id);}catch(e){}
   banners=banners.filter(x=>x.id!==id);
   if(!banners.some(x=>x.active))banners[0].active=true;
-  renderBannerGrid();
+  renderBannerGrid(); saveToStorage();
   addActivity(`刪除輪播圖：${b.name}`);
-  showToast('🗑️ 輪播圖已刪除！');
+  showToast('🗑️ 輪播圖已刪除並儲存！');
 }
 
 function saveBannerText(){
+  siteSettings.bannerSlogan=document.getElementById('banner-slogan').value;
+  siteSettings.bannerBtn=document.getElementById('banner-btn-text').value;
+  saveToStorage();
   addActivity('更新輪播圖文字設定');
-  showToast('✅ 輪播文字設定已儲存！');
+  showToast('✅ 輪播文字已儲存！');
 }
 
 /* ══════════════════════════════════════
    SETTINGS
 ══════════════════════════════════════ */
 function applyTextSettings(){
-  const s=document.getElementById('input-slogan').value;
-  const tg=document.getElementById('input-tag').value;
-  const d=document.getElementById('input-desc').value;
-  if(s)document.getElementById('hero-slogan').textContent=s;
-  if(tg)document.getElementById('hero-tag-text').textContent=tg;
-  if(d)document.getElementById('hero-desc').textContent=d;
-  addActivity('更新首頁文字設定');
-  showToast('✅ 首頁文字已更新到前台！');
+  siteSettings.slogan = document.getElementById('input-slogan').value;
+  siteSettings.tag    = document.getElementById('input-tag').value;
+  siteSettings.desc   = document.getElementById('input-desc').value;
+  document.getElementById('hero-slogan').textContent   = siteSettings.slogan;
+  document.getElementById('hero-tag-text').textContent = siteSettings.tag;
+  document.getElementById('hero-desc').textContent     = siteSettings.desc;
+  saveToStorage(); addActivity('更新首頁文字設定');
+  showToast('✅ 首頁文字已更新並儲存！');
 }
 
 function applyContactSettings(){
-  const map=[['input-phone','footer-phone'],['input-email','footer-email'],['input-addr','footer-addr'],['input-hours','footer-hours']];
-  map.forEach(([inp,out])=>{const v=document.getElementById(inp).value;if(v)document.getElementById(out).textContent=v;});
-  addActivity('更新聯絡資訊');
-  showToast('✅ 聯絡資訊已更新到頁尾！');
+  siteSettings.phone = document.getElementById('input-phone').value;
+  siteSettings.email = document.getElementById('input-email').value;
+  siteSettings.addr  = document.getElementById('input-addr').value;
+  siteSettings.hours = document.getElementById('input-hours').value;
+  document.getElementById('footer-phone').textContent = siteSettings.phone;
+  document.getElementById('footer-email').textContent = siteSettings.email;
+  document.getElementById('footer-addr').textContent  = siteSettings.addr;
+  document.getElementById('footer-hours').textContent = siteSettings.hours;
+  saveToStorage(); addActivity('更新聯絡資訊');
+  showToast('✅ 聯絡資訊已更新並儲存！');
 }
 
 /* ══════════════════════════════════════
@@ -1030,18 +1097,23 @@ function syncColorFromText(type,v){
   }
 }
 function applyBrandToSite(){
-  const en=document.getElementById('input-logo-en').value||'PARKNOW';
-  const zh=document.getElementById('input-logo-zh').value||'泊位智慧停車';
-  const p=document.getElementById('color-primary').value;
-  const a=document.getElementById('color-accent').value;
-  document.documentElement.style.setProperty('--primary',p);
-  document.documentElement.style.setProperty('--accent',a);
-  ['nav-logo-en','footer-logo-en'].forEach(id=>document.getElementById(id).textContent=en);
-  ['nav-logo-zh','footer-logo-zh'].forEach(id=>document.getElementById(id).textContent=zh);
+  siteBrand.logoEn  = document.getElementById('input-logo-en').value||'PARKNOW';
+  siteBrand.logoZh  = document.getElementById('input-logo-zh').value||'泊位智慧停車';
+  siteBrand.primary = document.getElementById('color-primary').value;
+  siteBrand.accent  = document.getElementById('color-accent').value;
+  applyBrandDOM();
+  saveToStorage(); addActivity(`更新品牌：${siteBrand.logoEn} / ${siteBrand.logoZh}`);
+  showToast('🚀 品牌設定已套用並儲存！');
+}
+
+function applyBrandDOM(){
+  document.documentElement.style.setProperty('--primary', siteBrand.primary);
+  document.documentElement.style.setProperty('--accent',  siteBrand.accent);
+  ['nav-logo-en','footer-logo-en'].forEach(id=>document.getElementById(id).textContent=siteBrand.logoEn);
+  ['nav-logo-zh','footer-logo-zh'].forEach(id=>document.getElementById(id).textContent=siteBrand.logoZh);
   const icon=document.getElementById('nav-logo-icon');
-  icon.textContent=en.charAt(0);icon.style.background=a;
-  addActivity(`更新品牌：${en} / ${zh}`);
-  showToast('🚀 品牌設定已套用到整個網站！');
+  icon.textContent=siteBrand.logoEn.charAt(0);
+  icon.style.background=siteBrand.accent;
 }
 
 /* ══════════════════════════════════════
@@ -1091,17 +1163,74 @@ function showToast(msg){
   window._tt=setTimeout(()=>t.style.display='none',3000);
 }
 
+function resetAllData(){
+  if(!confirm('確定要重置所有後台資料嗎？\n（消息、據點、設定將全部還原為預設值）'))return;
+  try{
+    Object.keys(localStorage).filter(k=>k.startsWith('pn_')).forEach(k=>localStorage.removeItem(k));
+  }catch(e){}
+  location.reload();
+}
+
 // Close modals on overlay click
 ['modal-news','modal-loc'].forEach(id=>{
   document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeModal(id);});
 });
 
-/* ── INIT ── */
+/* ══════════════════════════════════════
+   INIT — load from localStorage
+══════════════════════════════════════ */
+loadFromStorage();
+
+// Restore settings UI fields
+document.getElementById('input-slogan').value       = siteSettings.slogan;
+document.getElementById('input-tag').value          = siteSettings.tag;
+document.getElementById('input-desc').value         = siteSettings.desc;
+document.getElementById('input-phone').value        = siteSettings.phone;
+document.getElementById('input-email').value        = siteSettings.email;
+document.getElementById('input-addr').value         = siteSettings.addr;
+document.getElementById('input-hours').value        = siteSettings.hours;
+document.getElementById('banner-slogan').value      = siteSettings.bannerSlogan;
+document.getElementById('banner-btn-text').value    = siteSettings.bannerBtn;
+
+// Restore brand UI fields
+document.getElementById('input-logo-en').value      = siteBrand.logoEn;
+document.getElementById('input-logo-zh').value      = siteBrand.logoZh;
+document.getElementById('color-primary').value      = siteBrand.primary;
+document.getElementById('color-primary-text').value = siteBrand.primary;
+document.getElementById('color-accent').value       = siteBrand.accent;
+document.getElementById('color-accent-text').value  = siteBrand.accent;
+document.getElementById('swatch-primary').style.background = siteBrand.primary;
+document.getElementById('swatch-accent').style.background  = siteBrand.accent;
+document.getElementById('logo-preview-box').style.background  = siteBrand.primary;
+document.getElementById('logo-icon-preview').style.background = siteBrand.accent;
+updateLogoPreview();
+
+// Apply brand & settings to DOM
+applyBrandDOM();
+document.getElementById('hero-slogan').textContent   = siteSettings.slogan;
+document.getElementById('hero-tag-text').textContent = siteSettings.tag;
+document.getElementById('hero-desc').textContent     = siteSettings.desc;
+document.getElementById('footer-phone').textContent  = siteSettings.phone;
+document.getElementById('footer-email').textContent  = siteSettings.email;
+document.getElementById('footer-addr').textContent   = siteSettings.addr;
+document.getElementById('footer-hours').textContent  = siteSettings.hours;
+
+// Render all panels
 renderFrontNews();
 renderFrontLocs();
 renderAdminNews();
 renderAdminLocs();
 renderBannerGrid();
+
+// Add file inputs for any saved banners beyond default 3
+banners.forEach(b=>{
+  if(b.id>2 && !document.getElementById('file-input-'+b.id)){
+    const fi=document.createElement('input');
+    fi.type='file';fi.id=`file-input-${b.id}`;fi.className='hidden-file';fi.accept='image/*';
+    fi.onchange=function(){handleBannerImage(b.id,this)};
+    document.body.appendChild(fi);
+  }
+});
 </script>
 </body>
 </html>
