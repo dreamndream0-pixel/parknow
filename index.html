@@ -19,7 +19,8 @@ body{font-family:'Noto Sans TC',sans-serif;color:var(--text);background:#fff;ove
 /* NAV */
 .top-bar{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,34,64,0.97);backdrop-filter:blur(12px);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.logo-icon{width:38px;height:38px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:20px;color:#fff;flex-shrink:0;transition:background .3s}
+.logo-icon{width:38px;height:38px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:20px;color:#fff;flex-shrink:0;transition:background .3s;overflow:hidden}
+.logo-icon img{width:100%;height:100%;object-fit:contain}
 .logo-text{display:flex;flex-direction:column}
 .logo-en{font-family:'Bebas Neue';font-size:20px;color:#fff;letter-spacing:3px;line-height:1}
 .logo-zh{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:2px}
@@ -63,6 +64,36 @@ body{font-family:'Noto Sans TC',sans-serif;color:var(--text);background:#fff;ove
 .stat-card{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:20px;backdrop-filter:blur(10px)}
 .stat-num{font-family:'Bebas Neue';font-size:42px;color:var(--accent);letter-spacing:2px;line-height:1}
 .stat-label{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-top:4px}
+
+/* BANNER SLIDER */
+.front-banner{position:relative;width:100%;height:520px;overflow:hidden;background:#0A2240}
+@media(max-width:600px){.front-banner{height:260px}}
+.front-banner-track{display:flex;height:100%;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.front-banner-slide{flex-shrink:0;width:100%;height:100%;position:relative;overflow:hidden}
+.front-banner-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.front-banner-slide .slide-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(10,34,64,.6) 0%,rgba(10,34,64,.1) 100%)}
+.front-banner-slide .slide-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px}
+.slide-caption{position:absolute;bottom:40px;left:40px;right:40px;color:#fff;z-index:2}
+.slide-caption h2{font-family:'Bebas Neue';font-size:clamp(24px,4vw,44px);letter-spacing:2px;margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.slide-caption p{font-size:14px;color:rgba(255,255,255,.8);max-width:480px}
+@media(max-width:600px){.slide-caption{bottom:20px;left:20px;right:20px}.slide-caption h2{font-size:22px}.slide-caption p{font-size:12px}}
+.banner-nav{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
+.banner-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .2s;border:none}
+.banner-dot.active{background:#fff;width:24px;border-radius:4px}
+.banner-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:3;transition:background .2s;backdrop-filter:blur(4px)}
+.banner-arrow:hover{background:rgba(255,255,255,.3)}
+.banner-arrow.prev{left:16px}
+.banner-arrow.next{right:16px}
+
+/* FEATURES with photo */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feature-card{border:1.5px solid var(--border);border-radius:14px;overflow:hidden;transition:all .3s;background:#fff}
+.feature-card:hover{border-color:var(--accent);box-shadow:0 8px 32px rgba(245,166,35,0.1);transform:translateY(-4px)}
+.feature-card-img{width:100%;height:160px;object-fit:cover;display:block;background:#f0f4ff}
+.feature-card-img-placeholder{width:100%;height:160px;display:flex;align-items:center;justify-content:center;font-size:48px;background:var(--light)}
+.feature-card-body{padding:20px}
+.feature-card-body h3{font-size:16px;font-weight:600;color:var(--primary);margin-bottom:8px}
+.feature-card-body p{font-size:13px;color:var(--muted);line-height:1.75}
 
 /* SEARCH */
 .search-section{background:#fff;padding:20px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.08);position:relative;z-index:10}
@@ -489,7 +520,7 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
         <p class="hero-sub" id="hero-slogan">智慧停車，從容生活</p>
         <p class="hero-desc" id="hero-desc">泊位提供全方位智慧停車解決方案，24小時專人管理，月票自動扣繳，讓您的停車體驗更便利、更安心。</p>
         <div class="hero-btns">
-          <button class="btn-primary" onclick="document.getElementById('locations').scrollIntoView({behavior:'smooth'})">立即尋找停車場</button>
+          <button class="btn-primary" onclick="document.getElementById('banner-section').scrollIntoView({behavior:'smooth'})">立即尋找停車場</button>
           <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">了解更多服務</button>
         </div>
       </div>
@@ -504,6 +535,14 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
     </div>
   </section>
 
+  <!-- ★ BANNER SLIDER (front-end display) -->
+  <div class="front-banner" id="banner-section">
+    <div class="front-banner-track" id="front-banner-track"></div>
+    <button class="banner-arrow prev" onclick="slideBanner(-1)">‹</button>
+    <button class="banner-arrow next" onclick="slideBanner(1)">›</button>
+    <div class="banner-nav" id="banner-nav"></div>
+  </div>
+
   <div class="search-section">
     <div class="search-inner">
       <span class="search-label">🔍 尋找停車場</span>
@@ -517,14 +556,7 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
   <section class="section-bg" id="features">
     <div class="section-inner">
       <div class="section-header"><div class="section-tag" id="feat-tag">WHY PARKNOW</div><h2 id="feat-title">為什麼選擇泊位</h2><p id="feat-sub">超過 20 年停車場管理經驗，提供最優質的智慧停車體驗</p></div>
-      <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon" style="background:#FFF3E0" id="fc0-icon">🕐</div><h3 id="fc0-title">24小時全天服務</h3><p id="fc0-desc">全天候專業人員駐守，確保您的愛車安全無虞，隨時停、隨時取車。</p></div>
-        <div class="feature-card"><div class="feature-icon" style="background:#E8F5E9" id="fc1-icon">💳</div><h3 id="fc1-title">多元繳費方式</h3><p id="fc1-desc">支援 E-TAG 自動扣繳、超商繳費、信用卡、悠遊付等多種方式。</p></div>
-        <div class="feature-card"><div class="feature-icon" style="background:#E3F2FD" id="fc2-icon">📍</div><h3 id="fc2-title">全台廣布據點</h3><p id="fc2-desc">北中南超過 200 個停車場，涵蓋各大城市、交通樞紐與商業區。</p></div>
-        <div class="feature-card"><div class="feature-icon" style="background:#F3E5F5" id="fc3-icon">✈️</div><h3 id="fc3-title">機場接駁服務</h3><p id="fc3-desc">桃園、松山機場周邊停車，含專車接駁服務，出國停車好放心。</p></div>
-        <div class="feature-card"><div class="feature-icon" style="background:#E8F5E9" id="fc4-icon">🔒</div><h3 id="fc4-title">安全有保障</h3><p id="fc4-desc">全區監控攝影、專業保全巡邏，嚴格把關每一個進出車輛。</p></div>
-        <div class="feature-card"><div class="feature-icon" style="background:#FFF9E6" id="fc5-icon">📱</div><h3 id="fc5-title">線上抽籤登記</h3><p id="fc5-desc">手機線上完成月租車位抽籤登記，省時省力，讓好位子等您。</p></div>
-      </div>
+      <div class="features-grid" id="features-display"></div>
     </div>
   </section>
 
@@ -751,11 +783,11 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
     <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
       <div>
         <div style="font-family:'Bebas Neue';font-size:22px;color:#fff;letter-spacing:3px;margin-bottom:4px" id="lot-footer-en">PARKNOW</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px">泊位智慧停車</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px" id="lot-footer-zh">泊位智慧停車</div>
       </div>
       <div style="font-size:12px;text-align:right">
-        <div>客服電話：<span style="color:#fff">0800-888-123</span></div>
-        <div style="margin-top:4px">© 2024 泊位智慧停車股份有限公司</div>
+        <div>客服電話：<span style="color:#fff" id="lot-footer-phone">0800-888-123</span></div>
+        <div style="margin-top:4px">© 2024 <span id="lot-footer-corp">泊位智慧停車股份有限公司</span></div>
       </div>
     </div>
   </footer>
@@ -958,13 +990,16 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 
             <!-- FEATURES -->
             <div class="settings-card">
-              <h3>⭐ 服務特色區塊</h3>
+              <h3>⭐ 服務特色卡片（可上傳照片 / 新增 / 刪除）</h3>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
                 <div class="form-row"><label class="form-label">區塊標題</label><input class="form-input" id="ce-feat-title" value="為什麼選擇泊位"></div>
                 <div class="form-row"><label class="form-label">區塊副標</label><input class="form-input" id="ce-feat-sub" value="超過 20 年停車場管理經驗，提供最優質的智慧停車體驗"></div>
               </div>
               <div id="ce-features-list" style="display:flex;flex-direction:column;gap:10px"></div>
-              <button class="btn-save" style="margin-top:12px" onclick="applyContentEdit('features')">✅ 套用到服務特色</button>
+              <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+                <button class="btn-save" onclick="applyContentEdit('features')">✅ 套用到前台</button>
+                <button class="btn-preview" onclick="addFeatureCard()">➕ 新增卡片</button>
+              </div>
             </div>
 
             <!-- LOCATIONS SECTION HEADER -->
@@ -1104,22 +1139,39 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
 
         <!-- LOGO -->
         <div class="admin-panel" id="panel-logo">
-          <p class="text-muted mb-20">自訂品牌 LOGO 文字與主色調，點「套用」後更新整站。</p>
+          <p class="text-muted mb-20">上傳品牌 LOGO 圖片，或設定文字標誌與主色調，套用後更新整站所有頁面。</p>
           <div class="settings-grid">
             <div class="settings-card">
-              <h3>🔤 LOGO 文字</h3>
-              <div class="form-row"><label class="form-label">英文品牌名稱</label><input class="form-input" id="input-logo-en" value="PARKNOW" oninput="updateLogoPreview()"></div>
+              <h3>🖼️ LOGO 圖片上傳</h3>
+              <div style="border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;margin-bottom:14px;background:#fafafa;cursor:pointer" onclick="document.getElementById('logo-img-file').click()" id="logo-upload-area">
+                <div id="logo-upload-preview" style="margin-bottom:10px">
+                  <div style="font-size:32px;margin-bottom:6px">🖼️</div>
+                  <div style="font-size:13px;font-weight:500;color:var(--text)">點擊上傳 LOGO 圖片</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:4px">支援 PNG、SVG、JPG（建議使用透明背景 PNG）</div>
+                </div>
+              </div>
+              <input type="file" id="logo-img-file" style="display:none" accept="image/*,.svg" onchange="handleLogoImage(this)">
+              <div style="display:flex;gap:8px">
+                <button class="btn-save" style="flex:1" onclick="document.getElementById('logo-img-file').click()">📁 選擇圖片</button>
+                <button class="btn-preview" onclick="clearLogoImage()">✕ 清除圖片</button>
+              </div>
+              <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+                <h3>🔤 文字標誌（無圖片時顯示）</h3>
+              </div>
+              <div class="form-row" style="margin-top:12px"><label class="form-label">英文品牌名稱</label><input class="form-input" id="input-logo-en" value="PARKNOW" oninput="updateLogoPreview()"></div>
               <div class="form-row"><label class="form-label">中文品牌名稱</label><input class="form-input" id="input-logo-zh" value="泊位智慧停車" oninput="updateLogoPreview()"></div>
-              <h3 style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">🎨 品牌色調</h3>
+              <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+                <h3>🎨 品牌色調</h3>
+              </div>
               <div class="form-row" style="margin-top:12px">
-                <label class="form-label">主色（深色背景）</label>
+                <label class="form-label">主色（導覽列 / 深色背景）</label>
                 <div class="color-row">
                   <div class="color-swatch" id="swatch-primary" style="background:#0A2240"><input type="color" value="#0A2240" id="color-primary" oninput="updateBrandColor(this.value)"></div>
                   <input class="form-input" id="color-primary-text" value="#0A2240" style="font-family:monospace" oninput="syncColorFromText('primary',this.value)">
                 </div>
               </div>
               <div class="form-row">
-                <label class="form-label">強調色（橘黃）</label>
+                <label class="form-label">強調色（按鈕 / 橘黃色）</label>
                 <div class="color-row">
                   <div class="color-swatch" id="swatch-accent" style="background:#F5A623"><input type="color" value="#F5A623" id="color-accent" oninput="updateAccentColor(this.value)"></div>
                   <input class="form-input" id="color-accent-text" value="#F5A623" style="font-family:monospace" oninput="syncColorFromText('accent',this.value)">
@@ -1128,15 +1180,24 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
             </div>
             <div class="settings-card">
               <h3>👁️ 即時預覽</h3>
-              <div class="logo-preview-box" id="logo-preview-box" style="background:#0A2240">
-                <div class="logo-preview-icon" id="logo-icon-preview" style="background:#F5A623">P</div>
-                <div class="logo-preview-texts">
-                  <div class="pv-en" id="logo-en-preview">PARKNOW</div>
-                  <span class="pv-zh" id="logo-zh-preview">泊位智慧停車</span>
+              <!-- Navbar preview -->
+              <div style="background:rgba(10,34,64,0.97);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px" id="logo-preview-box">
+                <div id="logo-icon-preview" style="width:38px;height:38px;background:#F5A623;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:20px;color:#fff;flex-shrink:0;overflow:hidden">P</div>
+                <div>
+                  <div class="pv-en" id="logo-en-preview" style="font-family:'Bebas Neue';font-size:18px;color:#fff;letter-spacing:3px;line-height:1">PARKNOW</div>
+                  <div class="pv-zh" id="logo-zh-preview" style="font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:2px">泊位智慧停車</div>
                 </div>
               </div>
-              <div class="brand-note">💡 <strong>品牌理念</strong><br>「泊」象徵安心停靠；「位」代表珍貴停車位。ParkNow 直覺易記，傳達即刻停車的俐落感。</div>
-              <button class="btn-save" onclick="applyBrandToSite()">🚀 套用品牌到整站</button>
+              <!-- Footer preview -->
+              <div style="background:#071829;border-radius:8px;padding:14px 16px;margin-bottom:14px">
+                <div style="font-family:'Bebas Neue';font-size:22px;color:#fff;letter-spacing:3px" id="logo-footer-prev">PARKNOW</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:2px" id="logo-footer-zh-prev">泊位智慧停車</div>
+              </div>
+              <div class="brand-note">
+                💡 <strong>上傳建議</strong><br>
+                建議使用 <strong>透明背景 PNG</strong> 或 SVG 格式，尺寸 120×40px 以上，確保在深色導覽列上清晰顯示。上傳後會取代文字標誌顯示在所有頁面。
+              </div>
+              <button class="btn-save" onclick="applyBrandToSite()" style="width:100%">🚀 套用品牌到整站</button>
             </div>
           </div>
         </div>
@@ -1225,6 +1286,7 @@ const DEFAULT_SETTINGS = {
 const DEFAULT_BRAND = {
   logoEn:'PARKNOW', logoZh:'泊位智慧停車',
   primary:'#0A2240', accent:'#F5A623',
+  logoImgB64:'',
 };
 
 /* ══════════════════════════════════════
@@ -1451,8 +1513,12 @@ function saveToStorage(){
   // banners: save without large base64 separately to avoid quota issues
   LS.set('bannersMeta', banners.map(b=>({...b, imgB64:''})));
   banners.forEach(b=>{ if(b.imgB64) LS.set('bannerImg_'+b.id, b.imgB64); });
+  // brand: save logoImg separately
+  const brandMeta = {...siteBrand, logoImgB64:''};
+  LS.set('brand', brandMeta);
+  if(siteBrand.logoImgB64) LS.set('brandLogoImg', siteBrand.logoImgB64);
+  else try{localStorage.removeItem('pn_brandLogoImg');}catch(e){}
   LS.set('settings', siteSettings);
-  LS.set('brand', siteBrand);
   LS.set('lottery', lotteryData);
 }
 
@@ -1470,6 +1536,7 @@ function loadFromStorage(){
   }
   siteSettings = LS.get('settings', {...DEFAULT_SETTINGS});
   siteBrand    = LS.get('brand', {...DEFAULT_BRAND});
+  siteBrand.logoImgB64 = LS.get('brandLogoImg', '')||'';
   loadContent();
   loadRegData();
 }
@@ -1738,7 +1805,7 @@ function handleBannerImage(idx,input){
   reader.onload=function(e){
     const b64=e.target.result;
     const banner=banners.find(b=>b.id===idx);
-    if(banner){ banner.imgB64=b64; renderBannerGrid(); saveToStorage(); addActivity(`更換輪播圖：${banner.name}`); showToast('✅ 輪播圖已更換並儲存！'); }
+    if(banner){ banner.imgB64=b64; renderBannerGrid(); renderFrontBanner(); saveToStorage(); addActivity(`更換輪播圖：${banner.name}`); showToast('✅ 輪播圖已更換並儲存！'); }
   };
   reader.readAsDataURL(input.files[0]);
 }
@@ -1754,7 +1821,7 @@ function handleNewBannerImage(input){
     fi.type='file';fi.id=`file-input-${newId}`;fi.className='hidden-file';fi.accept='image/*';
     fi.onchange=function(){handleBannerImage(newId,this)};
     document.body.appendChild(fi);
-    renderBannerGrid(); saveToStorage(); addActivity('新增輪播圖'); showToast('✅ 新輪播圖已上傳並儲存！');
+    renderBannerGrid(); renderFrontBanner(); saveToStorage(); addActivity('新增輪播圖'); showToast('✅ 新輪播圖已上傳並儲存！');
   };
   reader.readAsDataURL(input.files[0]);
 }
@@ -1762,7 +1829,7 @@ function handleNewBannerImage(input){
 function setBannerActive(id){
   banners.forEach(b=>b.active=false);
   banners.find(b=>b.id===id).active=true;
-  renderBannerGrid(); saveToStorage();
+  renderBannerGrid(); renderFrontBanner(); saveToStorage();
   addActivity(`切換主輪播圖：${banners.find(b=>b.id===id).name}`);
   showToast('✅ 主輪播圖已切換並儲存！');
 }
@@ -1774,7 +1841,7 @@ function deleteBanner(id){
   try{localStorage.removeItem('pn_bannerImg_'+id);}catch(e){}
   banners=banners.filter(x=>x.id!==id);
   if(!banners.some(x=>x.active))banners[0].active=true;
-  renderBannerGrid(); saveToStorage();
+  renderBannerGrid(); renderFrontBanner(); saveToStorage();
   addActivity(`刪除輪播圖：${b.name}`);
   showToast('🗑️ 輪播圖已刪除並儲存！');
 }
@@ -1818,11 +1885,53 @@ function applyContactSettings(){
    LOGO & BRAND
 ══════════════════════════════════════ */
 function updateLogoPreview(){
-  const en=document.getElementById('input-logo-en').value||'PARKNOW';
-  const zh=document.getElementById('input-logo-zh').value||'泊位智慧停車';
-  document.getElementById('logo-en-preview').textContent=en;
-  document.getElementById('logo-zh-preview').textContent=zh;
-  document.getElementById('logo-icon-preview').textContent=en.charAt(0);
+  const en = document.getElementById('input-logo-en').value||'PARKNOW';
+  const zh = document.getElementById('input-logo-zh').value||'泊位智慧停車';
+  document.getElementById('logo-en-preview').textContent = en;
+  document.getElementById('logo-zh-preview').textContent = zh;
+  const fp = document.getElementById('logo-footer-prev'); if(fp) fp.textContent = en;
+  const fz = document.getElementById('logo-footer-zh-prev'); if(fz) fz.textContent = zh;
+  const ic = document.getElementById('logo-icon-preview');
+  if(ic && !siteBrand.logoImgB64){
+    ic.innerHTML = en.charAt(0);
+    ic.style.background = siteBrand.accent;
+  }
+}
+
+function handleLogoImage(input){
+  if(!input.files[0])return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    siteBrand.logoImgB64 = e.target.result;
+    // Update upload area preview
+    const area = document.getElementById('logo-upload-preview');
+    if(area) area.innerHTML = `<img src="${siteBrand.logoImgB64}" style="max-height:60px;max-width:180px;object-fit:contain;border-radius:6px">
+      <div style="font-size:11px;color:var(--muted);margin-top:6px">圖片已上傳 ✓</div>`;
+    // Update admin nav icon preview
+    const ic = document.getElementById('logo-icon-preview');
+    if(ic){
+      ic.innerHTML = `<img src="${siteBrand.logoImgB64}" style="width:100%;height:100%;object-fit:contain;padding:2px">`;
+      ic.style.background = 'transparent';
+    }
+    showToast('✅ LOGO 圖片已上傳，點擊「套用品牌到整站」生效！');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function clearLogoImage(){
+  siteBrand.logoImgB64 = '';
+  const area = document.getElementById('logo-upload-preview');
+  if(area) area.innerHTML = `<div style="font-size:32px;margin-bottom:6px">🖼️</div>
+    <div style="font-size:13px;font-weight:500;color:var(--text)">點擊上傳 LOGO 圖片</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:4px">支援 PNG、SVG、JPG（建議使用透明背景 PNG）</div>`;
+  const ic = document.getElementById('logo-icon-preview');
+  if(ic){
+    ic.innerHTML = (document.getElementById('input-logo-en').value||'PARKNOW').charAt(0);
+    ic.style.background = siteBrand.accent;
+  }
+  applyBrandDOM();
+  saveToStorage();
+  showToast('✅ LOGO 圖片已清除，改回文字標誌！');
 }
 function updateBrandColor(v){
   document.getElementById('color-primary-text').value=v;
@@ -1853,21 +1962,27 @@ function applyBrandToSite(){
 function applyBrandDOM(){
   document.documentElement.style.setProperty('--primary', siteBrand.primary);
   document.documentElement.style.setProperty('--accent',  siteBrand.accent);
-  // All logo-en elements across all pages
-  document.querySelectorAll('[id$="-logo-en"],[id="footer-logo-en"],[id="lot-footer-en"]').forEach(el=>{
-    if(el) el.textContent = siteBrand.logoEn;
+  const logoEnIds = ['nav-logo-en','footer-logo-en','lot-nav-logo-en','lot-footer-en'];
+  const logoZhIds = ['nav-logo-zh','footer-logo-zh','lot-footer-zh'];
+  const logoIconIds = ['nav-logo-icon','lot-nav-logo-icon'];
+  logoEnIds.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=siteBrand.logoEn;});
+  logoZhIds.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=siteBrand.logoZh;});
+  logoIconIds.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    if(siteBrand.logoImgB64){
+      el.innerHTML=`<img src="${siteBrand.logoImgB64}" alt="logo">`;
+      el.style.background='transparent';
+      el.style.padding='2px';
+    } else {
+      el.innerHTML=siteBrand.logoEn.charAt(0);
+      el.style.background=siteBrand.accent;
+      el.style.padding='';
+    }
   });
-  // All logo-zh elements
-  document.querySelectorAll('[id$="-logo-zh"],[id="footer-logo-zh"]').forEach(el=>{
-    if(el) el.textContent = siteBrand.logoZh;
-  });
-  // All logo-icon elements
-  document.querySelectorAll('[id$="-logo-icon"]').forEach(el=>{
-    if(el){ el.textContent = siteBrand.logoEn.charAt(0); el.style.background = siteBrand.accent; }
-  });
-  // lot-footer-en specifically
-  const lfe = document.getElementById('lot-footer-en');
-  if(lfe) lfe.textContent = siteBrand.logoEn;
+  // Also update lot-footer phone from settings
+  const lfp=document.getElementById('lot-footer-phone');
+  if(lfp) lfp.textContent = siteSettings.phone||'0800-888-123';
 }
 
 /* ══════════════════════════════════════
@@ -1935,6 +2050,8 @@ function renderLotAdminPanel(){
       : st==='soon'
       ? `<span class="status-badge draft">即將開放</span>`
       : `<span class="status-badge" style="background:#f3f4f6;color:#6b7280">已截止</span>`;
+    const parkRegs = regData.filter(x=>x.parkId===r.id);
+    const regCount = parkRegs.length;
     return `<tr>
       <td style="font-weight:600">${r.name}</td>
       <td>${r.city} ${r.district}</td>
@@ -1942,14 +2059,74 @@ function renderLotAdminPanel(){
       <td style="font-size:11px">${r.start.slice(0,10)}<br>～${r.end.slice(0,10)}</td>
       <td>${r.slots}</td>
       <td>${stHtml}</td>
-      <td><button class="btn-sm primary" onclick="editLotAdmin(${r.id})">編輯</button> <button class="btn-sm danger" onclick="deleteLotAdmin(${r.id})">刪除</button></td>
+      <td>
+        <span style="font-size:11px;background:#f0f4ff;color:var(--primary);padding:2px 8px;border-radius:10px;font-weight:600;margin-right:4px">📋 ${regCount} 筆</span>
+        <button class="btn-sm" onclick="toggleParkRegs(${r.id})" style="font-size:11px">${regCount?'查看名單':'無記錄'}</button>
+        <button class="btn-sm primary" onclick="editLotAdmin(${r.id})" style="margin-left:4px">編輯</button>
+        <button class="btn-sm danger" onclick="deleteLotAdmin(${r.id})">刪除</button>
+      </td>
+    </tr>
+    <tr id="park-regs-row-${r.id}" style="display:none">
+      <td colspan="7" style="padding:0;background:#f8f9fa">
+        <div style="padding:12px 16px">
+          <div style="font-size:12px;font-weight:600;color:var(--primary);margin-bottom:10px">📋 ${r.name} 登記名單（共 ${regCount} 筆）
+            ${regCount?`<button class="btn-sm" onclick="exportParkRegs(${r.id})" style="margin-left:8px;font-size:11px">📥 匯出</button>`:''}
+          </div>
+          ${regCount===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:12px">尚無登記資料</div>':''}
+          ${regCount>0?`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px;min-width:640px">
+            <thead><tr style="background:#e8eef7">
+              <th style="padding:7px 10px;text-align:left;font-weight:600;color:var(--primary)">編號</th>
+              <th style="padding:7px 10px;text-align:left">姓名</th>
+              <th style="padding:7px 10px;text-align:left">電話</th>
+              <th style="padding:7px 10px;text-align:left">信箱</th>
+              <th style="padding:7px 10px;text-align:left">車牌</th>
+              <th style="padding:7px 10px;text-align:left">登記時間</th>
+              <th style="padding:7px 10px;text-align:left">狀態</th>
+              <th style="padding:7px 10px;text-align:left">操作</th>
+            </tr></thead>
+            <tbody>${parkRegs.map(reg=>{
+              const sb=reg.regStatus==='won'?'<span class="status-badge pub">中籤</span>':reg.regStatus==='lost'?'<span class="status-badge" style="background:#f3f4f6;color:#6b7280">未中籤</span>':'<span class="status-badge draft">待抽籤</span>';
+              return `<tr style="border-bottom:1px solid #e5e7eb">
+                <td style="padding:7px 10px;font-family:monospace">${reg.ticketNo}</td>
+                <td style="padding:7px 10px;font-weight:600">${reg.name}</td>
+                <td style="padding:7px 10px">${reg.phone}</td>
+                <td style="padding:7px 10px">${reg.email}</td>
+                <td style="padding:7px 10px;font-family:monospace">${reg.plate}</td>
+                <td style="padding:7px 10px;white-space:nowrap">${reg.time}</td>
+                <td style="padding:7px 10px">${sb}</td>
+                <td style="padding:7px 10px;display:flex;gap:4px">
+                  ${reg.regStatus==='pending'?`<button class="btn-sm primary" onclick="setRegStatus('${reg.ticketNo}','won');renderLotAdminPanel()" style="font-size:10px">中籤</button><button class="btn-sm" onclick="setRegStatus('${reg.ticketNo}','lost');renderLotAdminPanel()" style="font-size:10px">未中</button>`:''}
+                  <button class="btn-sm danger" onclick="deleteReg('${reg.ticketNo}');renderLotAdminPanel()" style="font-size:10px">刪除</button>
+                </td>
+              </tr>`;}).join('')}
+            </tbody>
+          </table></div>`:''}
+        </div>
+      </td>
     </tr>`;
   }).join('');
-  // update stats
   document.getElementById('la-open-count').textContent = lotteryData.filter(r=>getLotStatus(r)==='open').length;
   document.getElementById('la-soon-count').textContent = lotteryData.filter(r=>getLotStatus(r)==='soon').length;
   document.getElementById('la-end-count').textContent  = lotteryData.filter(r=>getLotStatus(r)==='end').length;
   document.getElementById('la-total-slots').textContent = lotteryData.reduce((s,r)=>s+r.slots,0);
+}
+
+function toggleParkRegs(parkId){
+  const row = document.getElementById(`park-regs-row-${parkId}`);
+  if(row) row.style.display = row.style.display==='none'?'table-row':'none';
+}
+
+function exportParkRegs(parkId){
+  const park = lotteryData.find(x=>x.id===parkId);
+  const rows = regData.filter(x=>x.parkId===parkId);
+  if(!rows.length){showToast('⚠️ 無登記資料可匯出！');return;}
+  const header=['登記編號','姓名','身份證','電話','信箱','車牌','車位類型','登記時間','狀態'];
+  const csv=[header,...rows.map(r=>[r.ticketNo,r.name,r.idno,r.phone,r.email,r.plate,r.carType,r.time,{pending:'待抽籤',won:'中籤',lost:'未中籤'}[r.regStatus]])].map(r=>r.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download=`${park?park.name:'停車場'}_登記名單.csv`;
+  a.click();
+  showToast('📥 CSV 已下載！');
 }
 
 function openLotAdminModal(editId){
@@ -2109,14 +2286,32 @@ const DEFAULT_CONTENT = {
   heroTag:'全台超過 200 個停車場據點', heroSlogan:'智慧停車，從容生活',
   heroDesc:'泊位提供全方位智慧停車解決方案，24小時專人管理，月票自動扣繳，讓您的停車體驗更便利、更安心。',
   heroBtn1:'立即尋找停車場', heroBtn2:'了解更多服務',
-  featTitle:'為什麼選擇泊位', featSub:'超過 20 年停車場管理經驗，提供最優質的智慧停車體驗',
+  featTitle:'為什麼選擇泊位', featSub:'超過 20 年停車場管理經驗，值得信賴的智慧停車品牌',
   features:[
-    {icon:'🕐',title:'24小時全天服務',desc:'全天候專業人員駐守，確保您的愛車安全無虞，隨時停、隨時取車。'},
-    {icon:'💳',title:'多元繳費方式',desc:'支援 E-TAG 自動扣繳、超商繳費、信用卡、悠遊付等多種方式。'},
-    {icon:'📍',title:'全台廣布據點',desc:'北中南超過 200 個停車場，涵蓋各大城市、交通樞紐與商業區。'},
-    {icon:'✈️',title:'機場接駁服務',desc:'桃園、松山機場周邊停車，含專車接駁服務，出國停車好放心。'},
-    {icon:'🔒',title:'安全有保障',desc:'全區監控攝影、專業保全巡邏，嚴格把關每一個進出車輛。'},
-    {icon:'📱',title:'線上抽籤登記',desc:'手機線上完成月租車位抽籤登記，省時省力，讓好位子等您。'},
+    {id:1,imgB64:'',imgBg:'linear-gradient(135deg,#0A2240 0%,#1a3a5c 100%)',imgEmoji:'🕐',
+     svgColor:'#0A2240',
+     title:'24小時全天候服務',
+     desc:'全年365天、每天24小時皆有專業人員駐守管理，不論深夜或假日，您的愛車都在我們守護之下，隨時停、隨時取，完全無後顧之憂。'},
+    {id:2,imgB64:'',imgBg:'linear-gradient(135deg,#1a5c2a 0%,#22863a 100%)',imgEmoji:'💳',
+     svgColor:'#1a5c2a',
+     title:'多元智慧繳費',
+     desc:'支援 E-TAG 自動扣繳、手機 App 線上繳費、超商代收、信用卡感應、悠遊付等多達 8 種繳費方式，告別現金、告別排隊，繳費從此零煩惱。'},
+    {id:3,imgB64:'',imgBg:'linear-gradient(135deg,#1a3a8c 0%,#2952d9 100%)',imgEmoji:'📍',
+     svgColor:'#1a3a8c',
+     title:'全台密集據點網絡',
+     desc:'北中南超過 200 個停車場，全面佈局各大城市核心商圈、交通樞紐、醫療院所與觀光景點，15 分鐘車程內必有一處泊位，讓您隨到隨停。'},
+    {id:4,imgB64:'',imgBg:'linear-gradient(135deg,#7c3a8c 0%,#a855f7 100%)',imgEmoji:'✈️',
+     svgColor:'#7c3a8c',
+     title:'機場專屬停車接駁',
+     desc:'桃園、松山機場周邊設有專屬停車場，提供 24 小時免費接駁巴士，出境前 5 分鐘送達、入境後準時候車，讓出國旅程從停車就開始順心。'},
+    {id:5,imgB64:'',imgBg:'linear-gradient(135deg,#8c3a1a 0%,#d97706 100%)',imgEmoji:'🔒',
+     svgColor:'#8c3a1a',
+     title:'頂級安全防護系統',
+     desc:'全場 360° 高畫質監控攝影、24 小時保全巡邏、車牌辨識進出管控，並投保車輛竊盜險，讓您的愛車享有五星級安全防護，停放安心無憂。'},
+    {id:6,imgB64:'',imgBg:'linear-gradient(135deg,#065f46 0%,#059669 100%)',imgEmoji:'📱',
+     svgColor:'#065f46',
+     title:'線上抽籤 免排隊登記',
+     desc:'告別現場排隊搶號的時代！透過手機線上完成月租車位抽籤登記，系統公開電子抽籤，全程透明公正，中籤結果 Email 即時通知，輕鬆取得愛車的固定歸宿。'},
   ],
   locTitle:'熱門停車據點', locSub:'精選全台熱門地區停車場，找到最近的泊位停車場',
   newsTitle:'最新消息', newsSub:'掌握泊位最新動態、新場開幕與優惠資訊',
@@ -2137,7 +2332,6 @@ function saveContent(){
 }
 
 function renderContentEditPanel(){
-  // Restore field values from siteContent
   const S = siteContent;
   const f = id => document.getElementById(id);
   if(f('ce-tag'))        f('ce-tag').value        = S.heroTag||'';
@@ -2161,20 +2355,69 @@ function renderContentEditPanel(){
   if(f('ce-lot-sub'))    f('ce-lot-sub').value     = S.lotSub||'';
   if(f('ce-lot-steps-title')) f('ce-lot-steps-title').value = S.lotStepsTitle||'';
   if(f('ce-lot-steps-sub'))   f('ce-lot-steps-sub').value   = S.lotStepsSub||'';
+  renderFeatureEditList();
+}
 
-  // Render feature card editors
+function renderFeatureEditList(){
   const list = document.getElementById('ce-features-list');
-  if(list && S.features){
-    list.innerHTML = S.features.map((fc,i)=>`
-      <div style="background:#f8f9fa;border-radius:7px;padding:12px;border:1px solid var(--border)">
-        <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px">特色卡片 ${i+1}</div>
-        <div style="display:grid;grid-template-columns:64px 1fr 1fr;gap:8px">
-          <div class="form-row"><label class="form-label">圖示</label><input class="form-input" id="fc-icon-${i}" value="${fc.icon}" style="font-size:18px;text-align:center"></div>
-          <div class="form-row"><label class="form-label">標題</label><input class="form-input" id="fc-title-${i}" value="${fc.title}"></div>
-          <div class="form-row"><label class="form-label">描述</label><input class="form-input" id="fc-desc-${i}" value="${fc.desc}"></div>
+  if(!list||!siteContent.features) return;
+  list.innerHTML = siteContent.features.map((fc,i)=>`
+    <div style="background:#f8f9fa;border-radius:8px;padding:14px;border:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-size:11px;font-weight:600;color:var(--muted)">特色卡片 ${i+1}</span>
+        <button class="btn-sm danger" onclick="deleteFeatureCard(${fc.id})">刪除此卡</button>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <!-- Photo preview + upload -->
+        <div style="flex-shrink:0;text-align:center">
+          <div id="fc-preview-${fc.id}" style="width:80px;height:60px;border-radius:6px;overflow:hidden;background:${fc.imgBg||'linear-gradient(135deg,#0A2240,#1a3a5c)'};display:flex;align-items:center;justify-content:center;margin-bottom:6px;border:1.5px solid var(--border)">
+            ${fc.imgB64?`<img src="${fc.imgB64}" style="width:100%;height:100%;object-fit:cover">`:`<div style="width:30px;height:30px;opacity:0.9">${FC_SVGS[i%FC_SVGS.length]}</div>`}
+          </div>
+          <button class="btn-sm" onclick="document.getElementById('fc-file-${fc.id}').click()" style="font-size:10px;padding:3px 8px">📷 上傳圖</button>
+          <input type="file" id="fc-file-${fc.id}" style="display:none" accept="image/*" onchange="handleFeatureImage(${fc.id},this)">
+          ${fc.imgB64?`<br><button class="btn-sm danger" onclick="clearFeatureImage(${fc.id})" style="font-size:10px;margin-top:4px">✕ 清除</button>`:''}
         </div>
-      </div>`).join('');
-  }
+        <!-- Text fields -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+          <div class="form-row" style="margin-bottom:0"><label class="form-label">標題</label><input class="form-input" id="fc-title-${fc.id}" value="${fc.title}"></div>
+          <div class="form-row" style="margin-bottom:0"><label class="form-label">描述</label><textarea class="form-textarea" id="fc-desc-${fc.id}" style="min-height:52px">${fc.desc}</textarea></div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function handleFeatureImage(fcId, input){
+  if(!input.files[0])return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const fc=siteContent.features.find(x=>x.id===fcId);
+    if(fc){
+      fc.imgB64=e.target.result;
+      saveContent(); renderFeatureEditList(); renderFrontFeatures();
+      showToast('✅ 特色卡片圖片已上傳！');
+    }
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function clearFeatureImage(fcId){
+  const fc=siteContent.features.find(x=>x.id===fcId);
+  if(fc){fc.imgB64='';saveContent();renderFeatureEditList();renderFrontFeatures();}
+}
+
+function addFeatureCard(){
+  const newId = Date.now();
+  siteContent.features.push({id:newId,imgB64:'',imgBg:'#f0f4ff',imgEmoji:'⭐',title:'新特色',desc:'請輸入特色說明文字。'});
+  saveContent(); renderFeatureEditList(); renderFrontFeatures();
+  showToast('✅ 已新增特色卡片！');
+}
+
+function deleteFeatureCard(fcId){
+  if(siteContent.features.length<=1){showToast('⚠️ 至少需保留一張特色卡片！');return;}
+  if(!confirm('確定要刪除此特色卡片？'))return;
+  siteContent.features=siteContent.features.filter(x=>x.id!==fcId);
+  saveContent(); renderFeatureEditList(); renderFrontFeatures();
+  showToast('🗑️ 特色卡片已刪除！');
 }
 
 function applyContentEdit(section){
@@ -2202,20 +2445,17 @@ function applyContentEdit(section){
   if(section==='features'){
     S.featTitle = f('ce-feat-title');
     S.featSub   = f('ce-feat-sub');
-    if(S.features) S.features.forEach((fc,i)=>{
-      fc.icon  = f(`fc-icon-${i}`);
-      fc.title = f(`fc-title-${i}`);
-      fc.desc  = f(`fc-desc-${i}`);
+    // Read each card's text from form
+    if(S.features) S.features.forEach(fc=>{
+      const ti=document.getElementById(`fc-title-${fc.id}`);
+      const di=document.getElementById(`fc-desc-${fc.id}`);
+      if(ti) fc.title=ti.value;
+      if(di) fc.desc=di.value;
     });
-    // Apply to DOM
-    const th = document.getElementById('feat-title'); if(th) th.textContent=S.featTitle;
-    const ts = document.getElementById('feat-sub');   if(ts) ts.textContent=S.featSub;
-    if(S.features) S.features.forEach((fc,i)=>{
-      const ti=document.getElementById(`fc${i}-title`); if(ti) ti.textContent=fc.title;
-      const di=document.getElementById(`fc${i}-desc`);  if(di) di.textContent=fc.desc;
-      const ii=document.getElementById(`fc${i}-icon`);  if(ii) ii.textContent=fc.icon;
-    });
-    showToast('✅ 服務特色文字已更新！');
+    const fth=document.getElementById('feat-title'); if(fth)fth.textContent=S.featTitle;
+    const fts=document.getElementById('feat-sub');   if(fts)fts.textContent=S.featSub;
+    renderFrontFeatures();
+    showToast('✅ 服務特色已更新並套用！');
   }
   if(section==='locations'){
     S.locTitle = f('ce-loc-title');
@@ -2276,30 +2516,91 @@ function applyLotteryPageContent(){
 
 function applyAllContent(){
   const S = siteContent;
-  // Hero
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
   set('hero-tag-text',S.heroTag);
   set('hero-slogan',S.heroSlogan);
   set('hero-desc',S.heroDesc);
   document.querySelectorAll('.hero-btns .btn-primary').forEach(b=>b.textContent=S.heroBtn1);
   document.querySelectorAll('.hero-btns .btn-outline').forEach(b=>b.textContent=S.heroBtn2);
-  // Features
   const fth=document.getElementById('feat-title'); if(fth)fth.textContent=S.featTitle;
   const fts=document.getElementById('feat-sub');   if(fts)fts.textContent=S.featSub;
-  if(S.features) S.features.forEach((fc,i)=>{
-    const ti=document.getElementById(`fc${i}-title`);if(ti)ti.textContent=fc.title;
-    const di=document.getElementById(`fc${i}-desc`); if(di)di.textContent=fc.desc;
-    const ii=document.getElementById(`fc${i}-icon`); if(ii)ii.textContent=fc.icon;
-  });
-  // Sections
   set('loc-title',S.locTitle); set('loc-sub',S.locSub);
   set('news-title',S.newsTitle); set('news-sub',S.newsSub);
   set('cta-title',S.ctaTitle); set('cta-desc',S.ctaDesc);
   const cb1=document.getElementById('cta-btn1');if(cb1)cb1.textContent=S.ctaBtn1;
   const cb2=document.getElementById('cta-btn2');if(cb2)cb2.textContent=S.ctaBtn2;
   set('footer-desc-text',S.footerDesc);
-  // Lottery page
   applyLotteryPageContent();
+  renderFrontFeatures();
+}
+
+/* ══════════════════════════════════════
+   FRONT-END BANNER SLIDER
+══════════════════════════════════════ */
+let bannerSlideIdx = 0;
+let bannerTimer = null;
+
+function renderFrontBanner(){
+  const track = document.getElementById('front-banner-track');
+  const nav   = document.getElementById('banner-nav');
+  if(!track||!nav) return;
+  const active = banners.find(b=>b.active)||banners[0];
+  // show all banners as slides
+  track.innerHTML = banners.map(b=>`
+    <div class="front-banner-slide">
+      ${b.imgB64
+        ? `<img src="${b.imgB64}" alt="${b.name}"><div class="slide-overlay"></div>`
+        : `<div class="slide-placeholder" style="background:${b.bg}">${b.emoji}</div>`}
+      <div class="slide-caption">
+        <h2>${b.name}</h2>
+        <p>${b.slogan||''}</p>
+      </div>
+    </div>`).join('');
+  nav.innerHTML = banners.map((_,i)=>`<button class="banner-dot${i===0?' active':''}" onclick="goSlide(${i})"></button>`).join('');
+  bannerSlideIdx = banners.findIndex(b=>b.active)||0;
+  goSlide(bannerSlideIdx);
+  startBannerAuto();
+}
+
+function goSlide(idx){
+  bannerSlideIdx = (idx+banners.length)%banners.length;
+  const track = document.getElementById('front-banner-track');
+  if(track) track.style.transform = `translateX(-${bannerSlideIdx*100}%)`;
+  document.querySelectorAll('.banner-dot').forEach((d,i)=>d.classList.toggle('active',i===bannerSlideIdx));
+}
+function slideBanner(dir){ goSlide(bannerSlideIdx+dir); resetBannerAuto(); }
+function startBannerAuto(){ clearInterval(bannerTimer); bannerTimer=setInterval(()=>goSlide(bannerSlideIdx+1),4000); }
+function resetBannerAuto(){ clearInterval(bannerTimer); bannerTimer=setInterval(()=>goSlide(bannerSlideIdx+1),4000); }
+
+/* ══════════════════════════════════════
+   FRONT-END FEATURES (photo cards)
+══════════════════════════════════════ */
+// SVG icons for feature cards (professional vector icons)
+const FEATURE_SVGS = {
+  clock:`<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><path d="M24 13v11l7 7" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  card:`<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="12" width="36" height="24" rx="4" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><path d="M6 20h36" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><rect x="12" y="28" width="8" height="3" rx="1.5" fill="rgba(255,255,255,0.9)"/></svg>`,
+  pin:`<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44S10 30.4 10 20a14 14 0 1 1 28 0C38 30.4 24 44 24 44z" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><circle cx="24" cy="20" r="5" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/></svg>`,
+  plane:`<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M42 24L8 10l6 14-6 14 34-14z" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linejoin="round"/></svg>`,
+  lock:`<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="22" width="28" height="20" rx="4" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><path d="M16 22v-6a8 8 0 0 1 16 0v6" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="33" r="2.5" fill="rgba(255,255,255,0.9)"/></svg>`,
+  phone:`<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="14" y="4" width="20" height="40" rx="5" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/><circle cx="24" cy="38" r="2" fill="rgba(255,255,255,0.9)"/><path d="M20 10h8" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+};
+const FC_SVGS = [FEATURE_SVGS.clock, FEATURE_SVGS.card, FEATURE_SVGS.pin, FEATURE_SVGS.plane, FEATURE_SVGS.lock, FEATURE_SVGS.phone];
+
+function renderFrontFeatures(){
+  const grid = document.getElementById('features-display');
+  if(!grid||!siteContent.features) return;
+  grid.innerHTML = siteContent.features.map((fc,i)=>`
+    <div class="feature-card">
+      ${fc.imgB64
+        ? `<img class="feature-card-img" src="${fc.imgB64}" alt="${fc.title}">`
+        : `<div class="feature-card-img-placeholder" style="background:${fc.imgBg||'linear-gradient(135deg,#0A2240,#1a3a5c)'};display:flex;align-items:center;justify-content:center">
+             <div style="width:52px;height:52px;opacity:0.9">${FC_SVGS[i%FC_SVGS.length]}</div>
+           </div>`}
+      <div class="feature-card-body">
+        <h3>${fc.title}</h3>
+        <p>${fc.desc}</p>
+      </div>
+    </div>`).join('');
 }
 
 function resetAllData(){
@@ -2342,6 +2643,17 @@ document.getElementById('swatch-primary').style.background = siteBrand.primary;
 document.getElementById('swatch-accent').style.background  = siteBrand.accent;
 document.getElementById('logo-preview-box').style.background  = siteBrand.primary;
 document.getElementById('logo-icon-preview').style.background = siteBrand.accent;
+// Restore logo image preview if exists
+if(siteBrand.logoImgB64){
+  const area = document.getElementById('logo-upload-preview');
+  if(area) area.innerHTML = `<img src="${siteBrand.logoImgB64}" style="max-height:60px;max-width:180px;object-fit:contain;border-radius:6px">
+    <div style="font-size:11px;color:var(--muted);margin-top:6px">圖片已上傳 ✓</div>`;
+  const ic = document.getElementById('logo-icon-preview');
+  if(ic){
+    ic.innerHTML=`<img src="${siteBrand.logoImgB64}" style="width:100%;height:100%;object-fit:contain;padding:2px">`;
+    ic.style.background='transparent';
+  }
+}
 updateLogoPreview();
 
 // Apply brand & settings to DOM
@@ -2360,6 +2672,7 @@ applyAllContent();
 // Render all panels
 renderFrontNews();
 renderFrontLocs();
+renderFrontBanner();
 renderAdminNews();
 renderAdminLocs();
 renderBannerGrid();
