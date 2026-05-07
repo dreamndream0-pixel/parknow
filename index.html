@@ -314,6 +314,137 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
   .loc-admin-grid{grid-template-columns:1fr}
 }
 @media(max-width:360px){.locations-grid{grid-template-columns:1fr}.hero-stats{grid-template-columns:repeat(2,1fr)}}
+
+/* ══════════════════════════════
+   LOTTERY PAGE
+══════════════════════════════ */
+/* Page hero */
+.lot-hero{background:linear-gradient(135deg,#0A2240 0%,#1a3a5c 60%,#0d4a6e 100%);padding:100px 24px 56px;position:relative;overflow:hidden}
+.lot-hero::before{content:'';position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 60px,#fff 60px,#fff 61px),repeating-linear-gradient(90deg,transparent,transparent 60px,#fff 60px,#fff 61px)}
+.lot-hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.lot-breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.lot-breadcrumb span{font-size:12px;color:rgba(255,255,255,0.45)}
+.lot-breadcrumb a{font-size:12px;color:rgba(255,255,255,0.6);cursor:pointer;text-decoration:none;transition:color .2s}
+.lot-breadcrumb a:hover{color:var(--accent)}
+.lot-hero h1{font-family:'Bebas Neue';font-size:clamp(36px,6vw,60px);color:#fff;letter-spacing:2px;line-height:1.1;margin-bottom:12px}
+.lot-hero h1 span{color:var(--accent)}
+.lot-hero-sub{font-size:14px;color:rgba(255,255,255,0.65);line-height:1.7;max-width:620px;margin-bottom:28px}
+.lot-hero-badges{display:flex;gap:10px;flex-wrap:wrap}
+.lot-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:6px 14px;border-radius:20px;font-size:12px;color:rgba(255,255,255,0.8)}
+.lot-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+
+/* Steps */
+.lot-steps{background:#fff;padding:56px 24px;border-bottom:1px solid var(--border)}
+.lot-steps-inner{max-width:1100px;margin:0 auto}
+.lot-steps h2{font-family:'Bebas Neue';font-size:clamp(28px,4vw,38px);color:var(--primary);letter-spacing:2px;margin-bottom:8px;text-align:center}
+.lot-steps-sub{text-align:center;font-size:13px;color:var(--muted);margin-bottom:40px}
+.steps-row{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+.steps-row::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:0}
+.step-item{display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;z-index:1}
+.step-num{width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;font-family:'Bebas Neue';font-size:22px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;border:3px solid #fff;box-shadow:0 0 0 3px var(--primary);transition:all .3s}
+.step-item.done .step-num{background:var(--accent2);box-shadow:0 0 0 3px var(--accent2)}
+.step-item.active .step-num{background:var(--accent);box-shadow:0 0 0 3px var(--accent);transform:scale(1.1)}
+.step-title{font-size:13px;font-weight:600;color:var(--primary);margin-bottom:4px}
+.step-desc{font-size:11px;color:var(--muted);line-height:1.5;max-width:100px}
+
+/* Filter bar */
+.lot-filter{background:var(--light);border-bottom:1px solid var(--border);padding:16px 24px;position:sticky;top:64px;z-index:100}
+.lot-filter-inner{max-width:1100px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filter-label{font-size:13px;color:var(--muted);font-weight:500;white-space:nowrap}
+.lot-tab{padding:7px 18px;border-radius:20px;font-size:13px;cursor:pointer;font-family:'Noto Sans TC';border:1.5px solid var(--border);background:#fff;color:var(--muted);transition:all .2s;white-space:nowrap}
+.lot-tab:hover{border-color:var(--primary);color:var(--primary)}
+.lot-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.lot-search-box{margin-left:auto;display:flex;gap:8px}
+.lot-search-input{border:1.5px solid var(--border);border-radius:7px;padding:7px 12px;font-size:13px;font-family:'Noto Sans TC';color:var(--text);outline:none;width:200px;transition:border-color .2s}
+.lot-search-input:focus{border-color:var(--primary)}
+
+/* Table */
+.lot-body{padding:40px 24px 64px;background:#fff}
+.lot-body-inner{max-width:1100px;margin:0 auto}
+.lot-section-title{font-size:15px;font-weight:600;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.lot-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.lot-count-badge{background:var(--primary);color:#fff;font-size:11px;padding:2px 10px;border-radius:10px;font-weight:600}
+
+.lot-table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);margin-bottom:32px;box-shadow:0 2px 12px rgba(0,0,0,0.04)}
+.lot-table{width:100%;border-collapse:collapse;min-width:680px}
+.lot-table th{background:var(--primary);color:#fff;padding:13px 16px;text-align:left;font-size:12px;font-weight:500;letter-spacing:.5px;white-space:nowrap}
+.lot-table th:first-child{border-radius:11px 0 0 0}
+.lot-table th:last-child{border-radius:0 11px 0 0}
+.lot-table td{padding:13px 16px;font-size:13px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+.lot-table tr:last-child td{border:none}
+.lot-table tr:hover td{background:#f8faff}
+.lot-table .city-cell{font-weight:600;color:var(--primary)}
+.lot-table .name-cell{font-weight:600}
+.lot-table .title-cell{color:var(--muted);font-size:12px;line-height:1.5}
+.lot-date-chip{display:inline-flex;align-items:center;gap:4px;background:#f0f4ff;color:var(--primary);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:500;white-space:nowrap}
+.lot-status-open{display:inline-flex;align-items:center;gap:5px;background:#d1fae5;color:#065f46;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.lot-status-soon{display:inline-flex;align-items:center;gap:5px;background:#fef3c7;color:#92400e;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.lot-status-end{display:inline-flex;align-items:center;gap:5px;background:#f3f4f6;color:#6b7280;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.lot-reg-btn{background:var(--accent);color:#fff;border:none;padding:6px 16px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC';font-weight:500;transition:all .2s;white-space:nowrap}
+.lot-reg-btn:hover{background:#e0941a;transform:translateY(-1px)}
+.lot-reg-btn:disabled{background:#d1d5db;cursor:not-allowed;transform:none}
+
+/* Result banner */
+.lot-result-banner{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;border-radius:12px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px}
+.lot-result-icon{font-size:32px;flex-shrink:0}
+.lot-result-text h3{font-size:15px;font-weight:600;color:#15803d;margin-bottom:4px}
+.lot-result-text p{font-size:13px;color:#166534}
+.lot-result-btn{margin-left:auto;background:#15803d;color:#fff;border:none;padding:8px 18px;border-radius:7px;font-size:13px;cursor:pointer;font-family:'Noto Sans TC';white-space:nowrap}
+
+/* Info cards */
+.lot-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.lot-info-card{background:var(--light);border-radius:12px;padding:20px;border:1.5px solid transparent;transition:all .2s}
+.lot-info-card:hover{border-color:var(--accent);background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+.lot-info-card-icon{font-size:24px;margin-bottom:10px}
+.lot-info-card h3{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:6px}
+.lot-info-card p{font-size:12px;color:var(--muted);line-height:1.7}
+
+/* Register Modal */
+.lot-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
+.lot-modal-overlay.open{display:flex}
+.lot-modal{background:#fff;border-radius:14px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.2)}
+.lot-modal-header{background:var(--primary);padding:20px 24px;border-radius:14px 14px 0 0;display:flex;align-items:center;justify-content:space-between}
+.lot-modal-header h2{font-size:16px;font-weight:600;color:#fff}
+.lot-modal-close{background:rgba(255,255,255,0.1);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.lot-modal-close:hover{background:rgba(255,255,255,0.2)}
+.lot-modal-body{padding:24px}
+.lot-modal-info{background:#f0f4ff;border-radius:8px;padding:14px;margin-bottom:20px;font-size:13px;color:var(--primary);line-height:1.7;border-left:3px solid var(--primary)}
+.lot-modal-info strong{display:block;font-size:14px;margin-bottom:4px}
+.lot-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lot-form-full{grid-column:1/-1}
+.lot-modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+
+/* Success screen */
+.lot-success{text-align:center;padding:32px 24px}
+.lot-success-icon{font-size:56px;margin-bottom:16px}
+.lot-success h3{font-size:20px;font-weight:700;color:var(--primary);margin-bottom:8px}
+.lot-success p{font-size:14px;color:var(--muted);line-height:1.7;max-width:360px;margin:0 auto 20px}
+.lot-ticket{background:linear-gradient(135deg,var(--primary),#1a3a5c);border-radius:12px;padding:20px;color:#fff;margin:0 auto 24px;max-width:320px;text-align:left}
+.lot-ticket-no{font-family:'Bebas Neue';font-size:32px;color:var(--accent);letter-spacing:3px}
+.lot-ticket-label{font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-bottom:4px}
+.lot-ticket-info{font-size:12px;color:rgba(255,255,255,0.8);margin-top:8px;line-height:1.7}
+
+/* Responsive */
+@media(max-width:900px){
+  .steps-row{grid-template-columns:repeat(3,1fr);gap:20px}
+  .steps-row::before{display:none}
+  .lot-info-grid{grid-template-columns:1fr 1fr}
+  .lot-filter-inner{flex-wrap:wrap}
+  .lot-search-box{margin-left:0;width:100%}
+  .lot-search-input{flex:1}
+}
+@media(max-width:600px){
+  .lot-hero{padding:80px 16px 40px}
+  .lot-steps{padding:40px 16px}
+  .steps-row{grid-template-columns:1fr 1fr;gap:20px}
+  .lot-filter{padding:12px 16px}
+  .lot-body{padding:24px 16px 48px}
+  .lot-info-grid{grid-template-columns:1fr}
+  .lot-form-grid{grid-template-columns:1fr}
+  .lot-tab{padding:6px 12px;font-size:12px}
+  .lot-result-banner{flex-direction:column;text-align:center}
+  .lot-result-btn{margin-left:0;width:100%}
+}
 </style>
 </head>
 <body>
@@ -332,8 +463,8 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
       <a href="#features" onclick="closeMobileMenu()">服務特色</a>
       <a href="#locations" onclick="closeMobileMenu()">停車據點</a>
       <a href="#news" onclick="closeMobileMenu()">最新消息</a>
+      <a onclick="switchView('lottery');closeMobileMenu()" style="color:var(--accent);font-weight:500">🎫 月租抽籤</a>
       <a href="#contact" onclick="closeMobileMenu()">聯絡我們</a>
-      <a href="#about" onclick="closeMobileMenu()">關於泊位</a>
     </div>
     <div class="nav-right">
       <button class="btn-admin" onclick="switchView('admin')">⚙ 後台管理</button>
@@ -344,8 +475,8 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
     <a href="#features" onclick="closeMobileMenu()">服務特色</a>
     <a href="#locations" onclick="closeMobileMenu()">停車據點</a>
     <a href="#news" onclick="closeMobileMenu()">最新消息</a>
+    <a onclick="switchView('lottery');closeMobileMenu()" style="color:var(--accent)">🎫 月租抽籤登記</a>
     <a href="#contact" onclick="closeMobileMenu()">聯絡我們</a>
-    <a href="#about" onclick="closeMobileMenu()">關於泊位</a>
     <button class="btn-admin-mobile" onclick="closeMobileMenu();switchView('admin')">⚙ 後台管理</button>
   </div>
 
@@ -448,6 +579,259 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
   </footer>
 </div>
 
+<!-- ═══════════ LOTTERY PAGE ═══════════ -->
+<div id="view-lottery" class="view">
+
+  <!-- Navbar (shared style) -->
+  <nav class="top-bar">
+    <div class="logo-wrap" onclick="switchView('front')" style="cursor:pointer">
+      <div class="logo-icon" id="lot-nav-logo-icon">P</div>
+      <div class="logo-text">
+        <span class="logo-en" id="lot-nav-logo-en">PARKNOW</span>
+        <span class="logo-zh">泊位智慧停車</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a onclick="switchView('front')">首頁</a>
+      <a href="#" onclick="switchView('front');setTimeout(()=>document.getElementById('locations').scrollIntoView({behavior:'smooth'}),200)">停車據點</a>
+      <a onclick="switchView('front');setTimeout(()=>document.getElementById('news').scrollIntoView({behavior:'smooth'}),200)">最新消息</a>
+      <a style="color:var(--accent);font-weight:600">🎫 月租抽籤</a>
+      <a onclick="switchView('front');setTimeout(()=>document.getElementById('contact').scrollIntoView({behavior:'smooth'}),200)">聯絡我們</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-admin" onclick="switchView('admin')">⚙ 後台管理</button>
+      <button class="hamburger" id="lot-hamburger" onclick="toggleLotMobileMenu()"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="lot-mobile-menu">
+    <a onclick="switchView('front');closeLotMobileMenu()">🏠 回到首頁</a>
+    <a onclick="closeLotMobileMenu()" style="color:var(--accent)">🎫 月租抽籤登記</a>
+    <a onclick="switchView('front');closeLotMobileMenu()">📍 停車據點</a>
+    <a onclick="switchView('front');closeLotMobileMenu()">📰 最新消息</a>
+    <button class="btn-admin-mobile" onclick="closeLotMobileMenu();switchView('admin')">⚙ 後台管理</button>
+  </div>
+
+  <!-- Hero -->
+  <div class="lot-hero">
+    <div class="lot-hero-inner">
+      <div class="lot-breadcrumb">
+        <a onclick="switchView('front')">首頁</a>
+        <span>›</span>
+        <span style="color:#fff">月租停車位抽籤登記</span>
+      </div>
+      <h1>月租停車位<br><span>抽籤登記</span>系統</h1>
+      <p class="lot-hero-sub">泊位採用公開登記、公正電子抽籤方式辦理月租停車位分配，保障每位民眾的權益。請選擇您所在地區的停車場，依規定期限完成線上登記。</p>
+      <div class="lot-hero-badges">
+        <div class="lot-badge"><span class="dot"></span>公開透明抽籤</div>
+        <div class="lot-badge">📋 線上登記免排隊</div>
+        <div class="lot-badge">📧 結果 Email 通知</div>
+        <div class="lot-badge">🔒 個資安全保護</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div class="lot-steps">
+    <div class="lot-steps-inner">
+      <h2>抽籤流程說明</h2>
+      <p class="lot-steps-sub">從登記到取得車位，共五個簡單步驟，全程線上完成</p>
+      <div class="steps-row">
+        <div class="step-item done">
+          <div class="step-num">1</div>
+          <div class="step-title">確認資格</div>
+          <div class="step-desc">確認持有效駕照及車輛行照</div>
+        </div>
+        <div class="step-item active">
+          <div class="step-num">2</div>
+          <div class="step-title">線上登記</div>
+          <div class="step-desc">於登記期間填寫線上表單</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-title">電子抽籤</div>
+          <div class="step-desc">登記截止後系統公開抽籤</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-title">公布結果</div>
+          <div class="step-desc">Email 及官網公告中籤名單</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-title">完成簽約</div>
+          <div class="step-desc">持文件至停車場完成簽約</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="lot-filter">
+    <div class="lot-filter-inner">
+      <span class="filter-label">地區篩選：</span>
+      <button class="lot-tab active" onclick="filterLottery('all',this)">全部地區</button>
+      <button class="lot-tab" onclick="filterLottery('north',this)">北部</button>
+      <button class="lot-tab" onclick="filterLottery('central',this)">中部</button>
+      <button class="lot-tab" onclick="filterLottery('south',this)">南部</button>
+      <button class="lot-tab" onclick="filterLottery('open',this)">🟢 登記中</button>
+      <button class="lot-tab" onclick="filterLottery('soon',this)">🟡 即將開放</button>
+      <div class="lot-search-box">
+        <input class="lot-search-input" id="lot-search" placeholder="搜尋停車場名稱…" oninput="searchLottery(this.value)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Body -->
+  <div class="lot-body">
+    <div class="lot-body-inner">
+
+      <!-- Result announcement banner -->
+      <div class="lot-result-banner">
+        <div class="lot-result-icon">🎉</div>
+        <div class="lot-result-text">
+          <h3>115年度第二季抽籤結果已公布！</h3>
+          <p>台北車站停車場、板橋車站停車場中籤名單已公告，請前往查詢您的中籤號碼。</p>
+        </div>
+        <button class="lot-result-btn" onclick="showToast('📋 跳轉至中籤名單查詢頁面')">查看中籤名單</button>
+      </div>
+
+      <!-- Info cards -->
+      <div class="lot-info-grid">
+        <div class="lot-info-card">
+          <div class="lot-info-card-icon">📝</div>
+          <h3>登記注意事項</h3>
+          <p>每人每次限登記一個停車場。需備妥身份證、駕照及車輛行照。每月月租費依各場公告為準。</p>
+        </div>
+        <div class="lot-info-card">
+          <div class="lot-info-card-icon">🎯</div>
+          <h3>抽籤方式說明</h3>
+          <p>採電腦亂數抽籤，公開透明。抽籤過程全程錄影存檔，確保公平公正。設有候補名單機制。</p>
+        </div>
+        <div class="lot-info-card">
+          <div class="lot-info-card-icon">📞</div>
+          <h3>客服聯絡方式</h3>
+          <p>抽籤相關問題請洽客服：<strong>0800-888-123</strong><br>服務時間：週一～週五 9:00-18:00</p>
+        </div>
+      </div>
+
+      <!-- Lottery Table -->
+      <div class="lot-section-title">
+        抽籤活動據點一覽
+        <span class="lot-count-badge" id="lot-count-badge">共 0 筆</span>
+      </div>
+      <div class="lot-table-wrap">
+        <table class="lot-table">
+          <thead>
+            <tr>
+              <th style="width:70px">縣市</th>
+              <th style="width:70px">區域</th>
+              <th style="width:120px">停車場</th>
+              <th>活動標題</th>
+              <th style="width:180px">登記期間</th>
+              <th style="width:80px">狀態</th>
+              <th style="width:90px">操作</th>
+            </tr>
+          </thead>
+          <tbody id="lot-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Empty state -->
+      <div id="lot-empty" style="display:none;text-align:center;padding:48px 24px;color:var(--muted)">
+        <div style="font-size:48px;margin-bottom:16px">🔍</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">查無符合條件的抽籤活動</div>
+        <div style="font-size:13px">請嘗試其他篩選條件，或稍後再查詢</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer (simplified) -->
+  <footer id="lot-contact" style="background:#071829;color:rgba(255,255,255,0.6);padding:40px 24px 28px">
+    <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+      <div>
+        <div style="font-family:'Bebas Neue';font-size:22px;color:#fff;letter-spacing:3px;margin-bottom:4px" id="lot-footer-en">PARKNOW</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px">泊位智慧停車</div>
+      </div>
+      <div style="font-size:12px;text-align:right">
+        <div>客服電話：<span style="color:#fff">0800-888-123</span></div>
+        <div style="margin-top:4px">© 2024 泊位智慧停車股份有限公司</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- Lottery Admin Modal -->
+<div class="modal-overlay" id="lot-admin-modal">
+  <div class="modal" style="max-width:560px">
+    <h2 id="lot-admin-modal-title">➕ 新增抽籤活動</h2>
+    <div class="lot-form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="grid-column:1/-1"><div class="form-row"><label class="form-label">停車場名稱 *</label><input class="form-input" id="la-name" placeholder="例：台北車站停車場"></div></div>
+      <div class="form-row"><label class="form-label">縣市</label><input class="form-input" id="la-city" placeholder="例：台北市"></div>
+      <div class="form-row"><label class="form-label">區域</label><input class="form-input" id="la-district" placeholder="例：中正區"></div>
+      <div class="form-row"><label class="form-label">地區分類</label>
+        <select class="form-input" id="la-region"><option value="north">北部</option><option value="central">中部</option><option value="south">南部</option></select>
+      </div>
+      <div class="form-row"><label class="form-label">開放車位數</label><input class="form-input" id="la-slots" type="number" min="1" placeholder="10"></div>
+      <div style="grid-column:1/-1"><div class="form-row"><label class="form-label">活動標題</label><input class="form-input" id="la-title" placeholder="例：115年度XX停車場汽車月票抽籤線上登記"></div></div>
+      <div class="form-row"><label class="form-label">登記開始時間</label><input class="form-input" id="la-start" type="datetime-local"></div>
+      <div class="form-row"><label class="form-label">登記截止時間</label><input class="form-input" id="la-end" type="datetime-local"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('lot-admin-modal')">取消</button>
+      <button class="btn-confirm" onclick="saveLotAdmin()">確認儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div class="lot-modal-overlay" id="lot-modal">
+  <div class="lot-modal">
+    <div class="lot-modal-header">
+      <h2 id="lot-modal-title">📝 月租停車位抽籤登記</h2>
+      <button class="lot-modal-close" onclick="closeLotModal()">✕</button>
+    </div>
+    <div class="lot-modal-body" id="lot-modal-body">
+      <div class="lot-modal-info">
+        <strong id="lot-modal-park-name">停車場名稱</strong>
+        <span id="lot-modal-park-detail">登記期間 / 地址資訊</span>
+      </div>
+      <div class="lot-form-grid">
+        <div class="lot-form-full">
+          <div class="form-row"><label class="form-label">姓名 *</label><input class="form-input" id="lot-name" placeholder="請輸入真實姓名"></div>
+        </div>
+        <div class="form-row"><label class="form-label">身份證字號 *</label><input class="form-input" id="lot-idno" placeholder="A123456789" maxlength="10"></div>
+        <div class="form-row"><label class="form-label">聯絡電話 *</label><input class="form-input" id="lot-phone" placeholder="0912-345-678"></div>
+        <div class="lot-form-full">
+          <div class="form-row"><label class="form-label">電子信箱 *</label><input class="form-input" id="lot-email" placeholder="your@email.com" type="email"></div>
+        </div>
+        <div class="form-row"><label class="form-label">車牌號碼 *</label><input class="form-input" id="lot-plate" placeholder="ABC-1234"></div>
+        <div class="form-row"><label class="form-label">車輛廠牌</label><input class="form-input" id="lot-car" placeholder="例：Toyota"></div>
+        <div class="lot-form-full">
+          <div class="form-row"><label class="form-label">希望車位類型</label>
+            <select class="form-input" id="lot-type"><option>一般車位</option><option>機械車位</option><option>寬車位</option><option>不限</option></select>
+          </div>
+        </div>
+        <div class="lot-form-full">
+          <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:7px;padding:12px;font-size:12px;color:#92400e;line-height:1.7">
+            ⚠️ <strong>注意事項：</strong>每人每次限登記一個停車場。填寫資料需與駕照相符，如有虛偽填報，將取消抽籤資格。中籤後需於 7 日內完成簽約，逾期視同放棄。
+          </div>
+        </div>
+        <div class="lot-form-full">
+          <div class="form-row" style="display:flex;align-items:flex-start;gap:8px;margin-bottom:0">
+            <input type="checkbox" id="lot-agree" style="margin-top:3px;flex-shrink:0">
+            <label for="lot-agree" style="font-size:12px;color:var(--muted);cursor:pointer;line-height:1.6">我已閱讀並同意<span style="color:var(--primary);font-weight:600">個人資料保護聲明</span>，並確認所填資料正確無誤。</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="lot-modal-footer">
+      <button class="btn-cancel" onclick="closeLotModal()">取消</button>
+      <button class="btn-confirm" onclick="submitLotReg()">確認送出登記</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════ ADMIN ═══════════ -->
 <div id="view-admin" class="view">
   <div class="admin-layout">
@@ -460,6 +844,7 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
         <div class="menu-item" onclick="switchPanel('banner',this);closeAdminSidebar()"><span class="menu-icon">🖼️</span>輪播圖管理</div>
         <div class="menu-item" onclick="switchPanel('news',this);closeAdminSidebar()"><span class="menu-icon">📰</span>最新消息</div>
         <div class="menu-item" onclick="switchPanel('locations',this);closeAdminSidebar()"><span class="menu-icon">📍</span>停車據點</div>
+        <div class="menu-item" onclick="switchPanel('lottery-admin',this);closeAdminSidebar()"><span class="menu-icon">🎫</span>抽籤活動管理</div>
         <div class="menu-group-label">品牌設定</div>
         <div class="menu-item" onclick="switchPanel('settings',this);closeAdminSidebar()"><span class="menu-icon">⚙️</span>網站設定</div>
         <div class="menu-item" onclick="switchPanel('logo',this);closeAdminSidebar()"><span class="menu-icon">🎨</span>LOGO &amp; 品牌</div>
@@ -545,6 +930,30 @@ footer{background:#071829;color:rgba(255,255,255,0.6);padding:56px 24px 32px}
             <button class="btn-save" onclick="openLocModal()">＋ 新增據點</button>
           </div>
           <div class="loc-admin-grid" id="loc-admin-grid"></div>
+        </div>
+
+        <!-- LOTTERY ADMIN -->
+        <div class="admin-panel" id="panel-lottery-admin">
+          <div class="table-header">
+            <p class="text-muted">管理月租停車位抽籤活動（新增/編輯後即時同步到前台抽籤頁）</p>
+            <div style="display:flex;gap:8px">
+              <button class="btn-preview" onclick="switchView('lottery')">👁 預覽抽籤頁</button>
+              <button class="btn-save" onclick="openLotAdminModal()">＋ 新增活動</button>
+            </div>
+          </div>
+          <!-- Stats row -->
+          <div class="dash-stats" style="margin-bottom:16px">
+            <div class="dash-stat"><div class="dash-stat-val" id="la-open-count">0</div><div class="dash-stat-label">登記中活動</div></div>
+            <div class="dash-stat"><div class="dash-stat-val" id="la-soon-count">0</div><div class="dash-stat-label">即將開放</div></div>
+            <div class="dash-stat"><div class="dash-stat-val" id="la-end-count">0</div><div class="dash-stat-label">已截止</div></div>
+            <div class="dash-stat"><div class="dash-stat-val" id="la-total-slots">0</div><div class="dash-stat-label">總開放車位數</div></div>
+          </div>
+          <div style="overflow-x:auto;border-radius:8px;border:1px solid var(--border)">
+            <table class="news-table" style="min-width:700px">
+              <thead><tr><th>停車場</th><th>縣市/區域</th><th>地區</th><th>登記期間</th><th>車位</th><th>狀態</th><th>操作</th></tr></thead>
+              <tbody id="lot-admin-tbody"></tbody>
+            </table>
+          </div>
         </div>
 
         <!-- SETTINGS -->
@@ -695,6 +1104,201 @@ const DEFAULT_BRAND = {
 };
 
 /* ══════════════════════════════════════
+   LOTTERY DATA & LOGIC
+══════════════════════════════════════ */
+const DEFAULT_LOTTERY = [
+  {id:1,city:'台北市',district:'中正區',name:'台北車站停車場',title:'115年度台北車站停車場汽車月票抽籤線上登記',start:'2025-05-01 09:00',end:'2025-05-31 23:59',region:'north',status:'open',slots:20},
+  {id:2,city:'台北市',district:'信義區',name:'信義商圈停車場',title:'115年度信義商圈停車場月租車位公開抽籤登記',start:'2025-06-01 09:00',end:'2025-06-30 23:59',region:'north',status:'soon',slots:12},
+  {id:3,city:'新北市',district:'板橋區',name:'板橋車站停車場',title:'115年度板橋車站立體停車場汽車月票抽籤線上登記',start:'2025-04-15 09:00',end:'2025-04-30 23:59',region:'north',status:'end',slots:35},
+  {id:4,city:'新北市',district:'淡水區',name:'漁人碼頭停車場',title:'115年度淡水漁人碼頭停車場汽車月票抽籤線上登記',start:'2025-05-10 09:00',end:'2025-05-20 23:59',region:'north',status:'open',slots:8},
+  {id:5,city:'桃園市',district:'大園區',name:'桃園機場停車場',title:'115年度桃園機場週邊停車場汽車月票抽籤線上登記',start:'2025-06-15 09:00',end:'2025-06-25 23:59',region:'north',status:'soon',slots:50},
+  {id:6,city:'台中市',district:'中區',name:'台中火車站停車場',title:'115年度台中市火車站停車場汽車月票抽籤線上登記',start:'2025-05-05 09:00',end:'2025-05-25 23:59',region:'central',status:'open',slots:30},
+  {id:7,city:'雲林縣',district:'虎尾鎮',name:'虎尾公安停車場',title:'115年度雲林縣虎尾鎮虎尾公安立體停車場汽車月票抽籤線上登記',start:'2025-12-08 06:00',end:'2025-12-15 23:59',region:'central',status:'soon',slots:15},
+  {id:8,city:'台中市',district:'北區',name:'台中北區停車場',title:'115年度台中市北區停車場汽車月票抽籤線上登記',start:'2025-04-01 09:00',end:'2025-04-20 23:59',region:'central',status:'end',slots:25},
+  {id:9,city:'高雄市',district:'苓雅區',name:'三多商圈停車場',title:'115年度高雄市三多商圈停車場汽車月票抽籤線上登記',start:'2025-05-15 09:00',end:'2025-06-05 23:59',region:'south',status:'open',slots:18},
+  {id:10,city:'台南市',district:'東區',name:'成功大學停車場',title:'115年度台南市成功大學周邊停車場汽車月票抽籤線上登記',start:'2025-06-10 09:00',end:'2025-06-20 23:59',region:'south',status:'soon',slots:22},
+  {id:11,city:'高雄市',district:'前金區',name:'高雄市政府停車場',title:'115年度高雄市政府停車場汽車月票抽籤線上登記',start:'2025-03-15 09:00',end:'2025-03-31 23:59',region:'south',status:'end',slots:40},
+];
+
+let lotteryData = [];
+let lotCurrentFilter = 'all';
+let lotCurrentSearch = '';
+let lotSelectedPark = null;
+
+function loadLotteryData(){
+  lotteryData = LS.get('lottery', JSON.parse(JSON.stringify(DEFAULT_LOTTERY)));
+}
+function saveLotteryData(){
+  LS.set('lottery', lotteryData);
+}
+
+function getLotStatus(item){
+  const now = new Date();
+  const s = new Date(item.start.replace(' ','T'));
+  const e = new Date(item.end.replace(' ','T'));
+  if(now < s) return 'soon';
+  if(now > e) return 'end';
+  return 'open';
+}
+
+function renderLotteryTable(){
+  const tbody = document.getElementById('lot-tbody');
+  const emptyEl = document.getElementById('lot-empty');
+  const countEl = document.getElementById('lot-count-badge');
+  if(!tbody) return;
+
+  let rows = lotteryData.map(d=>({...d, computedStatus: getLotStatus(d)}));
+
+  if(lotCurrentFilter === 'north') rows = rows.filter(r=>r.region==='north');
+  else if(lotCurrentFilter === 'central') rows = rows.filter(r=>r.region==='central');
+  else if(lotCurrentFilter === 'south') rows = rows.filter(r=>r.region==='south');
+  else if(lotCurrentFilter === 'open') rows = rows.filter(r=>r.computedStatus==='open');
+  else if(lotCurrentFilter === 'soon') rows = rows.filter(r=>r.computedStatus==='soon');
+
+  if(lotCurrentSearch){
+    const q = lotCurrentSearch.toLowerCase();
+    rows = rows.filter(r=>r.name.toLowerCase().includes(q)||r.city.toLowerCase().includes(q)||r.district.toLowerCase().includes(q)||r.title.toLowerCase().includes(q));
+  }
+
+  countEl.textContent = `共 ${rows.length} 筆`;
+
+  if(!rows.length){
+    tbody.innerHTML=''; emptyEl.style.display='block'; return;
+  }
+  emptyEl.style.display='none';
+
+  // group by city
+  let lastCity='';
+  tbody.innerHTML = rows.map(r=>{
+    const showCity = r.city !== lastCity;
+    lastCity = r.city;
+    const st = r.computedStatus;
+    const stHtml = st==='open'
+      ? `<span class="lot-status-open">🟢 登記中</span>`
+      : st==='soon'
+      ? `<span class="lot-status-soon">🟡 即將開放</span>`
+      : `<span class="lot-status-end">⚫ 已截止</span>`;
+    const btnHtml = st==='open'
+      ? `<button class="lot-reg-btn" onclick="openLotModal(${r.id})">立即登記</button>`
+      : st==='soon'
+      ? `<button class="lot-reg-btn" disabled>尚未開放</button>`
+      : `<button class="lot-reg-btn" disabled>已截止</button>`;
+    const dateStr = `${r.start.slice(0,10)}<br>～ ${r.end.slice(0,10)}`;
+    return `<tr>
+      <td class="city-cell">${showCity?r.city:''}</td>
+      <td>${r.district}</td>
+      <td class="name-cell">${r.name}<br><span style="font-size:10px;color:var(--muted);font-weight:400">車位數：${r.slots} 個</span></td>
+      <td class="title-cell">${r.title}</td>
+      <td><div class="lot-date-chip">📅 ${dateStr}</div></td>
+      <td>${stHtml}</td>
+      <td>${btnHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filterLottery(type, el){
+  lotCurrentFilter = type;
+  document.querySelectorAll('.lot-tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderLotteryTable();
+}
+
+function searchLottery(q){
+  lotCurrentSearch = q;
+  renderLotteryTable();
+}
+
+function openLotModal(id){
+  lotSelectedPark = lotteryData.find(x=>x.id===id);
+  if(!lotSelectedPark) return;
+  document.getElementById('lot-modal-park-name').textContent = `📍 ${lotSelectedPark.name}`;
+  document.getElementById('lot-modal-park-detail').textContent = `登記期間：${lotSelectedPark.start.slice(0,10)} ～ ${lotSelectedPark.end.slice(0,10)} ／ ${lotSelectedPark.city}${lotSelectedPark.district} ／ 可租車位：${lotSelectedPark.slots} 個`;
+  // clear form
+  ['lot-name','lot-idno','lot-phone','lot-email','lot-plate','lot-car'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('lot-agree').checked = false;
+  document.getElementById('lot-modal-body').innerHTML = document.getElementById('lot-modal-body').innerHTML; // reset to form
+  // re-show form (in case success was shown)
+  renderLotModalForm();
+  document.getElementById('lot-modal').classList.add('open');
+}
+
+function renderLotModalForm(){
+  document.getElementById('lot-modal-body').innerHTML = `
+    <div class="lot-modal-info">
+      <strong id="lot-modal-park-name">📍 ${lotSelectedPark?lotSelectedPark.name:''}</strong>
+      <span id="lot-modal-park-detail">${lotSelectedPark?`登記期間：${lotSelectedPark.start.slice(0,10)} ～ ${lotSelectedPark.end.slice(0,10)} ／ ${lotSelectedPark.city}${lotSelectedPark.district} ／ 可租車位：${lotSelectedPark.slots} 個`:''}</span>
+    </div>
+    <div class="lot-form-grid">
+      <div class="lot-form-full"><div class="form-row"><label class="form-label">姓名 *</label><input class="form-input" id="lot-name" placeholder="請輸入真實姓名"></div></div>
+      <div class="form-row"><label class="form-label">身份證字號 *</label><input class="form-input" id="lot-idno" placeholder="A123456789" maxlength="10"></div>
+      <div class="form-row"><label class="form-label">聯絡電話 *</label><input class="form-input" id="lot-phone" placeholder="0912-345-678"></div>
+      <div class="lot-form-full"><div class="form-row"><label class="form-label">電子信箱 *</label><input class="form-input" id="lot-email" placeholder="your@email.com" type="email"></div></div>
+      <div class="form-row"><label class="form-label">車牌號碼 *</label><input class="form-input" id="lot-plate" placeholder="ABC-1234"></div>
+      <div class="form-row"><label class="form-label">車輛廠牌</label><input class="form-input" id="lot-car" placeholder="例：Toyota"></div>
+      <div class="lot-form-full"><div class="form-row"><label class="form-label">希望車位類型</label><select class="form-input" id="lot-type"><option>一般車位</option><option>機械車位</option><option>寬車位</option><option>不限</option></select></div></div>
+      <div class="lot-form-full"><div style="background:#fef3c7;border:1px solid #fde68a;border-radius:7px;padding:12px;font-size:12px;color:#92400e;line-height:1.7">⚠️ <strong>注意事項：</strong>每人每次限登記一個停車場。填寫資料需與駕照相符，如有虛偽填報，將取消抽籤資格。中籤後需於 7 日內完成簽約，逾期視同放棄。</div></div>
+      <div class="lot-form-full"><div class="form-row" style="display:flex;align-items:flex-start;gap:8px;margin-bottom:0"><input type="checkbox" id="lot-agree" style="margin-top:3px;flex-shrink:0"><label for="lot-agree" style="font-size:12px;color:var(--muted);cursor:pointer;line-height:1.6">我已閱讀並同意<span style="color:var(--primary);font-weight:600">個人資料保護聲明</span>，並確認所填資料正確無誤。</label></div></div>
+    </div>`;
+}
+
+function submitLotReg(){
+  const name = (document.getElementById('lot-name')||{}).value||'';
+  const idno = (document.getElementById('lot-idno')||{}).value||'';
+  const phone= (document.getElementById('lot-phone')||{}).value||'';
+  const email= (document.getElementById('lot-email')||{}).value||'';
+  const plate= (document.getElementById('lot-plate')||{}).value||'';
+  const agree= (document.getElementById('lot-agree')||{}).checked;
+  if(!name||!idno||!phone||!email||!plate){showToast('⚠️ 請填寫所有必填欄位！');return;}
+  if(idno.length!==10){showToast('⚠️ 身份證字號格式錯誤！');return;}
+  if(!agree){showToast('⚠️ 請勾選同意個人資料保護聲明！');return;}
+  // Show success
+  const ticketNo = 'PN' + Date.now().toString().slice(-8);
+  document.getElementById('lot-modal-body').innerHTML = `
+    <div class="lot-success">
+      <div class="lot-success-icon">🎉</div>
+      <h3>登記成功！</h3>
+      <p>您已完成「${lotSelectedPark?lotSelectedPark.name:''}」月租停車位抽籤登記，請保存以下登記編號，抽籤結果將以 Email 通知。</p>
+      <div class="lot-ticket">
+        <div class="lot-ticket-label">登記編號</div>
+        <div class="lot-ticket-no">${ticketNo}</div>
+        <div class="lot-ticket-info">
+          登記人：${name}<br>
+          停車場：${lotSelectedPark?lotSelectedPark.name:''}<br>
+          登記時間：${new Date().toLocaleString('zh-TW')}<br>
+          抽籤日期：${lotSelectedPark?lotSelectedPark.end.slice(0,10)+' 截止後公布':''}</div>
+      </div>
+      <button class="btn-primary" onclick="closeLotModal()">確認關閉</button>
+    </div>`;
+  document.querySelector('.lot-modal-footer').style.display='none';
+}
+
+function closeLotModal(){
+  document.getElementById('lot-modal').classList.remove('open');
+  document.querySelector('.lot-modal-footer').style.display='flex';
+}
+
+// Lottery mobile menu
+function toggleLotMobileMenu(){
+  const m=document.getElementById('lot-mobile-menu');
+  const h=document.getElementById('lot-hamburger');
+  const open=m.classList.toggle('open');
+  h.classList.toggle('open',open);
+  document.body.style.overflow=open?'hidden':'';
+}
+function closeLotMobileMenu(){
+  const m=document.getElementById('lot-mobile-menu');
+  const h=document.getElementById('lot-hamburger');
+  if(m)m.classList.remove('open');
+  if(h)h.classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// close on overlay click
+document.getElementById('lot-modal').addEventListener('click',function(e){if(e.target===this)closeLotModal();});
+
+/* ══════════════════════════════════════
    LOCALSTORAGE PERSISTENCE
 ══════════════════════════════════════ */
 const LS = {
@@ -712,6 +1316,7 @@ function saveToStorage(){
   banners.forEach(b=>{ if(b.imgB64) LS.set('bannerImg_'+b.id, b.imgB64); });
   LS.set('settings', siteSettings);
   LS.set('brand', siteBrand);
+  LS.set('lottery', lotteryData);
 }
 
 function loadFromStorage(){
@@ -1129,8 +1734,9 @@ function switchPanel(name,el){
   document.getElementById('panel-'+name).classList.add('active');
   document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
   if(el)el.classList.add('active');
-  const t={dashboard:'控制台',banner:'輪播圖管理',news:'最新消息',locations:'停車據點',settings:'網站設定',logo:'LOGO & 品牌'};
+  const t={dashboard:'控制台',banner:'輪播圖管理',news:'最新消息',locations:'停車據點','lottery-admin':'抽籤活動管理',settings:'網站設定',logo:'LOGO & 品牌'};
   document.getElementById('admin-title').textContent=t[name]||name;
+  if(name==='lottery-admin') renderLotAdminPanel();
 }
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
@@ -1163,6 +1769,95 @@ function showToast(msg){
   window._tt=setTimeout(()=>t.style.display='none',3000);
 }
 
+/* ══════════════════════════════════════
+   LOTTERY ADMIN CRUD
+══════════════════════════════════════ */
+let lotAdminEditId = 0;
+
+function renderLotAdminPanel(){
+  const tbody = document.getElementById('lot-admin-tbody');
+  if(!tbody) return;
+  tbody.innerHTML = lotteryData.map(r=>{
+    const st = getLotStatus(r);
+    const stHtml = st==='open'
+      ? `<span class="status-badge pub">登記中</span>`
+      : st==='soon'
+      ? `<span class="status-badge draft">即將開放</span>`
+      : `<span class="status-badge" style="background:#f3f4f6;color:#6b7280">已截止</span>`;
+    return `<tr>
+      <td style="font-weight:600">${r.name}</td>
+      <td>${r.city} ${r.district}</td>
+      <td>${{north:'北部',central:'中部',south:'南部'}[r.region]||r.region}</td>
+      <td style="font-size:11px">${r.start.slice(0,10)}<br>～${r.end.slice(0,10)}</td>
+      <td>${r.slots}</td>
+      <td>${stHtml}</td>
+      <td><button class="btn-sm primary" onclick="editLotAdmin(${r.id})">編輯</button> <button class="btn-sm danger" onclick="deleteLotAdmin(${r.id})">刪除</button></td>
+    </tr>`;
+  }).join('');
+  // update stats
+  document.getElementById('la-open-count').textContent = lotteryData.filter(r=>getLotStatus(r)==='open').length;
+  document.getElementById('la-soon-count').textContent = lotteryData.filter(r=>getLotStatus(r)==='soon').length;
+  document.getElementById('la-end-count').textContent  = lotteryData.filter(r=>getLotStatus(r)==='end').length;
+  document.getElementById('la-total-slots').textContent = lotteryData.reduce((s,r)=>s+r.slots,0);
+}
+
+function openLotAdminModal(editId){
+  lotAdminEditId = editId||0;
+  let r = editId ? lotteryData.find(x=>x.id===editId) : null;
+  const today = new Date().toISOString().slice(0,16);
+  document.getElementById('la-name').value    = r?r.name:'';
+  document.getElementById('la-city').value    = r?r.city:'';
+  document.getElementById('la-district').value= r?r.district:'';
+  document.getElementById('la-region').value  = r?r.region:'north';
+  document.getElementById('la-title').value   = r?r.title:'';
+  document.getElementById('la-start').value   = r?r.start:today;
+  document.getElementById('la-end').value     = r?r.end:today;
+  document.getElementById('la-slots').value   = r?r.slots:10;
+  document.getElementById('lot-admin-modal-title').textContent = editId ? '✏️ 編輯抽籤活動' : '➕ 新增抽籤活動';
+  openModal('lot-admin-modal');
+}
+
+function editLotAdmin(id){ openLotAdminModal(id); }
+
+function saveLotAdmin(){
+  const name  = document.getElementById('la-name').value.trim();
+  if(!name){ showToast('⚠️ 請輸入停車場名稱！'); return; }
+  const obj = {
+    id: lotAdminEditId || (Date.now()),
+    name,
+    city:     document.getElementById('la-city').value,
+    district: document.getElementById('la-district').value,
+    region:   document.getElementById('la-region').value,
+    title:    document.getElementById('la-title').value,
+    start:    document.getElementById('la-start').value,
+    end:      document.getElementById('la-end').value,
+    slots:    parseInt(document.getElementById('la-slots').value)||10,
+  };
+  if(lotAdminEditId){
+    const idx = lotteryData.findIndex(x=>x.id===lotAdminEditId);
+    lotteryData[idx] = obj;
+  } else {
+    lotteryData.push(obj);
+  }
+  closeModal('lot-admin-modal');
+  saveLotteryData();
+  renderLotAdminPanel();
+  renderLotteryTable();
+  addActivity(`${lotAdminEditId?'編輯':'新增'}抽籤活動：${name}`);
+  showToast(`✅ 抽籤活動「${name}」已${lotAdminEditId?'更新':'新增'}並儲存！`);
+}
+
+function deleteLotAdmin(id){
+  const r = lotteryData.find(x=>x.id===id);
+  if(!confirm(`確定要刪除抽籤活動「${r.name}」嗎？`)) return;
+  lotteryData = lotteryData.filter(x=>x.id!==id);
+  saveLotteryData();
+  renderLotAdminPanel();
+  renderLotteryTable();
+  addActivity(`刪除抽籤活動：${r.name}`);
+  showToast('🗑️ 抽籤活動已刪除！');
+}
+
 function resetAllData(){
   if(!confirm('確定要重置所有後台資料嗎？\n（消息、據點、設定將全部還原為預設值）'))return;
   try{
@@ -1172,7 +1867,7 @@ function resetAllData(){
 }
 
 // Close modals on overlay click
-['modal-news','modal-loc'].forEach(id=>{
+['modal-news','modal-loc','lot-admin-modal'].forEach(id=>{
   document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeModal(id);});
 });
 
@@ -1222,7 +1917,29 @@ renderAdminNews();
 renderAdminLocs();
 renderBannerGrid();
 
-// Add file inputs for any saved banners beyond default 3
+// Lottery init
+loadLotteryData();
+renderLotteryTable();
+
+// Sync lottery page logo with brand
+function syncLotLogo(){
+  const en=document.getElementById('lot-nav-logo-en');
+  const ic=document.getElementById('lot-nav-logo-icon');
+  const fe=document.getElementById('lot-footer-en');
+  if(en) en.textContent = siteBrand.logoEn;
+  if(ic){ ic.textContent = siteBrand.logoEn.charAt(0); ic.style.background = siteBrand.accent; }
+  if(fe) fe.textContent = siteBrand.logoEn;
+}
+syncLotLogo();
+
+// Override switchView to also sync lot logo
+const _origSwitchView = switchView;
+window.switchView = function(v){
+  _origSwitchView(v);
+  syncLotLogo();
+  closeLotMobileMenu();
+  closeMobileMenu();
+};
 banners.forEach(b=>{
   if(b.id>2 && !document.getElementById('file-input-'+b.id)){
     const fi=document.createElement('input');
