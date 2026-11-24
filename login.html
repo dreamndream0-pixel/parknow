@@ -52,6 +52,7 @@
         <form id="form-login" autocomplete="on" novalidate>
           <div class="field"><label for="li-email">Email</label><input id="li-email" type="email" autocomplete="email" required maxlength="120"></div>
           <div class="field"><label for="li-pass">密碼</label><input id="li-pass" type="password" autocomplete="current-password" required maxlength="72"></div>
+          <div id="captcha" class="captcha hidden"></div>
           <button class="btn btn-orange full" type="submit">登入</button>
           <p class="legal"><a href="#" id="link-forgot">忘記密碼？</a></p>
         </form>
@@ -87,8 +88,6 @@
         <div class="field"><label for="np-pass2">再輸入一次</label><input id="np-pass2" type="password" autocomplete="new-password" minlength="8" maxlength="72"></div>
         <button class="btn btn-orange full" type="submit">更新密碼</button>
       </form>
-
-      <div id="captcha" class="captcha hidden"></div>
 
       <p class="legal">登入即表示您同意本站<a href="privacy.html">隱私權政策</a></p>
     </div>
