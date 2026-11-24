@@ -43,45 +43,10 @@
   <!-- 主視覺 -->
   <section class="hero2" aria-labelledby="hero-title">
     <div class="hero2-art" aria-hidden="true">
-      <svg viewBox="0 0 720 360" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fb8de"/><stop offset="1" stop-color="#dbe8f3"/></linearGradient>
-          <linearGradient id="slab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9dde3"/><stop offset="1" stop-color="#b9c0ca"/></linearGradient>
-          <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3446"/><stop offset="1" stop-color="#3d4a5e"/></linearGradient>
-        </defs>
-        <rect width="720" height="360" fill="url(#sky)"/>
-        <g fill="#a9c3dc">
-          <rect x="250" y="70" width="46" height="230"/><rect x="300" y="110" width="34" height="190"/><rect x="338" y="40" width="40" height="260"/>
-          <rect x="382" y="95" width="30" height="205"/><rect x="640" y="60" width="50" height="240"/>
-        </g>
-        <g fill="#c3d6e8" opacity=".9"><rect x="344" y="52" width="6" height="230"/><rect x="356" y="52" width="6" height="230"/><rect x="368" y="52" width="4" height="230"/></g>
-        <g class="art-building">
-          <rect x="400" y="96" width="330" height="270" fill="#9aa3af"/>
-          <rect x="400" y="96" width="330" height="22" fill="url(#slab)"/>
-          <rect x="400" y="118" width="330" height="56" fill="url(#dark)"/>
-          <rect x="400" y="174" width="330" height="22" fill="url(#slab)"/>
-          <rect x="400" y="196" width="330" height="56" fill="url(#dark)"/>
-          <rect x="400" y="252" width="330" height="22" fill="url(#slab)"/>
-          <rect x="400" y="274" width="330" height="90" fill="url(#dark)"/>
-          <g fill="#c6ccd5"><rect x="470" y="118" width="16" height="246"/><rect x="580" y="118" width="16" height="246"/><rect x="690" y="118" width="16" height="246"/></g>
-          <g class="art-lights" fill="#fff6d6">
-            <rect x="420" y="124" width="34" height="4" rx="2"/><rect x="510" y="124" width="44" height="4" rx="2"/><rect x="616" y="124" width="44" height="4" rx="2"/>
-            <rect x="420" y="202" width="34" height="4" rx="2"/><rect x="510" y="202" width="44" height="4" rx="2"/><rect x="616" y="202" width="44" height="4" rx="2"/>
-            <rect x="420" y="280" width="34" height="4" rx="2"/><rect x="510" y="280" width="44" height="4" rx="2"/><rect x="616" y="280" width="44" height="4" rx="2"/>
-          </g>
-          <g fill="#7d8796"><rect x="400" y="160" width="330" height="3"/><rect x="400" y="238" width="330" height="3"/></g>
-          <path d="M400 360 L520 300 L730 300 L730 360Z" fill="#59626f"/>
-          <path d="M470 352 C520 330 560 318 640 312" stroke="#f0b400" stroke-width="4" fill="none" stroke-dasharray="0"/>
-          <g transform="translate(600 210)">
-            <rect width="56" height="80" rx="6" fill="#1b2a4e"/>
-            <text x="28" y="44" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="40" font-weight="700" fill="#fff">P</text>
-            <path d="M14 62h26M32 55l8 7-8 7" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-          <g fill="#ef8a00"><rect x="560" y="300" width="6" height="36"/><rect x="560" y="308" width="6" height="6" fill="#1b2a4e"/><rect x="560" y="322" width="6" height="6" fill="#1b2a4e"/></g>
-        </g>
-        <g fill="#2f6b3a"><circle cx="300" cy="300" r="46"/><circle cx="350" cy="320" r="40"/><circle cx="250" cy="330" r="44"/></g>
-        <g fill="#3f8a4b"><circle cx="318" cy="284" r="28"/><circle cx="268" cy="310" r="26"/></g>
-      </svg>
+      <picture>
+        <source media="(max-width: 860px)" srcset="assets/hero-entrance-m.jpg">
+        <img src="assets/hero-entrance.jpg" alt="" width="1923" height="818" fetchpriority="high">
+      </picture>
     </div>
     <div class="wrap hero2-copy">
       <p class="hero2-kicker"><span>24H</span> 台中・富格停車</p>
