@@ -28,6 +28,42 @@
     $$('button', form).forEach((b) => { b.disabled = on; });
   }
 
+  // ── Cloudflare Turnstile「我不是機器人」 ──
+  let captchaToken = '';
+  let captchaWidget = null;
+  const captchaOn = Boolean(cfg.TURNSTILE_SITE_KEY);
+  function loadCaptcha() {
+    if (!captchaOn) return;
+    $('#captcha').classList.remove('hidden');
+    window.fugoTurnstileReady = () => {
+      captchaWidget = window.turnstile.render('#captcha', {
+        sitekey: cfg.TURNSTILE_SITE_KEY,
+        language: 'zh-tw',
+        callback: (t) => { captchaToken = t; },
+        'expired-callback': () => { captchaToken = ''; },
+        'error-callback': () => { captchaToken = ''; },
+      });
+    };
+    const sc = document.createElement('script');
+    sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=fugoTurnstileReady';
+    sc.async = true;
+    document.head.append(sc);
+  }
+  // 每個送出動作都要一個新的驗證碼；用過就重置
+  function needCaptcha() {
+    if (!captchaOn) return false;
+    if (captchaToken) return false;
+    Fugo.showMsg(msg, 'err', '請先完成下方的「我不是機器人」驗證');
+    return true;
+  }
+  function takeCaptcha() {
+    const t = captchaToken || undefined;
+    captchaToken = '';
+    if (captchaWidget !== null && window.turnstile) window.turnstile.reset(captchaWidget);
+    return t;
+  }
+  loadCaptcha();
+
   async function afterLogin() {
     location.replace(next);
   }
@@ -72,8 +108,9 @@
     const email = $('#li-email').value.trim();
     const password = $('#li-pass').value;
     if (!email || !password) return Fugo.showMsg(msg, 'err', '請輸入 Email 和密碼');
+    if (needCaptcha()) return;
     busy(e.target, true);
-    const { error } = await Fugo.client.auth.signInWithPassword({ email, password });
+    const { error } = await Fugo.client.auth.signInWithPassword({ email, password, options: { captchaToken: takeCaptcha() } });
     busy(e.target, false);
     if (error) return Fugo.showMsg(msg, 'err', Fugo.errText(error));
     afterLogin();
@@ -88,8 +125,9 @@
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return Fugo.showMsg(msg, 'err', 'Email 格式不正確');
     if (p1.length < 8) return Fugo.showMsg(msg, 'err', '密碼至少要 8 個字元');
     if (p1 !== p2) return Fugo.showMsg(msg, 'err', '兩次輸入的密碼不一樣');
+    if (needCaptcha()) return;
     busy(e.target, true);
-    const { data, error } = await Fugo.client.auth.signUp({ email, password: p1, options: { emailRedirectTo: redirectTo } });
+    const { data, error } = await Fugo.client.auth.signUp({ email, password: p1, options: { emailRedirectTo: redirectTo, captchaToken: takeCaptcha() } });
     busy(e.target, false);
     if (error) return Fugo.showMsg(msg, 'err', Fugo.errText(error));
     if (data.session) return afterLogin();
@@ -104,9 +142,10 @@
     const raw = $('#ph-num').value;
     if (!Fugo.isTwMobile(raw)) return Fugo.showMsg(msg, 'err', '請輸入正確的手機號碼（例：0912345678）');
     const phone = Fugo.toE164(raw);
+    if ((!phoneSent || phoneSent !== phone) && needCaptcha()) return;
     busy(e.target, true);
     if (!phoneSent || phoneSent !== phone) {
-      const { error } = await Fugo.client.auth.signInWithOtp({ phone });
+      const { error } = await Fugo.client.auth.signInWithOtp({ phone, options: { captchaToken: takeCaptcha() } });
       busy(e.target, false);
       if (error) return Fugo.showMsg(msg, 'err', Fugo.errText(error));
       phoneSent = phone;
@@ -141,8 +180,9 @@
     e.preventDefault();
     const email = $('#fg-email').value.trim();
     if (!email) return Fugo.showMsg(msg, 'err', '請輸入 Email');
+    if (needCaptcha()) return;
     busy(e.target, true);
-    const { error } = await Fugo.client.auth.resetPasswordForEmail(email, { redirectTo: here + '?reset=1' });
+    const { error } = await Fugo.client.auth.resetPasswordForEmail(email, { redirectTo: here + '?reset=1', captchaToken: takeCaptcha() });
     busy(e.target, false);
     if (error) return Fugo.showMsg(msg, 'err', Fugo.errText(error));
     // 不論帳號是否存在都顯示一樣的訊息，避免被拿來查詢誰是會員
