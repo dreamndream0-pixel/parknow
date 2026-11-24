@@ -47,8 +47,7 @@ body.lock{overflow:hidden}
 /* ── 主視覺 ── */
 .hero2{position:relative;overflow:hidden;background:var(--navy);color:#fff;min-height:340px;display:flex;align-items:center}
 .hero2-art{position:absolute;inset:0}
-.hero2-art picture,.hero2-art img{width:100%;height:100%;display:block}
-.hero2-art img{object-fit:cover;object-position:100% 60%;animation:zoomout 14s ease-out both}
+.hero2-art{background:#2a3446 url("../assets/hero-entrance.jpg") 100% 60%/cover no-repeat;animation:zoomout 14s ease-out both}
 @keyframes zoomout{from{transform:scale(1.08)}to{transform:none}}
 .hero2-art::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--navy) 0%,rgba(22,36,63,.96) 28%,rgba(22,36,63,.55) 50%,rgba(22,36,63,.05) 72%)}
 .hero2-copy{position:relative;z-index:1;width:100%;padding-top:56px;padding-bottom:56px}
@@ -275,7 +274,7 @@ body.lock{overflow:hidden}
   .ph-nav{display:none}
   .ph-menu{display:flex}
   .hero2{min-height:220px}
-  .hero2-art{inset:0}
+  .hero2-art{inset:0;background-image:url("../assets/hero-entrance-m.jpg");background-position:74% 60%}
   .hero2-art::after{background:linear-gradient(90deg,rgba(22,36,63,.92) 0%,rgba(22,36,63,.6) 55%,rgba(22,36,63,.25) 100%)}
   .hero2-copy{padding-top:38px;padding-bottom:38px}
   .hero2-sub{font-size:14.5px;max-width:300px}
@@ -321,4 +320,123 @@ body.lock{overflow:hidden}
 @media (prefers-reduced-motion:reduce){
   .pub *,.pub *::before,.pub *::after{animation:none!important;transition:none!important}
   .reveal{opacity:1;transform:none}
+}
+
+/* ── 手機版：文字與元件整體縮小約 30% ── */
+@media (max-width:860px){
+  .pub{font-size:13px}
+  .ph .wrap{height:56px}
+  .pub .brand{gap:8px}
+  .pub .brand img{height:32px}
+  .pub .brand-zh{font-size:16px;letter-spacing:2px}
+  .pub .brand-en{font-size:8px;letter-spacing:2.2px;margin-top:2px}
+  .ph-menu{width:40px;height:40px;gap:5px}
+  .ph-menu span{width:22px;height:2.5px}
+  .bar-title{font-size:20px;padding-left:14px}
+  .bar-title::before{width:4px}
+  .hero2{min-height:200px}
+  .hero2-copy{padding-top:28px;padding-bottom:28px}
+  .hero2-kicker{font-size:10.5px;gap:7px;margin-bottom:10px;letter-spacing:1.5px}
+  .hero2-kicker span{padding:1px 6px}
+  .hero2 h1{font-size:26px;letter-spacing:2px}
+  .hero2-sub{font-size:12px;max-width:250px;margin-top:10px}
+  .find-panel > .bar-title{margin-top:22px}
+  .search{height:44px;margin-top:14px;padding:0 12px;border-radius:10px}
+  .search .ico{width:18px;height:18px}
+  .seg{margin-top:12px}
+  .seg button{height:36px;font-size:13px}
+  .find-hint{font-size:11px;margin:10px 2px 4px}
+  .find-map{height:280px}
+  .map-card{padding:11px 13px;gap:3px 12px;border-radius:12px;top:10px}
+  .map-card strong{font-size:14px}
+  .mc-dist{font-size:11px}
+  .mc-dist .ico{width:14px;height:14px}
+  .mc-actions{gap:8px}
+  .mc-btn{font-size:12px;padding:6px 11px;border-radius:8px}
+  .mc-btn .ico{width:13px;height:13px}
+  .mc-more{font-size:11.5px}
+  .mc-more .ico{width:13px;height:13px}
+  .lot-row{padding:12px 6px;gap:10px}
+  .lot-p{width:22px;height:22px}
+  .lot-txt strong{font-size:13.5px}
+  .lot-txt small{font-size:11px;margin-top:1px}
+  .lot-chev{width:16px;height:16px}
+  .cta-band .wrap{height:58px;gap:12px}
+  .cta-car{width:26px;height:26px}
+  .cta-sep{height:28px}
+  .cta-text{font-size:16px;letter-spacing:1px}
+  .cta-arrow{width:22px;height:22px}
+  .pub .sec{padding:32px 0}
+  .sec-row{margin-bottom:14px}
+  .more-link{font-size:12px}
+  .more-link .ico{width:14px;height:14px}
+  .news-row{padding:13px 4px;gap:10px}
+  .news-date{width:52px;padding-right:10px;font-size:14px}
+  .news-main{gap:4px}
+  .news-main strong{font-size:13.5px}
+  .news-tag{font-size:10px;padding:1px 7px}
+  .news-chev{width:16px;height:16px}
+  .news-body{padding:4px 4px 16px 66px;font-size:12.5px}
+  .news-body time{font-size:11px}
+  .flow{gap:8px;margin-bottom:18px}
+  .flow li,.perk{padding:12px 11px;border-radius:12px}
+  .flow-no{font-size:19px}
+  .flow h3,.perk h3{font-size:13.5px;margin:3px 0 2px}
+  .flow p,.perk p{font-size:11.5px}
+  .perk .ico{width:24px;height:24px}
+  .faq{padding:2px 14px;margin-bottom:20px}
+  .faq summary{font-size:13px;padding:13px 0}
+  .faq summary .ico{width:16px;height:16px}
+  .faq details p{font-size:12.5px;padding-bottom:13px}
+  .about-lead{font-size:13px;margin:12px 0 18px}
+  .btn-lg{padding:11px 22px;font-size:13.5px;border-radius:10px}
+  .pub .btn .ico{width:16px;height:16px}
+  .pf{padding:32px 0 20px}
+  .pf h3{font-size:13px}
+  .pf li,.pf-slogan{font-size:12px}
+  .pf-bottom{font-size:11px}
+  .tab{height:54px;font-size:10.5px;gap:2px}
+  .tab .ico{width:21px;height:21px}
+  body.has-tabbar{padding-bottom:calc(54px + env(safe-area-inset-bottom))}
+  .lot-page{padding:14px 0 36px}
+  .back{font-size:13px;margin-bottom:10px}
+  .back .ico{width:16px;height:16px}
+  .lot-info h1{font-size:21px}
+  .lot-district{font-size:12.5px;margin:3px 0 12px}
+  .info-list dt,.info-list dd{padding:10px 0;font-size:13px}
+  .info-list dt .ico{width:17px;height:17px}
+  .chip{font-size:11px;padding:3px 9px}
+  .lot-tags{margin:12px 0 14px}
+  .lot-cta{bottom:calc(54px + env(safe-area-inset-bottom));padding-top:10px;padding-bottom:10px;gap:8px}
+  .lot-cta .btn-lg{padding:11px 8px}
+  .other-lots{margin-top:22px}
+  .other-lots h2{font-size:12.5px}
+  .news-page{padding:22px 0 40px}
+  .tabs3{margin:16px 0 12px;border-radius:10px}
+  .tabs3 button{height:38px;font-size:13px}
+  .dr-head{padding:10px 14px 10px 18px}
+  .dr-head .brand img{height:30px}
+  .dr-head .brand-zh{font-size:16px}
+  .dr-close{width:38px;height:38px}
+  .dr-close .ico{width:22px;height:22px}
+  .dr-body{padding:18px 18px 14px}
+  .dr-body .bar-title{font-size:21px;margin-bottom:12px}
+  .dr-row{font-size:14.5px;padding:13px 2px;gap:12px}
+  .dr-row > .ico:first-child{width:21px;height:21px}
+  .dr-chev{width:17px;height:17px}
+  .dr-sub{margin:0 -18px;padding:2px 18px 8px 44px}
+  .dr-sub li{padding-left:16px}
+  .dr-sub li::after{width:9px}
+  .dr-sub a{font-size:13px;padding:7px 0}
+  .dr-call{gap:14px;padding:14px 20px calc(14px + env(safe-area-inset-bottom))}
+  .dr-call .ico{width:28px;height:28px;padding-right:13px}
+  .dr-call small{font-size:12px}
+  .dr-call strong{font-size:19px}
+  .sheet{padding:10px 16px calc(16px + env(safe-area-inset-bottom))}
+  .sheet .bar-title{font-size:17px}
+  .help-row{padding:12px 2px;gap:11px}
+  .help-row > .ico:first-child,.help-line{width:22px;height:22px}
+  .help-row strong{font-size:13.5px}
+  .help-row small{font-size:11px}
+  .sheet-close{font-size:13px;padding:9px}
 }
