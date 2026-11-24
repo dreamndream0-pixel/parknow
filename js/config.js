@@ -8,5 +8,5 @@ window.FUGO_CONFIG = {
   // 手機簡訊登入：需要先在 Supabase 後台設定簡訊服務（如 Twilio），設定好再改成 true
   PHONE_LOGIN_ENABLED: false,
   // Google 登入：需要先在 Supabase 後台啟用 Google 登入，設定好再改成 true
-  GOOGLE_LOGIN_ENABLED: false,
+  GOOGLE_LOGIN_ENABLED: true,
 };
