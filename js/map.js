@@ -132,4 +132,34 @@
     }).catch(() => leafletMap(el));
   };
   Fugo.fallbackMap = leafletMap;
+
+  // ── 地址 → 座標（後台新增停車場用）──
+  // 有 Google 金鑰先用 Google Geocoding（台灣門牌最準），失敗再用 OpenStreetMap 的 Nominatim。
+  // 回傳 { lat, lng, label, src } 或 null；只接受台灣範圍內的結果。
+  const inTW = (lat, lng) => lat > 21 && lat < 26.5 && lng > 118 && lng < 123;
+  async function googleGeocode(address, key) {
+    const gm = await loadGoogle(key);
+    const { results } = await new gm.Geocoder().geocode({ address, region: 'tw', language: 'zh-TW' });
+    const r = results && results[0];
+    if (!r) return null;
+    const lat = r.geometry.location.lat(), lng = r.geometry.location.lng();
+    return inTW(lat, lng) ? { lat, lng, label: r.formatted_address, src: 'Google' } : null;
+  }
+  async function osmGeocode(address) {
+    const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=tw&limit=1&accept-language=zh-TW&q='
+      + encodeURIComponent(address);
+    const res = await fetch(url, { headers: { Accept: 'application/json' }, referrerPolicy: 'strict-origin-when-cross-origin' });
+    if (!res.ok) return null;
+    const r = (await res.json())[0];
+    if (!r) return null;
+    const lat = Number(r.lat), lng = Number(r.lon);
+    return inTW(lat, lng) ? { lat, lng, label: r.display_name, src: 'OpenStreetMap' } : null;
+  }
+  Fugo.geocode = async function (address) {
+    const key = ((window.FUGO_CONFIG || {}).GOOGLE_MAPS_KEY || '').trim();
+    if (key) {
+      try { const g = await googleGeocode(address, key); if (g) return g; } catch (e) { /* 改用備用 */ }
+    }
+    try { return await osmGeocode(address); } catch (e) { return null; }
+  };
 })();
