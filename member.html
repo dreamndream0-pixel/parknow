@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex">
+<title>會員中心｜富格停車</title>
+<meta name="theme-color" content="#0a5a9c">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="富格停車 首頁">
+      <img src="assets/logo.png" alt="">
+      <span class="brand-text"><span class="brand-zh">富格<em>停車</em></span><span class="brand-en">FUGO <em>PARKING</em></span></span>
+    </a>
+    <div class="userbar">
+      <span id="who"></span>
+      <a class="btn btn-white btn-sm hidden" id="admin-link" href="admin.html">管理後台</a>
+      <button class="btn btn-ghost btn-sm" id="btn-logout" type="button">登出</button>
+    </div>
+  </div>
+</header>
+
+<main class="app-main">
+  <div class="wrap">
+    <div id="loading" class="loading">載入中…</div>
+    <div id="msg" class="msg hidden" role="alert"></div>
+
+    <div id="content" class="hidden">
+      <div class="page-title"><h1>會員中心</h1></div>
+
+      <!-- 會員資料（第一次登入必填） -->
+      <section class="panel" id="profile">
+        <h2>會員資料</h2>
+        <p class="sub" id="profile-sub">請填寫姓名與手機，方便我們聯絡您。</p>
+        <form id="form-profile" novalidate>
+          <div class="grid2">
+            <div class="field"><label for="pf-name">姓名 <span class="req">*</span></label><input id="pf-name" maxlength="50" autocomplete="name" required></div>
+            <div class="field"><label for="pf-phone">手機 <span class="req">*</span></label><input id="pf-phone" type="tel" inputmode="numeric" maxlength="12" placeholder="0912345678" autocomplete="tel" required></div>
+          </div>
+          <div class="field"><label for="pf-email">登入帳號</label><input id="pf-email" disabled></div>
+          <button class="btn btn-orange" type="submit">儲存會員資料</button>
+        </form>
+      </section>
+
+      <div id="member-area" class="hidden">
+        <!-- 申請月租 -->
+        <section class="panel" id="apply">
+          <h2>申請月租車位</h2>
+          <p class="sub">送出後客服會與您聯絡確認車位與費用。</p>
+          <form id="form-apply" novalidate>
+            <div class="grid2">
+              <div class="field"><label for="ap-lot">停車場 <span class="req">*</span></label><select id="ap-lot" required></select></div>
+              <div class="field"><label for="ap-type">車種</label><select id="ap-type"><option>汽車</option><option>機車</option></select></div>
+              <div class="field"><label for="ap-plate">車牌 <span class="req">*</span></label><input id="ap-plate" maxlength="10" placeholder="ABC-1234" autocapitalize="characters"></div>
+              <div class="field"><label for="ap-start">希望起租日</label><input id="ap-start" type="date"></div>
+            </div>
+            <div class="field"><label for="ap-note">備註</label><textarea id="ap-note" maxlength="300" placeholder="例：需要身障車位、希望靠近出口…"></textarea></div>
+            <button class="btn btn-orange" type="submit">送出申請</button>
+          </form>
+        </section>
+
+        <!-- 我的申請 -->
+        <section class="panel">
+          <h2>我的申請</h2>
+          <p class="sub">申請進度會即時更新</p>
+          <div id="my-apps"></div>
+        </section>
+
+        <!-- 我的月租 -->
+        <section class="panel">
+          <h2>我的月租車位</h2>
+          <p class="sub">由客服建立後會顯示在這裡</p>
+          <div id="my-rentals"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/vendor/supabase-2.49.10.js"></script>
+<script src="js/common.js"></script>
+<script src="js/member.js"></script>
+</body>
+</html>
