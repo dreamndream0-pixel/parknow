@@ -17,26 +17,7 @@
   let lots = [];
   let shown = [];
   let current = null;
-  const markers = new Map();
-
-  const map = window.L ? L.map('map', {
-    zoomControl: false,
-    scrollWheelZoom: false,
-    tap: true,
-    attributionControl: true,
-  }).setView([24.17, 120.68], 12) : null;
-  if (map) {
-    map.attributionControl.setPrefix(false);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      subdomains: 'abcd',
-      maxZoom: 19,
-      attribution: '© OpenStreetMap © CARTO',
-    }).addTo(map);
-    L.control.zoom({ position: 'topright', zoomInTitle: '放大', zoomOutTitle: '縮小' }).addTo(map);
-    // 在地圖上按一下才啟用滾輪縮放，避免捲動頁面時被地圖卡住
-    map.on('click', () => map.scrollWheelZoom.enable());
-    map.on('mouseout', () => map.scrollWheelZoom.disable());
-  }
+  let map = null;
 
   function pinEl(lot) {
     return el('div', { class: 'pin' + (lot === current ? ' on' : ''), title: lot.name },
@@ -45,26 +26,19 @@
   }
 
   function drawMarkers() {
-    if (!map) return;
-    markers.forEach((m) => m.remove());
-    markers.clear();
-    shown.forEach((lot) => {
-      const m = L.marker([lot.lat, lot.lng], {
-        icon: L.divIcon({ className: 'pin-wrap', html: pinEl(lot), iconSize: [44, 52], iconAnchor: [22, 50] }),
-        title: lot.name,
-        keyboard: true,
-        zIndexOffset: lot === current ? 1000 : 0,
-      }).addTo(map);
-      m.on('click', () => select(lot, true));
-      markers.set(lot.id, m);
-    });
+    if (map) map.markers(shown, current, (lot) => select(lot, true), pinEl);
   }
 
   function fit() {
-    if (!map || !shown.length) return;
-    if (shown.length === 1) map.setView([shown[0].lat, shown[0].lng], 15, { animate: true });
-    else map.fitBounds(L.latLngBounds(shown.map((l) => [l.lat, l.lng])), { padding: [70, 70], maxZoom: 15, animate: true });
+    if (map) map.fit(shown);
   }
+
+  const mapReady = Fugo.createMap($('#map')).then((m) => {
+    map = m;
+    if (map) map.onFail = () => { map = Fugo.fallbackMap($('#map')); drawMarkers(); fit(); };
+    drawMarkers();
+    fit();
+  });
 
   const areaText = () => (state.city || '全部城市') + (state.dist ? '・' + state.dist : state.city ? '・全部地區' : '');
 
@@ -105,7 +79,7 @@
     current = lot;
     drawMarkers();
     card();
-    if (pan && map && lot) map.setView([lot.lat, lot.lng], Math.max(map.getZoom(), 15), { animate: true });
+    if (pan && map && lot) map.focus(lot);
   }
 
   function apply(refit) {

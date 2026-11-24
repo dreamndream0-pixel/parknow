@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.basemaps.cartocdn.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://maps.googleapis.com https://*.gstatic.com 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.basemaps.cartocdn.com https://*.googleapis.com https://*.gstatic.com https://*.google.com https://*.googleusercontent.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.googleapis.com https://*.google.com https://*.gstatic.com data: blob:; worker-src blob:; frame-src https://*.google.com; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>富格停車 FUGO PARKING｜台中 24 小時停車場・月租車位</title>
 <meta name="description" content="富格停車 FUGO PARKING，台中潭子區公所共享停車場、大墩文化中心停車場，24 小時營業，提供臨時停車與月租車位線上申請。客服 0800-899-969。">
@@ -191,6 +191,7 @@
 <script src="js/data.js"></script>
 <script src="js/vendor/leaflet-1.9.4.js"></script>
 <script src="js/shell.js"></script>
+<script src="js/map.js"></script>
 <script src="js/site.js"></script>
 </body>
 </html>

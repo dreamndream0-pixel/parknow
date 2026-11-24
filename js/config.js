@@ -13,4 +13,8 @@ window.FUGO_CONFIG = {
   TURNSTILE_SITE_KEY: '0x4AAAAAAGQwwFS9Nu-m2TKD',
   // 右下角 LINE 客服（官方帳號 @980gulhj）
   LINE_URL: 'https://lin.ee/Ty82aqJ',
+  // 首頁地圖的 Google Maps JavaScript API 金鑰（瀏覽器金鑰，公開值）。
+  // 務必在 Google Cloud 設定「網站限制」只允許 dreamndream0-pixel.github.io/parknow/*，並限定只能用 Maps JavaScript API。
+  // 留空＝用免費的 OpenStreetMap 地圖。
+  GOOGLE_MAPS_KEY: '',
 };

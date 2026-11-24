@@ -13,7 +13,7 @@
 | `admin.html` | 管理後台：月租資料（新增／編輯／到期提醒／繳費狀態／匯出）、月租申請、會員、停車場 |
 | `privacy.html` | 隱私權政策 |
 
-停車場在管理後台「停車場」分頁新增／編輯（城市、行政區、座標、臨停／月租、汽車／機車），首頁地圖會直接讀資料庫；`js/data.js` 是連不上資料庫時的備用資料，最新消息也寫在那裡。首頁地圖用 Leaflet（`js/vendor/leaflet-1.9.4.js`）＋ CARTO 底圖。
+停車場在管理後台「停車場」分頁新增／編輯（城市、行政區、座標、臨停／月租、汽車／機車），首頁地圖會直接讀資料庫；`js/data.js` 是連不上資料庫時的備用資料，最新消息也寫在那裡。首頁地圖在 `js/map.js`：`js/config.js` 填了 `GOOGLE_MAPS_KEY` 就用 Google 地圖，留空、金鑰錯誤或載入失敗時自動改用 Leaflet（`js/vendor/leaflet-1.9.4.js`）＋ CARTO 底圖。
 前台共用的側邊服務選單、手機底部列、客服面板在 `js/shell.js`，樣式在 `css/site.css`。
 
 ## 資料與安全
@@ -36,4 +36,5 @@
    - Redirect URLs：加入 `https://dreamndream0-pixel.github.io/parknow/**`
 2. **Google 登入**：在 Google Cloud Console 建立 OAuth 用戶端（網頁應用程式），已授權的重新導向 URI 填 `https://kapktvwocibjvmqotbzh.supabase.co/auth/v1/callback`；把 Client ID／Secret 填到 Supabase → Authentication → Providers → Google。完成後把 `js/config.js` 的 `GOOGLE_LOGIN_ENABLED` 改成 `true`。
 3. **手機簡訊登入**：Supabase → Authentication → Providers → Phone，選簡訊服務（如 Twilio）填入帳號（簡訊會產生費用）。完成後把 `PHONE_LOGIN_ENABLED` 改成 `true`。
-4. **Email 驗證信**：Supabase 內建寄信每小時只能寄少量，會員多時建議在 Authentication → SMTP Settings 接自己的寄信服務。
+4. **Google 地圖**：Google Cloud Console → 啟用「Maps JavaScript API」→ 憑證 → 建立 API 金鑰 → 應用程式限制選「網站」，加入 `https://dreamndream0-pixel.github.io/parknow/*`；API 限制只勾 Maps JavaScript API。把金鑰填進 `js/config.js` 的 `GOOGLE_MAPS_KEY`（瀏覽器金鑰本來就公開，安全靠網站限制）。需綁定帳單，每月有免費額度。
+5. **Email 驗證信**：Supabase 內建寄信每小時只能寄少量，會員多時建議在 Authentication → SMTP Settings 接自己的寄信服務。
