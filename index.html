@@ -2,177 +2,220 @@
 <html lang="zh-Hant-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https://maps.google.com https://www.google.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>富格停車 FUGO PARKING｜台中 24 小時停車場・月租車位</title>
 <meta name="description" content="富格停車 FUGO PARKING，台中潭子區公所共享停車場、大墩文化中心停車場，24 小時營業，提供臨時停車與月租車位線上申請。客服 0800-899-969。">
 <meta property="og:title" content="富格停車 FUGO PARKING">
-<meta property="og:description" content="富格停車・停得安心｜台中 24 小時停車場、月租車位線上申請">
+<meta property="og:description" content="在台中，找個好車位。富格停車・停得安心">
 <meta property="og:image" content="assets/icon-192.png">
-<meta name="theme-color" content="#101c31">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/site.css">
 </head>
-<body class="home">
+<body class="pub" data-page="find">
 <a class="skip-link" href="#main">跳至主要內容</a>
 
-<header class="topbar">
+<header class="ph">
   <div class="wrap">
     <a class="brand" href="index.html" aria-label="富格停車 首頁">
       <img src="assets/logo.png" alt="">
-      <span class="brand-text">
-        <span class="brand-zh">富格<em>停車</em></span>
-        <span class="brand-en">FUGO <em>PARKING</em></span>
-      </span>
+      <span class="brand-text"><span class="brand-zh">富格<em>停車</em></span><span class="brand-en">FUGO PARKING</span></span>
     </a>
-    <button class="menu-btn" id="menu-btn" aria-label="選單" aria-expanded="false" aria-controls="nav"><span aria-hidden="true"></span></button>
-    <nav class="nav" id="nav">
-      <a href="#lots">停車場</a>
-      <a href="#features">服務特色</a>
-      <a href="#monthly">月租申請</a>
-      <a href="#contact">聯絡我們</a>
-      <a class="btn btn-orange btn-sm" id="member-link" href="login.html">會員登入</a>
+    <nav class="ph-nav" aria-label="主選單">
+      <a href="#find">停車據點</a>
+      <a href="#monthly">月租服務</a>
+      <a href="news.html">最新消息</a>
+      <a href="#about">關於富格</a>
+      <a class="ph-login" href="login.html" data-member-link>會員登入</a>
     </nav>
+    <button class="ph-menu" id="menu-open" type="button" aria-label="開啟服務選單" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
   </div>
 </header>
 
 <main id="main" tabindex="-1">
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="wrap">
-      <div class="hero-copy">
-        <p class="hero-kicker"><span></span> 台中・24 小時停車</p>
-        <h1 id="hero-title">富格停車<br><em>停得安心</em></h1>
-        <p class="hero-slogan">臨停、月租都方便。查找台中停車據點，<br class="desktop-break">或直接線上申請月租車位。</p>
-        <div class="hero-btns">
-          <a class="btn btn-orange" href="#lots">找停車場 <span aria-hidden="true">↓</span></a>
-          <a class="btn btn-ghost" href="login.html?next=apply">申請月租 <span aria-hidden="true">↗</span></a>
+  <!-- 主視覺 -->
+  <section class="hero2" aria-labelledby="hero-title">
+    <div class="hero2-art" aria-hidden="true">
+      <svg viewBox="0 0 720 360" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fb8de"/><stop offset="1" stop-color="#dbe8f3"/></linearGradient>
+          <linearGradient id="slab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9dde3"/><stop offset="1" stop-color="#b9c0ca"/></linearGradient>
+          <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3446"/><stop offset="1" stop-color="#3d4a5e"/></linearGradient>
+        </defs>
+        <rect width="720" height="360" fill="url(#sky)"/>
+        <g fill="#a9c3dc">
+          <rect x="250" y="70" width="46" height="230"/><rect x="300" y="110" width="34" height="190"/><rect x="338" y="40" width="40" height="260"/>
+          <rect x="382" y="95" width="30" height="205"/><rect x="640" y="60" width="50" height="240"/>
+        </g>
+        <g fill="#c3d6e8" opacity=".9"><rect x="344" y="52" width="6" height="230"/><rect x="356" y="52" width="6" height="230"/><rect x="368" y="52" width="4" height="230"/></g>
+        <g class="art-building">
+          <rect x="400" y="96" width="330" height="270" fill="#9aa3af"/>
+          <rect x="400" y="96" width="330" height="22" fill="url(#slab)"/>
+          <rect x="400" y="118" width="330" height="56" fill="url(#dark)"/>
+          <rect x="400" y="174" width="330" height="22" fill="url(#slab)"/>
+          <rect x="400" y="196" width="330" height="56" fill="url(#dark)"/>
+          <rect x="400" y="252" width="330" height="22" fill="url(#slab)"/>
+          <rect x="400" y="274" width="330" height="90" fill="url(#dark)"/>
+          <g fill="#c6ccd5"><rect x="470" y="118" width="16" height="246"/><rect x="580" y="118" width="16" height="246"/><rect x="690" y="118" width="16" height="246"/></g>
+          <g class="art-lights" fill="#fff6d6">
+            <rect x="420" y="124" width="34" height="4" rx="2"/><rect x="510" y="124" width="44" height="4" rx="2"/><rect x="616" y="124" width="44" height="4" rx="2"/>
+            <rect x="420" y="202" width="34" height="4" rx="2"/><rect x="510" y="202" width="44" height="4" rx="2"/><rect x="616" y="202" width="44" height="4" rx="2"/>
+            <rect x="420" y="280" width="34" height="4" rx="2"/><rect x="510" y="280" width="44" height="4" rx="2"/><rect x="616" y="280" width="44" height="4" rx="2"/>
+          </g>
+          <g fill="#7d8796"><rect x="400" y="160" width="330" height="3"/><rect x="400" y="238" width="330" height="3"/></g>
+          <path d="M400 360 L520 300 L730 300 L730 360Z" fill="#59626f"/>
+          <path d="M470 352 C520 330 560 318 640 312" stroke="#f0b400" stroke-width="4" fill="none" stroke-dasharray="0"/>
+          <g transform="translate(600 210)">
+            <rect width="56" height="80" rx="6" fill="#1b2a4e"/>
+            <text x="28" y="44" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="40" font-weight="700" fill="#fff">P</text>
+            <path d="M14 62h26M32 55l8 7-8 7" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <g fill="#ef8a00"><rect x="560" y="300" width="6" height="36"/><rect x="560" y="308" width="6" height="6" fill="#1b2a4e"/><rect x="560" y="322" width="6" height="6" fill="#1b2a4e"/></g>
+        </g>
+        <g fill="#2f6b3a"><circle cx="300" cy="300" r="46"/><circle cx="350" cy="320" r="40"/><circle cx="250" cy="330" r="44"/></g>
+        <g fill="#3f8a4b"><circle cx="318" cy="284" r="28"/><circle cx="268" cy="310" r="26"/></g>
+      </svg>
+    </div>
+    <div class="wrap hero2-copy">
+      <p class="hero2-kicker"><span>24H</span> 台中・富格停車</p>
+      <h1 id="hero-title">在台中，<br class="m-br">找個好車位。</h1>
+      <p class="hero2-sub">臨停、月租都方便。點選據點看地圖、一鍵導航，月租也能線上申請。</p>
+    </div>
+  </section>
+
+  <!-- 找停車場 -->
+  <section class="find" id="find" aria-labelledby="find-title">
+    <div class="find-grid">
+      <div class="find-panel">
+        <h2 class="bar-title" id="find-title">找停車場</h2>
+        <label class="search">
+          <i data-icon="search"></i>
+          <span class="visually-hidden">搜尋停車場或行政區</span>
+          <input id="lot-search" type="search" placeholder="輸入停車場或行政區" autocomplete="off" maxlength="30">
+        </label>
+        <div class="seg" role="group" aria-label="停車方式">
+          <button type="button" class="on" data-mode="temp" aria-pressed="true">臨停</button>
+          <button type="button" data-mode="monthly" aria-pressed="false">月租</button>
+        </div>
+        <p class="find-hint" id="find-hint">點選停車場，地圖會移到該據點。</p>
+        <div class="sheet-list">
+          <span class="sheet-grip" aria-hidden="true"></span>
+          <ul class="lot-list" id="lot-list"></ul>
+          <p class="lot-empty hidden" id="lot-empty">找不到符合的停車場，換個關鍵字試試。</p>
         </div>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="parking-bays">
-          <span></span><span></span><span></span><span></span>
+      <div class="find-map">
+        <iframe id="map-frame" title="停車場地圖" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="map-card" id="map-card" aria-live="polite">
+          <strong id="mc-name"></strong>
+          <span class="mc-dist"><i data-icon="pin"></i><span id="mc-district"></span></span>
+          <div class="mc-actions">
+            <a class="mc-btn" id="mc-go" target="_blank" rel="noopener noreferrer"><i data-icon="nav"></i><span id="mc-go-text">導航</span></a>
+            <a class="mc-more" id="mc-more">據點介紹<i data-icon="chev-r"></i></a>
+          </div>
         </div>
-        <div class="parking-stripe"></div>
-        <div class="parking-sign"><img src="assets/logo.png" alt="" width="246" height="350"></div>
-        <div class="art-caption"><strong>FUGO PARKING</strong><span>24H</span></div>
       </div>
     </div>
   </section>
 
-  <!-- 停車場 -->
-  <section id="lots">
+  <!-- 月租申請橫幅 -->
+  <a class="cta-band" href="login.html?next=apply">
+    <span class="wrap">
+      <i data-icon="car" class="cta-car"></i>
+      <span class="cta-sep" aria-hidden="true"></span>
+      <span class="cta-text">月租車位申請</span>
+      <i data-icon="arrow-r" class="cta-arrow"></i>
+    </span>
+  </a>
+
+  <!-- 最新消息 -->
+  <section class="sec" id="news" aria-labelledby="news-title">
     <div class="wrap">
-      <div class="location-heading">
-        <div class="sec-head">
-          <h2>停車場據點</h2>
-          <p>選擇地區，開啟 Google 地圖導航。</p>
-        </div>
-        <div class="lot-filters" id="lot-filters" role="group" aria-label="依行政區篩選"></div>
+      <div class="sec-row reveal">
+        <h2 class="bar-title" id="news-title">最新消息</h2>
+        <a class="more-link" href="news.html">看全部<i data-icon="chev-r"></i></a>
       </div>
-      <p class="visually-hidden" id="lot-results" role="status"></p>
-      <div class="lots" id="lots-list"></div>
+      <ul class="news-list reveal" id="news-preview"></ul>
     </div>
   </section>
 
-  <!-- 服務特色 -->
-  <section id="features">
+  <!-- 月租服務 -->
+  <section class="sec sec-soft" id="monthly" aria-labelledby="monthly-title">
     <div class="wrap">
-      <div class="sec-head">
-        <h2>為什麼選擇富格</h2>
+      <div class="sec-row reveal">
+        <h2 class="bar-title" id="monthly-title">月租服務</h2>
+        <a class="more-link" href="member.html">查詢申請進度<i data-icon="chev-r"></i></a>
       </div>
-      <div class="features">
-        <div class="feature">
-          <div class="ico"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="19" stroke="#0a5a9c" stroke-width="3"/><path d="M24 13v11l7 6" stroke="#f08c00" stroke-width="3" stroke-linecap="round"/></svg></div>
-          <h3>24 小時營業</h3>
-          <p>全天候開放進出，早出晚歸、假日夜間都能安心停放。</p>
-        </div>
-        <div class="feature">
-          <div class="ico"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="8" y="10" width="32" height="30" rx="4" stroke="#0a5a9c" stroke-width="3"/><path d="M8 19h32M17 6v8M31 6v8" stroke="#0a5a9c" stroke-width="3" stroke-linecap="round"/><path d="M17 29l5 5 9-10" stroke="#f08c00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h3>月租線上申請</h3>
-          <p>加入會員後直接在網站申請月租車位，申請進度隨時查得到。</p>
-        </div>
-        <div class="feature">
-          <div class="ico"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="17" cy="12" r="5" fill="#0a5a9c"/><path d="M17 18v12l8 8" stroke="#0a5a9c" stroke-width="3" stroke-linecap="round"/><circle cx="31" cy="30" r="9" stroke="#f08c00" stroke-width="3"/></svg></div>
-          <h3>身障・親子車位</h3>
-          <p>設有身障車位與親子車位，行動不便或帶小孩出門更從容。</p>
-        </div>
-        <div class="feature">
-          <div class="ico"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 5l15 6v11c0 10-6.5 17-15 21C15.5 39 9 32 9 22V11z" stroke="#0a5a9c" stroke-width="3" stroke-linejoin="round"/><path d="M17 24l5 5 9-10" stroke="#f08c00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h3>個資安全保護</h3>
-          <p>會員資料加密傳輸，每位會員只看得到自己的資料，僅授權人員可管理。</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 月租申請流程 -->
-  <section id="monthly">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2>月租車位申請</h2>
-        <p>四個步驟，線上就能完成申請</p>
-      </div>
-      <ol class="steps">
-        <li class="step"><h3>加入會員</h3><p>用 Google、Email 或手機註冊登入。</p></li>
-        <li class="step"><h3>填寫會員資料</h3><p>第一次登入請填姓名與手機，方便我們聯絡您。</p></li>
-        <li class="step"><h3>送出月租申請</h3><p>選擇停車場、填寫車牌與預計起租日。</p></li>
-        <li class="step"><h3>專人聯繫簽約</h3><p>客服確認車位後與您聯絡，完成繳費即可停放。</p></li>
+      <ol class="flow reveal">
+        <li><span class="flow-no">01</span><h3>加入會員</h3><p>用 Google 或 Email 註冊登入。</p></li>
+        <li><span class="flow-no">02</span><h3>填寫資料</h3><p>第一次登入填姓名與手機。</p></li>
+        <li><span class="flow-no">03</span><h3>送出申請</h3><p>選停車場、填車牌與起租日。</p></li>
+        <li><span class="flow-no">04</span><h3>專人聯繫</h3><p>確認車位、簽約繳費後即可停車。</p></li>
       </ol>
-      <div class="monthly-questions">
-        <h3>月租常見問題</h3>
+      <div class="faq reveal">
         <details>
-          <summary>送出申請後，什麼時候可以開始停車？</summary>
+          <summary>送出申請後，什麼時候可以開始停車？<i data-icon="chev-d"></i></summary>
           <p>客服確認車位後會與您聯絡。完成簽約和繳費後，即可依約定日期開始停車。</p>
         </details>
         <details>
-          <summary>在哪裡查看月租申請進度？</summary>
-          <p>登入<a href="member.html">會員中心</a>查看申請狀態。有疑問可撥 <a href="tel:0800899969">0800-899-969</a>。</p>
+          <summary>在哪裡查看月租申請進度？<i data-icon="chev-d"></i></summary>
+          <p>登入<a href="member.html">會員中心</a>就能看到申請狀態，有更新會即時顯示。</p>
+        </details>
+        <details>
+          <summary>月租費用怎麼算？<i data-icon="chev-d"></i></summary>
+          <p>各停車場費率不同，送出申請後客服會與您確認車位與費用，也可直接撥打 <a href="tel:0800899969">0800-899-969</a> 詢問。</p>
         </details>
       </div>
-      <div class="cta mt30" id="cta-box">
-        <div>
-          <h2>想要固定車位？<em>現在就申請月租</em></h2>
-          <p>或來電 <a href="tel:0800899969">0800-899-969</a> 洽詢</p>
-        </div>
-        <a class="btn btn-orange" href="login.html?next=apply">立即申請</a>
+      <div class="center reveal"><a class="btn btn-orange btn-lg" href="login.html?next=apply">線上申請月租</a></div>
+    </div>
+  </section>
+
+  <!-- 關於富格 -->
+  <section class="sec" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <h2 class="bar-title reveal" id="about-title">關於富格</h2>
+      <p class="about-lead reveal">富格停車在台中經營 24 小時停車場，提供臨時停車與月租車位。<strong>富格停車・停得安心</strong>，是我們對每一位車主的承諾。</p>
+      <div class="perks reveal">
+        <div class="perk"><i data-icon="clock"></i><h3>24 小時營業</h3><p>全天候進出，早出晚歸都方便。</p></div>
+        <div class="perk"><i data-icon="calendar"></i><h3>月租線上申請</h3><p>進度隨時在會員中心查得到。</p></div>
+        <div class="perk"><i data-icon="park"></i><h3>身障・親子車位</h3><p>設有專用車位，停車更從容。</p></div>
+        <div class="perk"><i data-icon="user"></i><h3>個資安全保護</h3><p>加密傳輸，只有您看得到自己的資料。</p></div>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="footer" id="contact">
+<footer class="pf" id="contact">
   <div class="wrap">
-    <div class="footer-grid">
+    <div class="pf-grid">
       <div>
         <a class="brand" href="index.html">
           <img src="assets/logo.png" alt="">
-          <span class="brand-text">
-            <span class="brand-zh">富格<em>停車</em></span>
-            <span class="brand-en">FUGO <em>PARKING</em></span>
-          </span>
+          <span class="brand-text"><span class="brand-zh">富格<em>停車</em></span><span class="brand-en">FUGO PARKING</span></span>
         </a>
-        <p>富格停車・停得安心</p>
+        <p class="pf-slogan">富格停車・停得安心</p>
       </div>
       <div>
-        <h4>聯絡我們</h4>
+        <h3>聯絡我們</h3>
         <ul>
-          <li>客服專線：<a href="tel:0800899969">0800-899-969</a></li>
-          <li>LINE：<a href="https://lin.ee/Ty82aqJ" target="_blank" rel="noopener noreferrer">@980gulhj</a></li>
-          <li>總公司：台中市北區台灣大道二段360號18樓之3</li>
+          <li>客服專線 <a href="tel:0800899969">0800-899-969</a></li>
+          <li>LINE <a href="https://lin.ee/Ty82aqJ" target="_blank" rel="noopener noreferrer">@980gulhj</a></li>
+          <li>總公司 台中市北區台灣大道二段360號18樓之3</li>
         </ul>
       </div>
       <div>
-        <h4>停車場</h4>
+        <h3>停車場</h3>
         <ul id="footer-lots"></ul>
       </div>
     </div>
-    <div class="footer-bottom">
+    <div class="pf-bottom">
       <span>© <span id="year">2026</span> 富格停車 FUGO PARKING</span>
       <a href="privacy.html">隱私權政策</a>
     </div>
@@ -182,6 +225,8 @@
 <script src="js/config.js"></script>
 <script src="js/vendor/supabase-2.49.10.js"></script>
 <script src="js/common.js"></script>
+<script src="js/data.js"></script>
+<script src="js/shell.js"></script>
 <script src="js/site.js"></script>
 </body>
 </html>
