@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>管理後台｜富格停車</title>
+<meta name="theme-color" content="#1b2a4e">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="富格停車 首頁">
+      <img src="assets/logo.png" alt="">
+      <span class="brand-text"><span class="brand-zh">富格<em>停車</em></span><span class="brand-en">管理後台</span></span>
+    </a>
+    <div class="userbar">
+      <span id="who"></span>
+      <a class="btn btn-white btn-sm" href="member.html">會員中心</a>
+      <button class="btn btn-ghost btn-sm" id="btn-logout" type="button">登出</button>
+    </div>
+  </div>
+</header>
+
+<main class="app-main">
+  <div class="wrap">
+    <div id="loading" class="loading">確認權限中…</div>
+    <div id="msg" class="msg hidden" role="alert"></div>
+
+    <div id="content" class="hidden">
+      <div class="page-title"><h1>管理後台</h1></div>
+
+      <div class="cards">
+        <div class="stat"><b id="st-active">0</b><span>有效月租</span></div>
+        <div class="stat orange"><b id="st-pending">0</b><span>待處理申請</span></div>
+        <div class="stat red"><b id="st-expiring">0</b><span>14 天內到期</span></div>
+        <div class="stat red"><b id="st-unpaid">0</b><span>未繳／逾期</span></div>
+        <div class="stat"><b id="st-income">0</b><span>每月租金合計</span></div>
+        <div class="stat"><b id="st-members">0</b><span>會員人數</span></div>
+      </div>
+
+      <div class="admin-tabs" role="tablist">
+        <button type="button" class="on" data-tab="rentals">月租資料</button>
+        <button type="button" data-tab="apps">月租申請</button>
+        <button type="button" data-tab="members">會員</button>
+        <button type="button" data-tab="lots">停車場</button>
+      </div>
+
+      <!-- 月租資料 -->
+      <section class="panel" id="tab-rentals">
+        <div class="toolbar">
+          <input id="rt-search" type="search" placeholder="搜尋姓名、電話、車牌、車位…">
+          <select id="rt-lot"><option value="">全部停車場</option></select>
+          <select id="rt-filter">
+            <option value="active">有效中</option>
+            <option value="expiring">14 天內到期</option>
+            <option value="unpaid">未繳／逾期</option>
+            <option value="ended">已結束</option>
+            <option value="">全部</option>
+          </select>
+          <button class="btn btn-line btn-sm" id="rt-export" type="button">匯出 CSV</button>
+          <button class="btn btn-orange btn-sm" id="rt-add" type="button">＋ 新增月租</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>停車場</th><th>車位</th><th>租戶</th><th>電話</th><th>車牌</th><th>月租金</th><th>租期</th><th>繳費</th><th>操作</th></tr></thead>
+            <tbody id="rt-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 月租申請 -->
+      <section class="panel hidden" id="tab-apps">
+        <div class="toolbar">
+          <select id="ap-filter">
+            <option value="open">待處理＋已聯絡</option>
+            <option value="pending">待處理</option>
+            <option value="contacted">已聯絡</option>
+            <option value="approved">已成立</option>
+            <option value="rejected">未成立</option>
+            <option value="cancelled">已取消</option>
+            <option value="">全部</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>申請時間</th><th>停車場</th><th>姓名</th><th>手機</th><th>車種／車牌</th><th>希望起租</th><th>備註</th><th>狀態</th><th>操作</th></tr></thead>
+            <tbody id="ap-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 會員 -->
+      <section class="panel hidden" id="tab-members">
+        <div class="toolbar">
+          <input id="mb-search" type="search" placeholder="搜尋姓名、電話、Email…">
+          <button class="btn btn-line btn-sm" id="mb-export" type="button">匯出 CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>姓名</th><th>手機</th><th>Email</th><th>資料</th><th>加入時間</th></tr></thead>
+            <tbody id="mb-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 停車場 -->
+      <section class="panel hidden" id="tab-lots">
+        <div class="toolbar"><button class="btn btn-orange btn-sm" id="lt-add" type="button">＋ 新增停車場</button></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>名稱</th><th>地址</th><th>Google 地圖搜尋字</th><th>狀態</th><th>操作</th></tr></thead>
+            <tbody id="lt-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- 月租編輯 -->
+<dialog id="dlg-rental">
+  <form id="form-rental" method="dialog" novalidate>
+    <div class="dlg-head" id="rt-title">新增月租</div>
+    <div class="dlg-body">
+      <div id="rt-msg" class="msg hidden"></div>
+      <div class="grid2">
+        <div class="field"><label for="rf-lot">停車場 <span class="req">*</span></label><select id="rf-lot"></select></div>
+        <div class="field"><label for="rf-space">車位編號</label><input id="rf-space" maxlength="20"></div>
+        <div class="field"><label for="rf-name">租戶姓名 <span class="req">*</span></label><input id="rf-name" maxlength="50"></div>
+        <div class="field"><label for="rf-phone">電話 <span class="req">*</span></label><input id="rf-phone" maxlength="20" inputmode="tel"></div>
+        <div class="field"><label for="rf-plate">車牌 <span class="req">*</span></label><input id="rf-plate" maxlength="12" autocapitalize="characters"></div>
+        <div class="field"><label for="rf-fee">月租金（元）<span class="req">*</span></label><input id="rf-fee" type="number" min="0" max="1000000" step="1"></div>
+        <div class="field"><label for="rf-start">起租日 <span class="req">*</span></label><input id="rf-start" type="date"></div>
+        <div class="field"><label for="rf-end">到期日 <span class="req">*</span></label><input id="rf-end" type="date"></div>
+        <div class="field"><label for="rf-paid">已繳費至</label><input id="rf-paid" type="date"></div>
+        <div class="field"><label for="rf-pay">繳費狀態</label><select id="rf-pay"><option value="unpaid">未繳費</option><option value="paid">已繳費</option><option value="overdue">逾期</option></select></div>
+        <div class="field"><label for="rf-status">租約狀態</label><select id="rf-status"><option value="active">有效中</option><option value="ended">已結束</option></select></div>
+        <div class="field"><label for="rf-member">綁定會員（選填）</label><select id="rf-member"></select><div class="hint">綁定後，會員可在會員中心看到這筆月租</div></div>
+      </div>
+      <div class="field"><label for="rf-note">備註</label><textarea id="rf-note" maxlength="500"></textarea></div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn btn-line" type="button" id="rt-cancel">取消</button>
+      <button class="btn btn-orange" type="submit" value="save">儲存</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- 申請處理 -->
+<dialog id="dlg-app">
+  <form id="form-app" method="dialog" novalidate>
+    <div class="dlg-head">處理月租申請</div>
+    <div class="dlg-body">
+      <p class="sub" id="ap-info"></p>
+      <div class="field"><label for="af-status">狀態</label>
+        <select id="af-status"><option value="pending">待處理</option><option value="contacted">已聯絡</option><option value="approved">已成立</option><option value="rejected">未成立</option></select>
+      </div>
+      <div class="field"><label for="af-note">回覆給會員（會顯示在會員中心）</label><textarea id="af-note" maxlength="300"></textarea></div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn btn-line" type="button" id="af-cancel">取消</button>
+      <button class="btn btn-orange" type="submit" value="save">儲存</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- 停車場編輯 -->
+<dialog id="dlg-lot">
+  <form id="form-lot" method="dialog" novalidate>
+    <div class="dlg-head" id="lt-title">新增停車場</div>
+    <div class="dlg-body">
+      <div class="field"><label for="lf-name">名稱 <span class="req">*</span></label><input id="lf-name" maxlength="60"></div>
+      <div class="field"><label for="lf-addr">地址</label><input id="lf-addr" maxlength="120"></div>
+      <div class="field"><label for="lf-map">Google 地圖搜尋字</label><input id="lf-map" maxlength="120"><div class="hint">例：大墩文化中心 停車場</div></div>
+      <div class="field"><label for="lf-sort">排序（數字小的在前）</label><input id="lf-sort" type="number" step="1"></div>
+      <div class="field"><label for="lf-active">狀態</label><select id="lf-active"><option value="1">開放申請</option><option value="0">暫停</option></select></div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn btn-line" type="button" id="lf-cancel">取消</button>
+      <button class="btn btn-orange" type="submit" value="save">儲存</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="js/config.js"></script>
+<script src="js/vendor/supabase-2.49.10.js"></script>
+<script src="js/common.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
