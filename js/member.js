@@ -35,6 +35,7 @@
       fillProfile(profile);
       $('#loading').classList.add('hidden');
       $('#content').classList.remove('hidden');
+      Fugo.idleLogout(60);
       if (isComplete(profile)) await openMemberArea();
       else {
         $('#profile-sub').textContent = '第一次登入，請先填寫姓名與手機（必填），填完才能申請月租。';

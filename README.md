@@ -21,6 +21,9 @@
   管理員的 Email 必須已驗證（Google 登入或 Email 註冊並點過驗證信）。
 - `js/config.js` 裡的 anon key 是公開金鑰，本來就會出現在瀏覽器；**絕對不要**放 service_role / secret key。
 - 所有頁面有 CSP，只允許載入本站程式；使用者輸入一律以純文字顯示，避免 XSS；CSV 匯出防公式注入。
+- 補強（`supabase/hardening.sql`）：欄位級最小權限（會員只能改姓名、手機）；申請只能選開放中的停車場、每人最多 3 筆待處理；所有新增／修改／刪除寫入 `fugo_audit_log`（後台「操作紀錄」可看，任何人都不能改）。
+- 防嵌入：網站被別人用 iframe 嵌入時自動隱藏並跳回本站。後台閒置 15 分鐘、會員中心 60 分鐘自動登出。
+- 權限自我檢測：在 Supabase SQL Editor 執行 `select fugo_private.selftest();`，會模擬會員、未登入、假管理員做 33 項攻擊，結果顯示在錯誤訊息裡，所有測試資料自動復原。
 
 ## 開通設定（在 Supabase 後台）
 1. **網址設定**：Authentication → URL Configuration

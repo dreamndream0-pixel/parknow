@@ -9,4 +9,6 @@ window.FUGO_CONFIG = {
   PHONE_LOGIN_ENABLED: false,
   // Google 登入：需要先在 Supabase 後台啟用 Google 登入，設定好再改成 true
   GOOGLE_LOGIN_ENABLED: true,
+  // 右下角 LINE 客服（官方帳號 @980gulhj）
+  LINE_URL: 'https://lin.ee/Ty82aqJ',
 };
