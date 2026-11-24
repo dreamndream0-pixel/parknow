@@ -21,6 +21,7 @@
     ['#form-login', '#form-signup', '#form-phone'].forEach((f) => $(f).classList.toggle('hidden', f !== id));
     $$('.tabs button').forEach((b) => b.classList.toggle('on', '#form-' + b.dataset.tab === id));
     Fugo.hideMsg(msg);
+    placeCaptcha(id);
   }
   $$('.tabs button').forEach((b) => b.addEventListener('click', () => showForm('#form-' + b.dataset.tab)));
 
@@ -32,18 +33,33 @@
   let captchaToken = '';
   let captchaWidget = null;
   const captchaOn = Boolean(cfg.TURNSTILE_SITE_KEY);
+  function renderCaptcha() {
+    captchaWidget = window.turnstile.render('#captcha', {
+      sitekey: cfg.TURNSTILE_SITE_KEY,
+      language: 'zh-tw',
+      callback: (t) => { captchaToken = t; },
+      'expired-callback': () => { captchaToken = ''; },
+      'error-callback': () => { captchaToken = ''; },
+    });
+  }
+  // 驗證框固定放在目前表單的送出按鈕正上方（換表單時搬過去並重新產生）
+  function placeCaptcha(formSel) {
+    if (!captchaOn) return;
+    const box = $('#captcha');
+    const btn = $('button[type="submit"]', $(formSel));
+    if (!btn || btn.previousElementSibling === box) return;
+    if (captchaWidget !== null && window.turnstile) {
+      window.turnstile.remove(captchaWidget);
+      captchaWidget = null;
+    }
+    captchaToken = '';
+    btn.before(box);
+    if (window.turnstile) renderCaptcha();
+  }
   function loadCaptcha() {
     if (!captchaOn) return;
     $('#captcha').classList.remove('hidden');
-    window.fugoTurnstileReady = () => {
-      captchaWidget = window.turnstile.render('#captcha', {
-        sitekey: cfg.TURNSTILE_SITE_KEY,
-        language: 'zh-tw',
-        callback: (t) => { captchaToken = t; },
-        'expired-callback': () => { captchaToken = ''; },
-        'error-callback': () => { captchaToken = ''; },
-      });
-    };
+    window.fugoTurnstileReady = renderCaptcha;
     const sc = document.createElement('script');
     sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=fugoTurnstileReady';
     sc.async = true;
@@ -53,7 +69,7 @@
   function needCaptcha() {
     if (!captchaOn) return false;
     if (captchaToken) return false;
-    Fugo.showMsg(msg, 'err', '請先完成下方的「我不是機器人」驗證');
+    Fugo.showMsg(msg, 'err', '請先勾選「驗證您是人類」');
     return true;
   }
   function takeCaptcha() {
@@ -169,12 +185,14 @@
     $('#form-forgot').classList.remove('hidden');
     $('#fg-email').value = $('#li-email').value;
     Fugo.hideMsg(msg);
+    placeCaptcha('#form-forgot');
   });
   $('#link-back').addEventListener('click', (e) => {
     e.preventDefault();
     $('#form-forgot').classList.add('hidden');
     $('#auth-main').classList.remove('hidden');
     Fugo.hideMsg(msg);
+    placeCaptcha('#form-login');
   });
   $('#form-forgot').addEventListener('submit', async (e) => {
     e.preventDefault();
