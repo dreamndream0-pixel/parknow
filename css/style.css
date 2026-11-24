@@ -253,3 +253,4 @@ dialog{margin:auto}
 .line-support-check:checked + .line-support-toggle .line-support-open{display:none}
 .line-support-check:checked + .line-support-toggle .line-support-tag{display:flex}
 .line-support-check:checked ~ .line-support-link{display:none}
+.where .relocate{margin-left:10px;vertical-align:middle}

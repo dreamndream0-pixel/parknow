@@ -291,7 +291,7 @@
       el('td', { text: l.address || '—' }),
       el('td', { text: svc(l) || '—' }),
       el('td', null, l.lat != null && l.lng != null
-        ? el('a', { href: Fugo.mapUrl(l.lat + ',' + l.lng), target: '_blank', rel: 'noopener noreferrer', text: l.lat.toFixed(5) + ', ' + l.lng.toFixed(5) })
+        ? el('a', { href: Fugo.mapUrl(l.lat + ',' + l.lng), target: '_blank', rel: 'noopener noreferrer', text: '查看位置' })
         : el('span', { class: 'badge b-warn', text: '未設定' })),
       el('td', null, el('span', { class: 'badge ' + (l.active ? 'b-ok' : 'b-mute'), text: l.active ? '顯示中' : '暫停' })),
       el('td', null, el('button', { class: 'btn btn-line btn-sm', type: 'button', text: '編輯', onclick: () => openLot(l) })))));
@@ -303,7 +303,8 @@
     $('#lf-city').value = l ? l.city || '' : '台中市';
     $('#lf-district').value = l ? l.district || '' : '';
     $('#lf-addr').value = l ? l.address || '' : '';
-    $('#lf-coord').value = l && l.lat != null && l.lng != null ? l.lat + ', ' + l.lng : '';
+    relocate = false;
+    showWhere(l && l.lat != null && l.lng != null ? { lat: l.lat, lng: l.lng } : null, '目前地圖位置');
     $('#lf-map').value = l ? l.map_query || '' : '';
     $('#lf-hours').value = l ? l.hours || '' : '24 小時';
     $('#lf-rate').value = l ? l.rate || '' : '依現場公告';
@@ -317,28 +318,49 @@
     Fugo.hideMsg($('#lf-msg'));
     $('#dlg-lot').showModal();
   }
-  // 接受「24.1442, 120.6633」或 Google 地圖網址裡的 @24.1442,120.6633
-  function parseCoord(v) {
-    const m = String(v).match(/(-?\d{1,3}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)/);
-    if (!m) return null;
-    const lat = Number(m[1]), lng = Number(m[2]);
-    if (lat < 21 || lat > 26.5 || lng < 118 || lng > 123) return null;
-    return { lat, lng };
+  let relocate = false;
+  // 後台只填地址：儲存時自動換算成地圖位置（js/map.js 的 Fugo.geocode）
+  function showWhere(pos, label) {
+    const box = $('#lf-where');
+    if (!pos) { box.classList.add('hidden'); box.replaceChildren(); return; }
+    box.replaceChildren(el('span', { text: label + '：' }),
+      el('a', { href: Fugo.mapUrl(pos.lat + ',' + pos.lng), target: '_blank', rel: 'noopener noreferrer', text: '在 Google 地圖上查看' }),
+      el('button', { type: 'button', class: 'btn btn-line btn-sm relocate', text: '位置不對？儲存時依地址重新定位',
+        onclick(e) { relocate = true; e.currentTarget.disabled = true; e.currentTarget.textContent = '儲存時會依地址重新定位'; } }));
+    box.classList.remove('hidden');
+  }
+  // 從地址帶出城市、行政區，例：台中市西區英才路600號 → 台中市／西區
+  function parseArea(addr) {
+    const m = String(addr).replace(/^\d{3,6}\s*/, '').replace(/^臺/, '台').match(/^(\S{2,3}?[市縣])(\S{1,3}?[區鄉鎮市])/);
+    return m ? { city: m[1], district: m[2] } : null;
+  }
+  $('#lf-addr').addEventListener('change', () => {
+    const a = parseArea($('#lf-addr').value.trim());
+    if (!a) return;
+    $('#lf-city').value = a.city;
+    $('#lf-district').value = a.district;
+  });
+  async function locate(addr) {
+    const tries = [addr];
+    if (/台/.test(addr)) tries.push(addr.replace(/台/g, '臺'));
+    for (const q of tries) {
+      const r = await Fugo.geocode(q);
+      if (r) return r;
+    }
+    return null;
   }
   $('#lt-add').addEventListener('click', () => openLot(null));
   $('#lf-cancel').addEventListener('click', () => $('#dlg-lot').close());
   $('#form-lot').addEventListener('submit', async (e) => {
     e.preventDefault();
     const box = $('#lf-msg');
-    const coord = parseCoord($('#lf-coord').value);
+    const btn = e.submitter || $('#form-lot button[type=submit]');
     const rec = {
       name: $('#lf-name').value.trim(),
       city: $('#lf-city').value.trim(),
       district: $('#lf-district').value.trim(),
       address: $('#lf-addr').value.trim() || null,
       map_query: $('#lf-map').value.trim() || null,
-      lat: coord ? coord.lat : null,
-      lng: coord ? coord.lng : null,
       hours: $('#lf-hours').value.trim() || '24 小時',
       rate: $('#lf-rate').value.trim() || '依現場公告',
       allow_temp: $('#lf-temp').checked,
@@ -351,14 +373,27 @@
     };
     if (!rec.name) return Fugo.showMsg(box, 'err', '請填停車場名稱');
     if (!rec.city || !rec.district) return Fugo.showMsg(box, 'err', '請填城市和行政區（網站用來分區搜尋）');
-    if (!coord) return Fugo.showMsg(box, 'err', '地圖座標格式不對，請貼上像「24.1442, 120.6633」這樣的數字');
+    if (!rec.address) return Fugo.showMsg(box, 'err', '請填停車場地址，網站會用地址找出地圖位置');
     if (!rec.allow_temp && !rec.allow_monthly) return Fugo.showMsg(box, 'err', '臨停、月租至少要勾一個');
     if (!rec.allow_car && !rec.allow_moto) return Fugo.showMsg(box, 'err', '汽車、機車至少要勾一個');
+    // 地址沒改且已有位置就沿用，否則重新找位置
+    let found = null;
+    if (editingLot && !relocate && editingLot.address === rec.address && editingLot.lat != null) {
+      rec.lat = editingLot.lat; rec.lng = editingLot.lng;
+    } else {
+      Fugo.hideMsg(box);
+      if (btn) { btn.disabled = true; btn.dataset.t = btn.textContent; btn.textContent = '找位置中…'; }
+      found = await locate(rec.address);
+      if (btn) { btn.disabled = false; btn.textContent = btn.dataset.t; }
+      if (!found) return Fugo.showMsg(box, 'err', '找不到這個地址的位置，請確認有寫縣市、區、路名和門牌號碼，例：台中市西區英才路600號');
+      rec.lat = Math.round(found.lat * 1e6) / 1e6;
+      rec.lng = Math.round(found.lng * 1e6) / 1e6;
+    }
     const q = editingLot ? db().from('fugo_lots').update(rec).eq('id', editingLot.id) : db().from('fugo_lots').insert(rec);
     const { error } = await q;
     if (error) return Fugo.showMsg(box, 'err', Fugo.errText(error));
     $('#dlg-lot').close();
-    Fugo.toast('停車場已儲存，網站地圖會馬上更新');
+    Fugo.toast(found ? '已儲存，地圖位置：' + found.label + '（可在列表點位置確認）' : '停車場已儲存，網站地圖會馬上更新');
     await loadLots();
     renderRentals();
     renderApps();
