@@ -16,5 +16,5 @@ window.FUGO_CONFIG = {
   // 首頁地圖的 Google Maps JavaScript API 金鑰（瀏覽器金鑰，公開值）。
   // 務必在 Google Cloud 設定「網站限制」只允許 dreamndream0-pixel.github.io/parknow/*，並限定只能用 Maps JavaScript API。
   // 留空＝用免費的 OpenStreetMap 地圖。
-  GOOGLE_MAPS_KEY: '',
+  GOOGLE_MAPS_KEY: 'AIzaSyAFINHwS1x5qlGvdYDwce1fQml9kCMX1SA',
 };
