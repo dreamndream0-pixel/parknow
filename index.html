@@ -3,19 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https://maps.google.com https://www.google.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.basemaps.cartocdn.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>富格停車 FUGO PARKING｜台中 24 小時停車場・月租車位</title>
 <meta name="description" content="富格停車 FUGO PARKING，台中潭子區公所共享停車場、大墩文化中心停車場，24 小時營業，提供臨時停車與月租車位線上申請。客服 0800-899-969。">
 <meta property="og:title" content="富格停車 FUGO PARKING">
 <meta property="og:description" content="在台中，找個好車位。富格停車・停得安心">
 <meta property="og:image" content="assets/icon-192.png">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0a5a9c">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/leaflet-1.9.4.css">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/site.css">
 </head>
@@ -51,59 +52,60 @@
     </div>
   </section>
 
-  <!-- 找停車場 -->
-  <section class="find" id="find" aria-labelledby="find-title">
-    <div class="find-grid">
-      <div class="find-panel">
-        <h2 class="bar-title" id="find-title">找停車場</h2>
-        <label class="search">
-          <i data-icon="search"></i>
-          <span class="visually-hidden">搜尋停車場或行政區</span>
-          <input id="lot-search" type="search" placeholder="輸入停車場或行政區" autocomplete="off" maxlength="30">
-        </label>
-        <div class="seg" role="group" aria-label="停車方式">
-          <button type="button" class="on" data-mode="temp" aria-pressed="true">臨停</button>
-          <button type="button" data-mode="monthly" aria-pressed="false">月租</button>
-        </div>
-        <p class="find-hint" id="find-hint">點選停車場，地圖會移到該據點。</p>
-        <div class="sheet-list">
-          <span class="sheet-grip" aria-hidden="true"></span>
-          <ul class="lot-list" id="lot-list"></ul>
-          <p class="lot-empty hidden" id="lot-empty">找不到符合的停車場，換個關鍵字試試。</p>
-        </div>
+  <!-- 最新消息（精簡） -->
+  <section class="news-mini" id="news" aria-labelledby="news-title">
+    <div class="wrap">
+      <div class="nm-head">
+        <h2 id="news-title"><i data-icon="megaphone"></i>最新消息</h2>
+        <a class="more-link" href="news.html">看全部<i data-icon="chev-r"></i></a>
       </div>
-      <div class="find-map">
-        <iframe id="map-frame" title="停車場地圖" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <div class="map-card" id="map-card" aria-live="polite">
-          <strong id="mc-name"></strong>
-          <span class="mc-dist"><i data-icon="pin"></i><span id="mc-district"></span></span>
-          <div class="mc-actions">
-            <a class="mc-btn" id="mc-go" target="_blank" rel="noopener noreferrer"><i data-icon="nav"></i><span id="mc-go-text">導航</span></a>
-            <a class="mc-more" id="mc-more">據點介紹<i data-icon="chev-r"></i></a>
-          </div>
-        </div>
-      </div>
+      <ul class="nm-list" id="news-preview"></ul>
     </div>
   </section>
 
-  <!-- 月租申請橫幅 -->
-  <a class="cta-band" href="login.html?next=apply">
-    <span class="wrap">
-      <i data-icon="car" class="cta-car"></i>
-      <span class="cta-sep" aria-hidden="true"></span>
-      <span class="cta-text">月租車位申請</span>
-      <i data-icon="arrow-r" class="cta-arrow"></i>
-    </span>
-  </a>
+  <!-- 找停車場：地圖 -->
+  <section class="find2" id="find" aria-labelledby="find-title">
+    <div class="wrap find-head">
+      <h2 class="bar-title" id="find-title">找停車場</h2>
+      <span class="find-count" id="find-count" role="status"></span>
+    </div>
+    <div class="mapbox">
+      <div class="map" id="map" aria-label="停車場地圖"></div>
 
-  <!-- 最新消息 -->
-  <section class="sec" id="news" aria-labelledby="news-title">
-    <div class="wrap">
-      <div class="sec-row reveal">
-        <h2 class="bar-title" id="news-title">最新消息</h2>
-        <a class="more-link" href="news.html">看全部<i data-icon="chev-r"></i></a>
+      <div class="map-tl">
+        <div class="pill" role="group" aria-label="停車方式">
+          <button type="button" data-f="use" data-v="temp" class="on" aria-pressed="true">臨停</button>
+          <button type="button" data-f="use" data-v="monthly" aria-pressed="false">月租</button>
+        </div>
+        <div class="pill" role="group" aria-label="車種">
+          <button type="button" data-f="veh" data-v="car" class="on" aria-pressed="true">汽車</button>
+          <button type="button" data-f="veh" data-v="moto" aria-pressed="false">機車</button>
+        </div>
       </div>
-      <ul class="news-list reveal" id="news-preview"></ul>
+
+      <div class="map-tr">
+        <button type="button" class="map-btn" id="area-open" aria-label="選擇地區" aria-expanded="false" aria-controls="area-pop"><i data-icon="search"></i></button>
+      </div>
+
+      <div class="area-pop" id="area-pop" role="dialog" aria-label="選擇地區" hidden>
+        <div class="area-head">
+          <strong>選擇地區</strong>
+          <button type="button" class="area-x" id="area-close" aria-label="關閉"><i data-icon="close"></i></button>
+        </div>
+        <p class="area-label">城市</p>
+        <div class="chips" id="city-chips"></div>
+        <p class="area-label">行政區</p>
+        <div class="chips" id="dist-chips"></div>
+      </div>
+
+      <div class="lot-card" id="lot-card">
+        <div class="lc-bar">
+          <span class="lc-area" id="lc-area"></span>
+          <button type="button" class="lc-list-btn" id="lc-list-btn" aria-expanded="false" aria-controls="lc-list"><i data-icon="list"></i>列表<b id="lc-n"></b></button>
+        </div>
+        <div class="lc-main" id="lc-main"></div>
+        <ul class="lc-list" id="lc-list" hidden></ul>
+      </div>
     </div>
   </section>
 
@@ -187,6 +189,7 @@
 <script src="js/vendor/supabase-2.49.10.js"></script>
 <script src="js/common.js"></script>
 <script src="js/data.js"></script>
+<script src="js/vendor/leaflet-1.9.4.js"></script>
 <script src="js/shell.js"></script>
 <script src="js/site.js"></script>
 </body>

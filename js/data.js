@@ -1,26 +1,19 @@
 // 富格停車 — 網站內容（停車場據點、最新消息）
 // 要改地址、營業時間、費率或新增消息，改這個檔案就好。
 window.FUGO_DATA = {
+  // 停車場以後台（Supabase fugo_lots）為準；連不上資料庫時才用這份備用資料
   lots: [
     {
-      id: 'tanzi',
-      name: '潭子區公所共享停車場',
-      district: '潭子區',
-      address: '台中市潭子區（潭子區公所旁）',
-      mapQuery: '潭子區公所 停車場',
-      hours: '24 小時',
-      rate: '依現場公告',
-      tags: ['24 小時', '共享停車', '臨停', '月租'],
+      id: 1, name: '潭子區公所共享停車場', city: '台中市', district: '潭子區',
+      address: '台中市潭子區（潭子區公所旁）', map_query: '潭子區公所 停車場',
+      lat: 24.2096, lng: 120.7050, hours: '24 小時', rate: '依現場公告',
+      allow_temp: true, allow_monthly: true, allow_car: true, allow_moto: false, features: '共享停車',
     },
     {
-      id: 'dadun',
-      name: '大墩文化中心停車場',
-      district: '西區',
-      address: '台中市西區英才路600號',
-      mapQuery: '大墩文化中心 停車場 台中市西區英才路600號',
-      hours: '24 小時',
-      rate: '依現場公告',
-      tags: ['24 小時', '臨停', '月租'],
+      id: 2, name: '大墩文化中心停車場', city: '台中市', district: '西區',
+      address: '台中市西區英才路600號', map_query: '大墩文化中心 停車場 台中市西區英才路600號',
+      lat: 24.1442, lng: 120.6633, hours: '24 小時', rate: '依現場公告',
+      allow_temp: true, allow_monthly: true, allow_car: true, allow_moto: false, features: '',
     },
   ],
 
