@@ -20,7 +20,8 @@
   // ── 分頁 ──
   $$('.admin-tabs button').forEach((b) => b.addEventListener('click', () => {
     $$('.admin-tabs button').forEach((x) => x.classList.toggle('on', x === b));
-    ['rentals', 'apps', 'members', 'lots'].forEach((t) => $('#tab-' + t).classList.toggle('hidden', t !== b.dataset.tab));
+    if (b.dataset.tab === 'audit') loadAudit();
+    ['rentals', 'apps', 'members', 'lots', 'audit'].forEach((t) => $('#tab-' + t).classList.toggle('hidden', t !== b.dataset.tab));
   }));
 
   async function init() {
@@ -35,6 +36,7 @@
     }
     $('#loading').classList.add('hidden');
     $('#content').classList.remove('hidden');
+    Fugo.idleLogout(15);
     await reloadAll();
   }
 
@@ -320,6 +322,34 @@
     renderRentals();
     renderApps();
   });
+
+  // ── 操作紀錄 ──
+  const TABLE_NAMES = { fugo_rentals: '月租資料', fugo_applications: '月租申請', fugo_lots: '停車場', fugo_profiles: '會員資料', fugo_admins: '管理員名單' };
+  const ACTIONS = { INSERT: ['新增', 'b-ok'], UPDATE: ['修改', 'b-blue'], DELETE: ['刪除', 'b-bad'] };
+  const SKIP = ['updated_at', 'created_at'];
+  function auditSummary(a) {
+    const o = a.old_data || {}, n = a.new_data || {};
+    const d = a.action === 'DELETE' ? o : n;
+    const who = d.tenant_name || d.full_name || d.name || d.email || d.plate || '';
+    if (a.action !== 'UPDATE') return who;
+    const changed = Object.keys(n).filter((k) => !SKIP.includes(k) && JSON.stringify(n[k]) !== JSON.stringify(o[k]));
+    return (who ? who + '：' : '') + changed.map((k) => `${k} ${o[k] ?? '—'} → ${n[k] ?? '—'}`).join('；');
+  }
+  async function loadAudit() {
+    const body = $('#au-body');
+    const { data, error } = await db().from('fugo_audit_log').select('*').order('at', { ascending: false }).limit(200);
+    if (error) return body.replaceChildren(el('tr', null, el('td', { colspan: 5, class: 'empty', text: Fugo.errText(error) })));
+    if (!data.length) return body.replaceChildren(el('tr', null, el('td', { colspan: 5, class: 'empty', text: '還沒有紀錄' })));
+    body.replaceChildren(...data.map((a) => {
+      const [al, ac] = ACTIONS[a.action] || [a.action, 'b-mute'];
+      return el('tr', null,
+        el('td', { text: Fugo.fmtDateTime(a.at) }),
+        el('td', { text: a.actor_email || (a.actor ? '會員' : '系統') }),
+        el('td', { text: TABLE_NAMES[a.table_name] || a.table_name }),
+        el('td', null, el('span', { class: 'badge ' + ac, text: al })),
+        el('td', { text: auditSummary(a) }));
+    }));
+  }
 
   // ── CSV 匯出（防止 Excel 公式注入） ──
   function csvCell(v) {

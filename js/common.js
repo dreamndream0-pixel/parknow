@@ -133,8 +133,43 @@
     location.href = 'index.html';
   };
 
+  // 防止網站被別人用 iframe 嵌進假網站騙登入（GitHub Pages 無法設定 X-Frame-Options，改用程式擋）
+  if (window.top !== window.self) {
+    document.documentElement.classList.add('hidden');
+    try { window.top.location.replace(window.self.location.href); } catch (e) { /* 跨網域無法跳轉時保持隱藏 */ }
+  }
+
+  // 閒置自動登出：後台 15 分鐘、會員中心 60 分鐘沒有操作就登出，避免共用電腦外洩資料
+  Fugo.idleLogout = function (minutes) {
+    let last = Date.now();
+    const bump = () => { last = Date.now(); };
+    ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((ev) => window.addEventListener(ev, bump, { passive: true }));
+    setInterval(async () => {
+      if (Date.now() - last > minutes * 60000) {
+        if (Fugo.ready) await Fugo.client.auth.signOut();
+        location.replace('login.html?timeout=1');
+      }
+    }, 30000);
+  };
+
+  // 右下角 LINE 客服（後台不顯示）
+  function mountLine() {
+    const url = cfg.LINE_URL;
+    if (!url || !/^https:\/\/lin\.ee\//.test(url) || document.body.dataset.noLine !== undefined) return;
+    const box = Fugo.el('div', { class: 'line-support' },
+      Fugo.el('input', { class: 'line-support-check', type: 'checkbox', id: 'line-support-toggle' }),
+      Fugo.el('label', { class: 'line-support-toggle', for: 'line-support-toggle' },
+        Fugo.el('span', { class: 'line-support-open' }, Fugo.el('span', { 'aria-hidden': 'true', text: '×' }), Fugo.el('span', { class: 'line-support-sr', text: '收起客服按鈕' })),
+        Fugo.el('span', { class: 'line-support-tag', text: 'LINE客服' })),
+      Fugo.el('a', { class: 'line-support-link', href: url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': 'LINE 客服 @980gulhj' },
+        Fugo.el('span', { class: 'line-support-bubble', 'aria-hidden': 'true' }),
+        Fugo.el('span', { class: 'line-support-label', text: 'LINE 客服' })));
+    document.body.append(box);
+  }
+
   // 手機選單
   document.addEventListener('DOMContentLoaded', () => {
+    mountLine();
     const btn = document.getElementById('menu-btn');
     const nav = document.getElementById('nav');
     if (btn && nav) {

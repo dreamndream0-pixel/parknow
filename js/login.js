@@ -32,6 +32,8 @@
     location.replace(next);
   }
 
+  if (params.get('timeout') === '1') Fugo.showMsg(msg, 'info', '您已閒置一段時間，為了保護資料已自動登出，請重新登入。');
+
   if (!Fugo.ready) {
     Fugo.requireReady(msg);
     $$('form button, #btn-google').forEach((b) => { b.disabled = true; });

@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body data-no-line>
 <header class="topbar">
   <div class="wrap">
     <a class="brand" href="index.html" aria-label="富格停車 首頁">
@@ -51,6 +51,7 @@
         <button type="button" data-tab="apps">月租申請</button>
         <button type="button" data-tab="members">會員</button>
         <button type="button" data-tab="lots">停車場</button>
+        <button type="button" data-tab="audit">操作紀錄</button>
       </div>
 
       <!-- 月租資料 -->
@@ -118,6 +119,17 @@
           <table>
             <thead><tr><th>名稱</th><th>地址</th><th>Google 地圖搜尋字</th><th>狀態</th><th>操作</th></tr></thead>
             <tbody id="lt-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 操作紀錄 -->
+      <section class="panel hidden" id="tab-audit">
+        <p class="sub">最近 200 筆新增／修改／刪除紀錄。紀錄只能看，任何人（包含管理員）都不能修改或刪除。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>時間</th><th>操作人</th><th>資料</th><th>動作</th><th>內容</th></tr></thead>
+            <tbody id="au-body"></tbody>
           </table>
         </div>
       </section>
