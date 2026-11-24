@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https://maps.google.com https://www.google.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>停車場介紹｜富格停車</title>
+<meta name="description" content="富格停車據點介紹：地址、營業時間、費率與導航。">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body class="pub" data-page="find">
+<a class="skip-link" href="#main">跳至主要內容</a>
+
+<header class="ph">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="富格停車 首頁">
+      <img src="assets/logo.png" alt="">
+      <span class="brand-text"><span class="brand-zh">富格<em>停車</em></span><span class="brand-en">FUGO PARKING</span></span>
+    </a>
+    <nav class="ph-nav" aria-label="主選單">
+      <a href="index.html#find" aria-current="page">停車據點</a>
+      <a href="index.html#monthly">月租服務</a>
+      <a href="news.html">最新消息</a>
+      <a href="index.html#about">關於富格</a>
+      <a class="ph-login" href="login.html" data-member-link>會員登入</a>
+    </nav>
+    <button class="ph-menu" id="menu-open" type="button" aria-label="開啟服務選單" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main" tabindex="-1" class="lot-page">
+  <div class="wrap">
+    <a class="back" href="index.html#find"><i data-icon="chev-l"></i>返回據點</a>
+    <div class="lot-layout">
+      <div class="lot-map">
+        <iframe id="lot-map" title="停車場地圖" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="lot-info">
+        <h1 id="lot-name">停車場</h1>
+        <p class="lot-district" id="lot-district"></p>
+        <dl class="info-list" id="lot-rows"></dl>
+        <div class="lot-tags" id="lot-tags"></div>
+        <div class="lot-cta">
+          <a class="btn btn-orange btn-lg" id="lot-go" target="_blank" rel="noopener noreferrer"><i data-icon="nav"></i>開始導航</a>
+          <a class="btn btn-outline btn-lg" href="login.html?next=apply"><i data-icon="calendar"></i>申請月租</a>
+        </div>
+        <div class="other-lots">
+          <h2>其他據點</h2>
+          <ul id="other-lots"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="pf">
+  <div class="wrap">
+    <div class="pf-bottom">
+      <span>© <span id="year">2026</span> 富格停車 FUGO PARKING・客服 <a href="tel:0800899969">0800-899-969</a></span>
+      <a href="privacy.html">隱私權政策</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/vendor/supabase-2.49.10.js"></script>
+<script src="js/common.js"></script>
+<script src="js/data.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/lot.js"></script>
+</body>
+</html>

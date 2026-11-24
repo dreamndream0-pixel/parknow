@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>最新消息｜富格停車</title>
+<meta name="description" content="富格停車官方公告與服務指南。">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body class="pub" data-page="news">
+<a class="skip-link" href="#main">跳至主要內容</a>
+
+<header class="ph">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="富格停車 首頁">
+      <img src="assets/logo.png" alt="">
+      <span class="brand-text"><span class="brand-zh">富格<em>停車</em></span><span class="brand-en">FUGO PARKING</span></span>
+    </a>
+    <nav class="ph-nav" aria-label="主選單">
+      <a href="index.html#find">停車據點</a>
+      <a href="index.html#monthly">月租服務</a>
+      <a href="news.html" aria-current="page">最新消息</a>
+      <a href="index.html#about">關於富格</a>
+      <a class="ph-login" href="login.html" data-member-link>會員登入</a>
+    </nav>
+    <button class="ph-menu" id="menu-open" type="button" aria-label="開啟服務選單" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main" tabindex="-1" class="news-page">
+  <div class="wrap narrow">
+    <h1 class="bar-title">最新消息</h1>
+    <div class="tabs3" role="tablist" aria-label="消息分類">
+      <button type="button" role="tab" class="on" aria-selected="true" data-cat="">全部</button>
+      <button type="button" role="tab" aria-selected="false" data-cat="notice">官方公告</button>
+      <button type="button" role="tab" aria-selected="false" data-cat="guide">服務指南</button>
+    </div>
+    <ul class="news-list" id="news-list"></ul>
+  </div>
+</main>
+
+<footer class="pf">
+  <div class="wrap">
+    <div class="pf-bottom">
+      <span>© <span id="year">2026</span> 富格停車 FUGO PARKING・客服 <a href="tel:0800899969">0800-899-969</a></span>
+      <a href="privacy.html">隱私權政策</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/vendor/supabase-2.49.10.js"></script>
+<script src="js/common.js"></script>
+<script src="js/data.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/news.js"></script>
+</body>
+</html>
