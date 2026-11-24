@@ -100,6 +100,7 @@
     if (/row-level security|permission denied/i.test(m)) return '沒有權限執行這個動作';
     if (/fugo_profiles_phone_check|phone_check/i.test(m)) return '手機號碼格式錯誤（例：0912345678）';
     if (/plate_check/i.test(m)) return '車牌格式錯誤（例：ABC-1234）';
+    if (/captcha/i.test(m)) return '「我不是機器人」驗證失敗，請重新勾選後再試一次';
     if (/Failed to fetch|NetworkError/i.test(m)) return '網路連線失敗，請稍後再試';
     return m || '發生錯誤，請稍後再試';
   };
