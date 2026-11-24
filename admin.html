@@ -117,7 +117,7 @@
         <div class="toolbar"><button class="btn btn-orange btn-sm" id="lt-add" type="button">＋ 新增停車場</button></div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>名稱</th><th>地址</th><th>Google 地圖搜尋字</th><th>狀態</th><th>操作</th></tr></thead>
+            <thead><tr><th>名稱</th><th>地區</th><th>地址</th><th>服務</th><th>座標</th><th>狀態</th><th>操作</th></tr></thead>
             <tbody id="lt-body"></tbody>
           </table>
         </div>
@@ -189,11 +189,32 @@
   <form id="form-lot" method="dialog" novalidate>
     <div class="dlg-head" id="lt-title">新增停車場</div>
     <div class="dlg-body">
+      <div id="lf-msg" class="msg hidden" role="alert"></div>
       <div class="field"><label for="lf-name">名稱 <span class="req">*</span></label><input id="lf-name" maxlength="60"></div>
+      <div class="grid2">
+        <div class="field"><label for="lf-city">城市 <span class="req">*</span></label><input id="lf-city" maxlength="10" placeholder="台中市"></div>
+        <div class="field"><label for="lf-district">行政區 <span class="req">*</span></label><input id="lf-district" maxlength="10" placeholder="西區"></div>
+      </div>
       <div class="field"><label for="lf-addr">地址</label><input id="lf-addr" maxlength="120"></div>
-      <div class="field"><label for="lf-map">Google 地圖搜尋字</label><input id="lf-map" maxlength="120"><div class="hint">例：大墩文化中心 停車場</div></div>
-      <div class="field"><label for="lf-sort">排序（數字小的在前）</label><input id="lf-sort" type="number" step="1"></div>
-      <div class="field"><label for="lf-active">狀態</label><select id="lf-active"><option value="1">開放申請</option><option value="0">暫停</option></select></div>
+      <div class="field"><label for="lf-coord">地圖座標 <span class="req">*</span></label><input id="lf-coord" maxlength="60" placeholder="24.1442, 120.6633"><div class="hint">在 Google 地圖對停車場入口按右鍵（手機長按），點最上面那串數字就會複製，貼到這裡。</div></div>
+      <div class="field"><label for="lf-map">導航搜尋字</label><input id="lf-map" maxlength="120"><div class="hint">按「導航」時用這個字開 Google 地圖，例：大墩文化中心 停車場。留空就用座標。</div></div>
+      <div class="grid2">
+        <div class="field"><label for="lf-hours">營業時間</label><input id="lf-hours" maxlength="40" placeholder="24 小時"></div>
+        <div class="field"><label for="lf-rate">停車費率</label><input id="lf-rate" maxlength="120" placeholder="依現場公告"></div>
+      </div>
+      <div class="field"><label>提供服務</label>
+        <div class="checks">
+          <label><input type="checkbox" id="lf-temp"> 臨停</label>
+          <label><input type="checkbox" id="lf-monthly"> 月租</label>
+          <label><input type="checkbox" id="lf-car"> 汽車</label>
+          <label><input type="checkbox" id="lf-moto"> 機車</label>
+        </div>
+      </div>
+      <div class="field"><label for="lf-feat">特色標籤</label><input id="lf-feat" maxlength="120" placeholder="共享停車、身障車位"><div class="hint">用頓號或逗號分開，會顯示在網站上。</div></div>
+      <div class="grid2">
+        <div class="field"><label for="lf-sort">排序（數字小的在前）</label><input id="lf-sort" type="number" step="1"></div>
+        <div class="field"><label for="lf-active">狀態</label><select id="lf-active"><option value="1">顯示在網站、開放申請</option><option value="0">暫停（網站不顯示）</option></select></div>
+      </div>
     </div>
     <div class="dlg-foot">
       <button class="btn btn-line" type="button" id="lf-cancel">取消</button>

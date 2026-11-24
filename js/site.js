@@ -1,90 +1,193 @@
-// 富格停車 — 首頁：找停車場（搜尋、臨停／月租、地圖）、最新消息預覽
+// 富格停車 — 首頁：最新消息、找停車場地圖（臨停／月租、汽車／機車、地區搜尋、卡片內導航與列表）
 (function () {
   'use strict';
-  const { el, $ } = Fugo;
-  const DATA = window.FUGO_DATA || { lots: [], news: [] };
-  const LOTS = DATA.lots;
+  const { el, $, $$ } = Fugo;
+  const DATA = window.FUGO_DATA || { news: [] };
 
-  let mode = 'temp';
-  let current = LOTS[0];
+  // ── 最新消息（精簡 3 則） ──
+  $('#news-preview').replaceChildren(...DATA.news.slice(0, 3).map((n) =>
+    el('li', null, el('a', { href: 'news.html#' + n.id },
+      el('span', { class: 'nm-date', text: Fugo.newsDate(n.date) }),
+      el('span', { class: 'news-tag ' + n.cat, text: Fugo.NEWS_CAT[n.cat] || '' }),
+      el('span', { class: 'nm-title', text: n.title }),
+      Fugo.icon('chev-r', 'nm-chev')))));
 
-  const list = $('#lot-list');
-  const frame = $('#map-frame');
-  const card = $('#map-card');
+  // ── 地圖 ──
+  const state = { use: 'temp', veh: 'car', city: '', dist: '' };
+  let lots = [];
+  let shown = [];
+  let current = null;
+  const markers = new Map();
 
-  function rows() {
-    const q = $('#lot-search').value.trim().replace(/\s+/g, '');
-    const shown = LOTS.filter((l) => !q || (l.name + l.district + l.address).replace(/\s+/g, '').includes(q));
-    list.replaceChildren(...shown.map((lot) =>
-      el('li', null,
-        el('button', {
-          type: 'button',
-          class: 'lot-row' + (lot === current ? ' on' : ''),
-          'aria-pressed': String(lot === current),
-          onclick() { select(lot, true); },
-        },
-          Fugo.icon('park', 'lot-p'),
-          el('span', { class: 'lot-txt' },
-            el('strong', { text: lot.name }),
-            el('small', { text: lot.district + (mode === 'monthly' ? '・可申請月租' : '・' + lot.hours) })),
-          Fugo.icon('chev-r', 'lot-chev')))));
-    $('#lot-empty').classList.toggle('hidden', shown.length > 0);
+  const map = window.L ? L.map('map', {
+    zoomControl: false,
+    scrollWheelZoom: false,
+    tap: true,
+    attributionControl: true,
+  }).setView([24.17, 120.68], 12) : null;
+  if (map) {
+    map.attributionControl.setPrefix(false);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      subdomains: 'abcd',
+      maxZoom: 19,
+      attribution: '© OpenStreetMap © CARTO',
+    }).addTo(map);
+    L.control.zoom({ position: 'topright', zoomInTitle: '放大', zoomOutTitle: '縮小' }).addTo(map);
+    // 在地圖上按一下才啟用滾輪縮放，避免捲動頁面時被地圖卡住
+    map.on('click', () => map.scrollWheelZoom.enable());
+    map.on('mouseout', () => map.scrollWheelZoom.disable());
   }
 
-  function select(lot, fromUser) {
+  function pinEl(lot) {
+    return el('div', { class: 'pin' + (lot === current ? ' on' : ''), title: lot.name },
+      el('span', { class: 'pin-p', text: 'P' }),
+      state.use === 'monthly' ? el('span', { class: 'pin-sub', text: '租' }) : null);
+  }
+
+  function drawMarkers() {
+    if (!map) return;
+    markers.forEach((m) => m.remove());
+    markers.clear();
+    shown.forEach((lot) => {
+      const m = L.marker([lot.lat, lot.lng], {
+        icon: L.divIcon({ className: 'pin-wrap', html: pinEl(lot), iconSize: [44, 52], iconAnchor: [22, 50] }),
+        title: lot.name,
+        keyboard: true,
+        zIndexOffset: lot === current ? 1000 : 0,
+      }).addTo(map);
+      m.on('click', () => select(lot, true));
+      markers.set(lot.id, m);
+    });
+  }
+
+  function fit() {
+    if (!map || !shown.length) return;
+    if (shown.length === 1) map.setView([shown[0].lat, shown[0].lng], 15, { animate: true });
+    else map.fitBounds(L.latLngBounds(shown.map((l) => [l.lat, l.lng])), { padding: [70, 70], maxZoom: 15, animate: true });
+  }
+
+  const areaText = () => (state.city || '全部城市') + (state.dist ? '・' + state.dist : state.city ? '・全部地區' : '');
+
+  function card() {
+    $('#lc-area').replaceChildren(Fugo.icon('pin'), el('span', { text: areaText() }));
+    $('#lc-n').textContent = shown.length;
+    $('#find-count').textContent = shown.length ? '共 ' + shown.length + ' 個停車場' : '';
+    const main = $('#lc-main');
+    if (!current) {
+      main.replaceChildren(el('p', { class: 'lc-empty', text: '這個條件目前沒有停車場，換個地區或切換臨停／月租、汽車／機車看看。' }));
+      return;
+    }
+    const lot = current;
+    main.replaceChildren(
+      el('div', { class: 'lc-title' },
+        el('h3', { text: lot.name }),
+        el('span', { text: lot.city + lot.district })),
+      lot.address ? el('p', { class: 'lc-addr', text: lot.address }) : null,
+      el('div', { class: 'lc-tags' }, Fugo.lotTags(lot).map((t) => el('span', { class: 'chip', text: t }))),
+      el('div', { class: 'lc-actions' },
+        el('a', { class: 'lc-go', href: Fugo.navUrl(lot), target: '_blank', rel: 'noopener noreferrer' }, Fugo.icon('nav'), el('span', { text: '導航' })),
+        state.use === 'monthly'
+          ? el('a', { class: 'lc-apply', href: 'login.html?next=apply' }, Fugo.icon('calendar'), el('span', { text: '申請月租' }))
+          : null,
+        el('a', { class: 'lc-more', href: 'lot.html?id=' + lot.id }, el('span', { text: '據點介紹' }), Fugo.icon('chev-r'))));
+    $('#lc-list').replaceChildren(...shown.map((l) =>
+      el('li', null, el('button', {
+        type: 'button',
+        class: 'lot-row' + (l === current ? ' on' : ''),
+        onclick() { select(l, true); toggleList(false); },
+      },
+        Fugo.icon('park', 'lot-p'),
+        el('span', { class: 'lot-txt' }, el('strong', { text: l.name }), el('small', { text: l.city + l.district + '・' + l.hours })),
+        Fugo.icon('chev-r', 'lot-chev')))));
+  }
+
+  function select(lot, pan) {
     current = lot;
-    const src = Fugo.mapEmbed(lot.mapQuery);
-    if (frame.getAttribute('src') !== src) frame.setAttribute('src', src);
-    $('#mc-name').textContent = lot.name;
-    $('#mc-district').textContent = '台中市' + lot.district;
-    const go = $('#mc-go');
-    if (mode === 'monthly') {
-      go.href = 'login.html?next=apply';
-      go.removeAttribute('target');
-      $('#mc-go-text').textContent = '申請月租';
-    } else {
-      go.href = Fugo.mapUrl(lot.mapQuery);
-      go.setAttribute('target', '_blank');
-      $('#mc-go-text').textContent = '導航';
-    }
-    $('#mc-more').href = 'lot.html?id=' + lot.id;
-    card.classList.remove('pop');
-    void card.offsetWidth; // 重新播放彈出動畫
-    card.classList.add('pop');
-    rows();
-    // 手機版：點了清單就把地圖捲進畫面
-    if (fromUser && window.matchMedia('(max-width: 860px)').matches) {
-      const top = $('.find-map').getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+    drawMarkers();
+    card();
+    if (pan && map && lot) map.setView([lot.lat, lot.lng], Math.max(map.getZoom(), 15), { animate: true });
   }
 
-  $('#lot-search').addEventListener('input', rows);
-  Fugo.$$('.seg button').forEach((b) => b.addEventListener('click', () => {
-    mode = b.dataset.mode;
-    Fugo.$$('.seg button').forEach((x) => {
+  function apply(refit) {
+    shown = lots.filter((l) => l.lat != null && l.lng != null
+      && (state.use === 'temp' ? l.temp : l.monthly)
+      && (state.veh === 'car' ? l.car : l.moto)
+      && (!state.city || l.city === state.city)
+      && (!state.dist || l.district === state.dist));
+    if (!shown.includes(current)) current = shown[0] || null;
+    drawMarkers();
+    card();
+    if (refit) fit();
+  }
+
+  // 臨停／月租、汽車／機車
+  $$('.pill button').forEach((b) => b.addEventListener('click', () => {
+    state[b.dataset.f] = b.dataset.v;
+    $$('.pill button[data-f="' + b.dataset.f + '"]').forEach((x) => {
       x.classList.toggle('on', x === b);
       x.setAttribute('aria-pressed', String(x === b));
     });
-    $('#find-hint').textContent = mode === 'monthly'
-      ? '所有據點都可申請月租，選好停車場後按「申請月租」。'
-      : '點選停車場，地圖會移到該據點。';
-    select(current, false);
+    apply(true);
   }));
 
-  // 最新消息預覽（最新 3 則）
-  Fugo.newsRow = function (n, href) {
-    return el('li', null,
-      el('a', { class: 'news-row', href },
-        el('span', { class: 'news-date', text: Fugo.newsDate(n.date) }),
-        el('span', { class: 'news-main' },
-          el('span', { class: 'news-tag ' + n.cat, text: Fugo.NEWS_CAT[n.cat] || '' }),
-          el('strong', { text: n.title })),
-        Fugo.icon('chev-r', 'news-chev')));
-  };
-  $('#news-preview').replaceChildren(...DATA.news.slice(0, 3).map((n) => Fugo.newsRow(n, 'news.html#' + n.id)));
+  // 列表（在卡片內展開）
+  function toggleList(force) {
+    const btn = $('#lc-list-btn');
+    const open = force === undefined ? btn.getAttribute('aria-expanded') !== 'true' : force;
+    btn.setAttribute('aria-expanded', String(open));
+    $('#lc-list').hidden = !open;
+    $('#lot-card').classList.toggle('listing', open);
+  }
+  $('#lc-list-btn').addEventListener('click', () => toggleList());
 
-  $('#footer-lots').replaceChildren(...LOTS.map((l) => el('li', null, el('a', { href: 'lot.html?id=' + l.id, text: l.name }))));
+  // 放大鏡：選城市／行政區（只列出有停車場的地區）
+  const pop = $('#area-pop');
+  const openBtn = $('#area-open');
+  function chip(text, on, onclick) {
+    return el('button', { type: 'button', class: 'achip' + (on ? ' on' : ''), 'aria-pressed': String(on), text, onclick });
+  }
+  function renderArea() {
+    const withPos = lots.filter((l) => l.lat != null);
+    const cities = [...new Set(withPos.map((l) => l.city))];
+    $('#city-chips').replaceChildren(
+      chip('全部', !state.city, () => { state.city = ''; state.dist = ''; renderArea(); apply(true); }),
+      ...cities.map((c) => chip(c, state.city === c, () => { state.city = c; state.dist = ''; renderArea(); apply(true); })));
+    const dists = [...new Set(withPos.filter((l) => !state.city || l.city === state.city).map((l) => l.district).filter(Boolean))];
+    $('#dist-chips').replaceChildren(
+      chip('全部地區', !state.dist, () => { state.dist = ''; renderArea(); apply(true); closePop(); }),
+      ...dists.map((d) => chip(d, state.dist === d, () => { state.dist = d; renderArea(); apply(true); closePop(); })));
+  }
+  function openPop() {
+    renderArea();
+    pop.hidden = false;
+    openBtn.setAttribute('aria-expanded', 'true');
+    requestAnimationFrame(() => pop.classList.add('open'));
+    const first = pop.querySelector('.achip.on') || pop.querySelector('button');
+    if (first) first.focus();
+  }
+  function closePop() {
+    pop.classList.remove('open');
+    openBtn.setAttribute('aria-expanded', 'false');
+    pop.hidden = true;
+  }
+  openBtn.addEventListener('click', () => (pop.hidden ? openPop() : closePop()));
+  $('#area-close').addEventListener('click', () => { closePop(); openBtn.focus(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !pop.hidden) { closePop(); openBtn.focus(); } });
+  document.addEventListener('click', (e) => {
+    if (!pop.hidden && !pop.contains(e.target) && !openBtn.contains(e.target)) closePop();
+  });
 
-  if (current) select(current, false);
+  // 載入停車場（後台資料）
+  Fugo.loadLots().then((data) => {
+    lots = data;
+    apply(true);
+    $('#footer-lots').replaceChildren(...lots.map((l) => el('li', null, el('a', { href: 'lot.html?id=' + l.id, text: l.name }))));
+    openListFromHash();
+  });
+  function openListFromHash() {
+    if (location.hash !== '#list' || !lots.length) return;
+    toggleList(true);
+    $('#find').scrollIntoView({ behavior: 'smooth' });
+  }
+  window.addEventListener('hashchange', openListFromHash);
 })();

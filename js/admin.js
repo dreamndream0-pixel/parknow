@@ -283,41 +283,82 @@
   // ── 停車場 ──
   function renderLots() {
     const body = $('#lt-body');
-    if (!lots.length) return body.replaceChildren(el('tr', null, el('td', { colspan: 5, class: 'empty', text: '還沒有停車場' })));
+    if (!lots.length) return body.replaceChildren(el('tr', null, el('td', { colspan: 7, class: 'empty', text: '還沒有停車場' })));
+    const svc = (l) => [l.allow_temp !== false && '臨停', l.allow_monthly !== false && '月租', l.allow_car !== false && '汽車', l.allow_moto && '機車'].filter(Boolean).join('・');
     body.replaceChildren(...lots.map((l) => el('tr', null,
       el('td', { text: l.name }),
+      el('td', { text: (l.city || '') + (l.district || '') || '—' }),
       el('td', { text: l.address || '—' }),
-      el('td', null, l.map_query ? el('a', { href: Fugo.mapUrl(l.map_query), target: '_blank', rel: 'noopener noreferrer', text: l.map_query }) : '—'),
-      el('td', null, el('span', { class: 'badge ' + (l.active ? 'b-ok' : 'b-mute'), text: l.active ? '開放申請' : '暫停' })),
+      el('td', { text: svc(l) || '—' }),
+      el('td', null, l.lat != null && l.lng != null
+        ? el('a', { href: Fugo.mapUrl(l.lat + ',' + l.lng), target: '_blank', rel: 'noopener noreferrer', text: l.lat.toFixed(5) + ', ' + l.lng.toFixed(5) })
+        : el('span', { class: 'badge b-warn', text: '未設定' })),
+      el('td', null, el('span', { class: 'badge ' + (l.active ? 'b-ok' : 'b-mute'), text: l.active ? '顯示中' : '暫停' })),
       el('td', null, el('button', { class: 'btn btn-line btn-sm', type: 'button', text: '編輯', onclick: () => openLot(l) })))));
   }
   function openLot(l) {
     editingLot = l || null;
     $('#lt-title').textContent = l ? '編輯停車場' : '新增停車場';
     $('#lf-name').value = l ? l.name : '';
+    $('#lf-city').value = l ? l.city || '' : '台中市';
+    $('#lf-district').value = l ? l.district || '' : '';
     $('#lf-addr').value = l ? l.address || '' : '';
+    $('#lf-coord').value = l && l.lat != null && l.lng != null ? l.lat + ', ' + l.lng : '';
     $('#lf-map').value = l ? l.map_query || '' : '';
+    $('#lf-hours').value = l ? l.hours || '' : '24 小時';
+    $('#lf-rate').value = l ? l.rate || '' : '依現場公告';
+    $('#lf-temp').checked = !l || l.allow_temp !== false;
+    $('#lf-monthly').checked = !l || l.allow_monthly !== false;
+    $('#lf-car').checked = !l || l.allow_car !== false;
+    $('#lf-moto').checked = Boolean(l && l.allow_moto);
+    $('#lf-feat').value = l ? l.features || '' : '';
     $('#lf-sort').value = l ? l.sort_order : lots.length + 1;
     $('#lf-active').value = !l || l.active ? '1' : '0';
+    Fugo.hideMsg($('#lf-msg'));
     $('#dlg-lot').showModal();
+  }
+  // 接受「24.1442, 120.6633」或 Google 地圖網址裡的 @24.1442,120.6633
+  function parseCoord(v) {
+    const m = String(v).match(/(-?\d{1,3}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)/);
+    if (!m) return null;
+    const lat = Number(m[1]), lng = Number(m[2]);
+    if (lat < 21 || lat > 26.5 || lng < 118 || lng > 123) return null;
+    return { lat, lng };
   }
   $('#lt-add').addEventListener('click', () => openLot(null));
   $('#lf-cancel').addEventListener('click', () => $('#dlg-lot').close());
   $('#form-lot').addEventListener('submit', async (e) => {
     e.preventDefault();
+    const box = $('#lf-msg');
+    const coord = parseCoord($('#lf-coord').value);
     const rec = {
       name: $('#lf-name').value.trim(),
+      city: $('#lf-city').value.trim(),
+      district: $('#lf-district').value.trim(),
       address: $('#lf-addr').value.trim() || null,
       map_query: $('#lf-map').value.trim() || null,
+      lat: coord ? coord.lat : null,
+      lng: coord ? coord.lng : null,
+      hours: $('#lf-hours').value.trim() || '24 小時',
+      rate: $('#lf-rate').value.trim() || '依現場公告',
+      allow_temp: $('#lf-temp').checked,
+      allow_monthly: $('#lf-monthly').checked,
+      allow_car: $('#lf-car').checked,
+      allow_moto: $('#lf-moto').checked,
+      features: $('#lf-feat').value.trim(),
       sort_order: parseInt($('#lf-sort').value, 10) || 0,
       active: $('#lf-active').value === '1',
     };
-    if (!rec.name) return alert('請填停車場名稱');
+    if (!rec.name) return Fugo.showMsg(box, 'err', '請填停車場名稱');
+    if (!rec.city || !rec.district) return Fugo.showMsg(box, 'err', '請填城市和行政區（網站用來分區搜尋）');
+    if (!coord) return Fugo.showMsg(box, 'err', '地圖座標格式不對，請貼上像「24.1442, 120.6633」這樣的數字');
+    if (!rec.allow_temp && !rec.allow_monthly) return Fugo.showMsg(box, 'err', '臨停、月租至少要勾一個');
+    if (!rec.allow_car && !rec.allow_moto) return Fugo.showMsg(box, 'err', '汽車、機車至少要勾一個');
     const q = editingLot ? db().from('fugo_lots').update(rec).eq('id', editingLot.id) : db().from('fugo_lots').insert(rec);
     const { error } = await q;
-    if (error) return Fugo.showMsg(msg, 'err', Fugo.errText(error));
+    if (error) return Fugo.showMsg(box, 'err', Fugo.errText(error));
     $('#dlg-lot').close();
-    Fugo.toast('停車場已儲存');
+    Fugo.toast('停車場已儲存，網站地圖會馬上更新');
     await loadLots();
     renderRentals();
     renderApps();

@@ -148,6 +148,9 @@ section{padding:72px 0}
 .field textarea{min-height:80px;resize:vertical}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue-2);box-shadow:0 0 0 3px rgba(10,130,200,.15)}
 .field .hint{font-size:12.5px;color:var(--muted);margin-top:4px}
+.checks{display:flex;flex-wrap:wrap;gap:8px 18px;padding:4px 0}
+.checks label{display:inline-flex!important;align-items:center;gap:6px;font-weight:500!important;font-size:15px!important;margin:0!important;cursor:pointer}
+.checks input{width:18px!important;height:18px;padding:0!important;accent-color:var(--orange)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
 .full{width:100%}
 .btn-google{width:100%;background:#fff;color:#3c4043;border:1.5px solid #dadce0}

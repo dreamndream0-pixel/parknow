@@ -25,6 +25,8 @@
     chat: 'M12 4c5 0 9 3 9 7s-4 7-9 7l-4 3v-3.5C5 16 3 13.8 3 11c0-4 4-7 9-7z',
     building: 'M4 21V5l8-2v18M12 8l8 2v11M3 21h18M7 8h2M7 12h2M7 16h2M15 13h2M15 17h2',
     tag: 'M3 12V4h8l10 10-8 8zM7.5 7.5h.01',
+    list: 'M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01',
+    locate: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v3M12 19v3M2 12h3M19 12h3',
   };
 
   // 產生線條圖示（用 DOM 建立，不使用 innerHTML）
@@ -44,7 +46,6 @@
   Fugo.$$('i[data-icon]').forEach((i) => i.replaceWith(Fugo.icon(i.dataset.icon, i.className)));
 
   const page = document.body.dataset.page || '';
-  const lots = (window.FUGO_DATA && window.FUGO_DATA.lots) || [];
   const fmtDot = (d) => d.slice(5).replace('-', '.');
   Fugo.newsDate = fmtDot;
   Fugo.NEWS_CAT = { notice: '官方公告', guide: '服務指南' };
@@ -78,7 +79,7 @@
       el('button', { type: 'button', class: 'dr-close', 'aria-label': '關閉選單' }, Fugo.icon('close'))),
     el('div', { class: 'dr-body' },
       el('h2', { class: 'bar-title', text: '服務選單' }),
-      group('park', '停車據點', [['地圖找車位', 'index.html#find'], ...lots.map((l) => [l.name, 'lot.html?id=' + l.id])], true),
+      group('park', '停車據點', [['地圖找車位', 'index.html#find'], ['據點列表', 'index.html#list']], true),
       group('calendar', '月租服務', [['月租申請', 'login.html?next=apply'], ['申請進度', 'member.html'], ['申請流程', 'index.html#monthly']], true),
       link('megaphone', '最新消息', 'news.html'),
       link('info', '關於富格', 'index.html#about'),
@@ -187,6 +188,43 @@
     onScroll();
   }
 
-  Fugo.lotById = (id) => lots.find((l) => l.id === id);
+  // ── 停車場資料：以後台資料庫為準，連不上才用 js/data.js 備用資料 ──
+  const norm = (l) => ({
+    id: l.id,
+    name: l.name,
+    city: l.city || '台中市',
+    district: l.district || '',
+    address: l.address || '',
+    mapQuery: l.map_query || (l.lat != null ? l.lat + ',' + l.lng : l.name),
+    lat: l.lat == null ? null : Number(l.lat),
+    lng: l.lng == null ? null : Number(l.lng),
+    hours: l.hours || '24 小時',
+    rate: l.rate || '依現場公告',
+    temp: l.allow_temp !== false,
+    monthly: l.allow_monthly !== false,
+    car: l.allow_car !== false,
+    moto: Boolean(l.allow_moto),
+    features: String(l.features || '').split(/[、,，\s]+/).filter(Boolean),
+  });
+  let lotsPromise = null;
+  Fugo.loadLots = function () {
+    if (lotsPromise) return lotsPromise;
+    const fallback = () => ((window.FUGO_DATA && window.FUGO_DATA.lots) || []).map(norm);
+    lotsPromise = (async () => {
+      if (!Fugo.ready) return fallback();
+      try {
+        const { data, error } = await Fugo.client.from('fugo_lots').select('*').eq('active', true).order('sort_order').order('id');
+        if (error || !data || !data.length) return fallback();
+        return data.map(norm);
+      } catch (e) {
+        return fallback();
+      }
+    })();
+    return lotsPromise;
+  };
+  Fugo.lotTags = (l) => [l.hours, l.temp && '臨停', l.monthly && '月租', l.car && '汽車', l.moto && '機車', ...l.features].filter(Boolean);
+  Fugo.navUrl = (l) => (l.lat != null
+    ? 'https://www.google.com/maps/dir/?api=1&destination=' + l.lat + ',' + l.lng
+    : Fugo.mapUrl(l.mapQuery));
   Fugo.mapEmbed = (q) => 'https://maps.google.com/maps?q=' + encodeURIComponent(q) + '&hl=zh-TW&z=16&output=embed';
 })();
