@@ -21,7 +21,8 @@
   $$('.admin-tabs button').forEach((b) => b.addEventListener('click', () => {
     $$('.admin-tabs button').forEach((x) => x.classList.toggle('on', x === b));
     if (b.dataset.tab === 'audit') loadAudit();
-    ['rentals', 'apps', 'members', 'lots', 'audit'].forEach((t) => $('#tab-' + t).classList.toggle('hidden', t !== b.dataset.tab));
+    if (b.dataset.tab === 'news') loadNews();
+    ['rentals', 'apps', 'members', 'lots', 'news', 'audit'].forEach((t) => $('#tab-' + t).classList.toggle('hidden', t !== b.dataset.tab));
   }));
 
   async function init() {
@@ -399,8 +400,73 @@
     renderApps();
   });
 
+  // ── 最新消息 ──
+  const NEWS_CAT = { notice: '官方公告', guide: '服務指南', lottery: '抽籤公告' };
+  let news = [];
+  let editingNews = null;
+  async function loadNews() {
+    const { data, error } = await db().from('fugo_news').select('*').order('publish_date', { ascending: false }).order('id', { ascending: false });
+    if (error) return Fugo.toast(Fugo.errText(error));
+    news = data;
+    renderNews();
+  }
+  function renderNews() {
+    const body = $('#nw-body');
+    if (!news.length) return body.replaceChildren(el('tr', null, el('td', { colspan: 5, class: 'empty', text: '還沒有消息' })));
+    body.replaceChildren(...news.map((n) => el('tr', null,
+      el('td', { text: n.publish_date }),
+      el('td', null, el('span', { class: 'badge ' + (n.cat === 'lottery' ? 'b-bad' : n.cat === 'guide' ? 'b-warn' : 'b-blue'), text: NEWS_CAT[n.cat] || n.cat })),
+      el('td', { text: n.title }),
+      el('td', null, el('span', { class: 'badge ' + (n.published ? 'b-ok' : 'b-mute'), text: n.published ? '已發布' : '已下架' })),
+      el('td', null, el('button', { class: 'btn btn-line btn-sm', type: 'button', text: '編輯', onclick: () => openNews(n) })))));
+  }
+  function openNews(n) {
+    editingNews = n || null;
+    $('#nw-title').textContent = n ? '編輯消息' : '新增消息';
+    $('#nf-cat').value = n ? n.cat : 'notice';
+    $('#nf-date').value = n ? n.publish_date : Fugo.today();
+    $('#nf-head').value = n ? n.title : '';
+    $('#nf-body').value = n ? n.body : '';
+    $('#nf-pub').value = !n || n.published ? '1' : '0';
+    $('#nf-del').classList.toggle('hidden', !n);
+    Fugo.hideMsg($('#nf-msg'));
+    $('#dlg-news').showModal();
+  }
+  $('#nw-add').addEventListener('click', () => openNews(null));
+  $('#nf-cancel').addEventListener('click', () => $('#dlg-news').close());
+  $('#nf-del').addEventListener('click', async () => {
+    if (!editingNews || !confirm('確定要刪除「' + editingNews.title + '」？刪除後無法復原（只想暫時不顯示可改成「下架」）。')) return;
+    const { error } = await db().from('fugo_news').delete().eq('id', editingNews.id);
+    if (error) return Fugo.showMsg($('#nf-msg'), 'err', Fugo.errText(error));
+    $('#dlg-news').close();
+    Fugo.toast('消息已刪除');
+    loadNews();
+  });
+  $('#form-news').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const box = $('#nf-msg');
+    const rec = {
+      cat: $('#nf-cat').value,
+      publish_date: $('#nf-date').value,
+      title: $('#nf-head').value.trim(),
+      body: $('#nf-body').value.replace(/\r/g, '').trim(),
+      published: $('#nf-pub').value === '1',
+    };
+    if (!NEWS_CAT[rec.cat]) return Fugo.showMsg(box, 'err', '請選分類');
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(rec.publish_date)) return Fugo.showMsg(box, 'err', '請選發布日期');
+    if (!rec.title) return Fugo.showMsg(box, 'err', '請填標題');
+    if (!rec.body) return Fugo.showMsg(box, 'err', '請填內容');
+    if (editingNews) rec.updated_at = new Date().toISOString();
+    const q = editingNews ? db().from('fugo_news').update(rec).eq('id', editingNews.id) : db().from('fugo_news').insert(rec);
+    const { error } = await q;
+    if (error) return Fugo.showMsg(box, 'err', Fugo.errText(error));
+    $('#dlg-news').close();
+    Fugo.toast(rec.published ? '消息已發布，網站馬上看得到' : '已存成下架狀態，網站不會顯示');
+    loadNews();
+  });
+
   // ── 操作紀錄 ──
-  const TABLE_NAMES = { fugo_rentals: '月租資料', fugo_applications: '月租申請', fugo_lots: '停車場', fugo_profiles: '會員資料', fugo_admins: '管理員名單' };
+  const TABLE_NAMES = { fugo_rentals: '月租資料', fugo_applications: '月租申請', fugo_lots: '停車場', fugo_news: '最新消息', fugo_profiles: '會員資料', fugo_admins: '管理員名單' };
   const ACTIONS = { INSERT: ['新增', 'b-ok'], UPDATE: ['修改', 'b-blue'], DELETE: ['刪除', 'b-bad'] };
   const SKIP = ['updated_at', 'created_at'];
   function auditSummary(a) {

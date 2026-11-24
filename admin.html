@@ -51,6 +51,7 @@
         <button type="button" data-tab="apps">月租申請</button>
         <button type="button" data-tab="members">會員</button>
         <button type="button" data-tab="lots">停車場</button>
+        <button type="button" data-tab="news">最新消息</button>
         <button type="button" data-tab="audit">操作紀錄</button>
       </div>
 
@@ -123,6 +124,17 @@
         </div>
       </section>
 
+      <!-- 最新消息 -->
+      <section class="panel hidden" id="tab-news">
+        <div class="toolbar"><button class="btn btn-orange btn-sm" id="nw-add" type="button">＋ 新增消息</button></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>日期</th><th>分類</th><th>標題</th><th>狀態</th><th>操作</th></tr></thead>
+            <tbody id="nw-body"></tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- 操作紀錄 -->
       <section class="panel hidden" id="tab-audit">
         <p class="sub">最近 200 筆新增／修改／刪除紀錄。紀錄只能看，任何人（包含管理員）都不能修改或刪除。</p>
@@ -179,6 +191,30 @@
     </div>
     <div class="dlg-foot">
       <button class="btn btn-line" type="button" id="af-cancel">取消</button>
+      <button class="btn btn-orange" type="submit" value="save">儲存</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- 最新消息編輯 -->
+<dialog id="dlg-news">
+  <form id="form-news" method="dialog" novalidate>
+    <div class="dlg-head" id="nw-title">新增消息</div>
+    <div class="dlg-body">
+      <div id="nf-msg" class="msg hidden" role="alert"></div>
+      <div class="grid2">
+        <div class="field"><label for="nf-cat">分類 <span class="req">*</span></label>
+          <select id="nf-cat"><option value="notice">官方公告</option><option value="guide">服務指南</option><option value="lottery">抽籤公告</option></select></div>
+        <div class="field"><label for="nf-date">發布日期 <span class="req">*</span></label><input id="nf-date" type="date"></div>
+      </div>
+      <div class="field"><label for="nf-head">標題 <span class="req">*</span></label><input id="nf-head" maxlength="80"></div>
+      <div class="field"><label for="nf-body">內容 <span class="req">*</span></label><textarea id="nf-body" rows="9" maxlength="5000"></textarea><div class="hint">每按一次 Enter 換一段。月租抽籤結果請選「抽籤公告」，會出現在選單的「月租抽籤公告」。</div></div>
+      <div class="field"><label for="nf-pub">狀態</label>
+        <select id="nf-pub"><option value="1">發布（網站看得到）</option><option value="0">下架（先存草稿）</option></select></div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn btn-danger hidden" type="button" id="nf-del">刪除</button>
+      <button class="btn btn-line" type="button" id="nf-cancel">取消</button>
       <button class="btn btn-orange" type="submit" value="save">儲存</button>
     </div>
   </form>

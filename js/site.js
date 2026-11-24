@@ -2,15 +2,14 @@
 (function () {
   'use strict';
   const { el, $, $$ } = Fugo;
-  const DATA = window.FUGO_DATA || { news: [] };
 
   // ── 最新消息（精簡 3 則） ──
-  $('#news-preview').replaceChildren(...DATA.news.slice(0, 3).map((n) =>
+  Fugo.loadNews().then((news) => $('#news-preview').replaceChildren(...news.slice(0, 3).map((n) =>
     el('li', null, el('a', { href: 'news.html#' + n.id },
       el('span', { class: 'nm-date', text: Fugo.newsDate(n.date) }),
       el('span', { class: 'news-tag ' + n.cat, text: Fugo.NEWS_CAT[n.cat] || '' }),
       el('span', { class: 'nm-title', text: n.title }),
-      Fugo.icon('chev-r', 'nm-chev')))));
+      Fugo.icon('chev-r', 'nm-chev'))))));
 
   // ── 地圖 ──
   const state = { use: 'temp', veh: 'car', city: '', dist: '' };

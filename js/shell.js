@@ -48,7 +48,7 @@
   const page = document.body.dataset.page || '';
   const fmtDot = (d) => d.slice(5).replace('-', '.');
   Fugo.newsDate = fmtDot;
-  Fugo.NEWS_CAT = { notice: '官方公告', guide: '服務指南' };
+  Fugo.NEWS_CAT = { notice: '官方公告', guide: '服務指南', lottery: '抽籤公告' };
 
   // ── 側邊「服務選單」 ──
   function group(icon, label, items, open) {
@@ -80,7 +80,7 @@
     el('div', { class: 'dr-body' },
       el('h2', { class: 'bar-title', text: '服務選單' }),
       group('park', '停車據點', [['地圖找車位', 'index.html#find'], ['據點列表', 'index.html#list']], true),
-      group('calendar', '月租服務', [['月租申請', 'login.html?next=apply'], ['申請進度', 'member.html'], ['申請流程', 'index.html#monthly']], true),
+      group('calendar', '月租服務', [['月租申請', 'login.html?next=apply'], ['申請進度', 'member.html'], ['申請流程', 'index.html#monthly'], ['月租抽籤公告', 'news.html?cat=lottery']], true),
       link('megaphone', '最新消息', 'news.html'),
       link('info', '關於富格', 'index.html#about'),
       el('a', { class: 'dr-row', href: 'member.html', id: 'dr-member' }, Fugo.icon('user'), memberLabel, Fugo.icon('chev-r', 'dr-chev'))),
@@ -221,6 +221,27 @@
       }
     })();
     return lotsPromise;
+  };
+  // 最新消息：後台「最新消息」分頁編輯，讀不到資料庫時用 js/data.js
+  let newsPromise = null;
+  Fugo.loadNews = function () {
+    if (newsPromise) return newsPromise;
+    const fallback = () => (window.FUGO_DATA && window.FUGO_DATA.news) || [];
+    newsPromise = (async () => {
+      if (!Fugo.ready) return fallback();
+      try {
+        const { data, error } = await Fugo.client.from('fugo_news').select('id,cat,title,body,publish_date')
+          .eq('published', true).order('publish_date', { ascending: false }).order('id', { ascending: false }).limit(100);
+        if (error || !data) return fallback();
+        return data.map((n) => ({
+          id: 'n' + n.id, cat: n.cat, title: n.title, date: n.publish_date,
+          body: String(n.body).split(/\n+/).map((t) => t.trim()).filter(Boolean),
+        }));
+      } catch (e) {
+        return fallback();
+      }
+    })();
+    return newsPromise;
   };
   Fugo.lotTags = (l) => [l.hours, l.temp && '臨停', l.monthly && '月租', l.car && '汽車', l.moto && '機車', ...l.features].filter(Boolean);
   Fugo.navUrl = (l) => (l.lat != null

@@ -7,13 +7,13 @@
 |---|---|
 | `index.html` | 首頁：主視覺、最新消息、找停車場地圖（臨停／月租、汽車／機車、地區搜尋、卡片內導航與列表）、月租服務、關於富格 |
 | `lot.html?id=…` | 停車場介紹：地圖、地址、營業時間、費率、導航、申請月租 |
-| `news.html` | 最新消息：官方公告／服務指南分類，點開看內容 |
+| `news.html` | 最新消息：官方公告／服務指南／抽籤公告分類（`news.html?cat=lottery` 就是選單的「月租抽籤公告」），點開看內容 |
 | `login.html` | 會員登入／註冊：Google、Email、手機簡訊（Google 與手機需先開通，見下方） |
 | `member.html` | 會員中心：第一次登入必填姓名＋手機；申請月租、查看申請進度與自己的月租 |
-| `admin.html` | 管理後台：月租資料（新增／編輯／到期提醒／繳費狀態／匯出）、月租申請、會員、停車場 |
+| `admin.html` | 管理後台：月租資料（新增／編輯／到期提醒／繳費狀態／匯出）、月租申請、會員、停車場、最新消息（新增／編輯／下架／刪除） |
 | `privacy.html` | 隱私權政策 |
 
-停車場在管理後台「停車場」分頁新增／編輯，只要填地址，儲存時自動找出地圖位置並帶入城市、行政區（有 Google 金鑰用 Google Geocoding，否則用 OpenStreetMap Nominatim），首頁地圖會直接讀資料庫；`js/data.js` 是連不上資料庫時的備用資料，最新消息也寫在那裡。首頁地圖在 `js/map.js`：`js/config.js` 填了 `GOOGLE_MAPS_KEY` 就用 Google 地圖，留空、金鑰錯誤或載入失敗時自動改用 Leaflet（`js/vendor/leaflet-1.9.4.js`）＋ CARTO 底圖。
+停車場在管理後台「停車場」分頁新增／編輯，只要填地址，儲存時自動找出地圖位置並帶入城市、行政區（有 Google 金鑰用 Google Geocoding，否則用 OpenStreetMap Nominatim），首頁地圖會直接讀資料庫。最新消息存在資料庫 `fugo_news`（`supabase/news.sql`），在後台「最新消息」分頁編輯。`js/data.js` 只是連不上資料庫時的備用資料。首頁地圖在 `js/map.js`：`js/config.js` 填了 `GOOGLE_MAPS_KEY` 就用 Google 地圖，留空、金鑰錯誤或載入失敗時自動改用 Leaflet（`js/vendor/leaflet-1.9.4.js`）＋ CARTO 底圖。
 前台共用的側邊服務選單、手機底部列、客服面板在 `js/shell.js`，樣式在 `css/site.css`。
 
 ## 資料與安全
